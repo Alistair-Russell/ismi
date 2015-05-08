@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/publicTemplate.xhtml">
+
+		<ui:define name="publicContent">
+			
+			<h:outputStylesheet name="/css/ismi-db/repository.css" />
+			
+			<div id="pageTitle">
+				<h:outputText value="Browse Repository" />
+			</div>
+
+			<h:panelGrid columns="1"
+				style="margin-left: auto; margin-right: auto; text-align: center; width: 700px">
+				
+				<hr/>
+				
+				<h:panelGrid 
+					columns="1" 
+					id="browsePanel"
+					styleClass="controlPanel">
+					
+					<h:panelGrid columns="2">
+						<h:outputText value="Select entity by class" />
+						<h:selectOneMenu value="#{EntityRepository.objectClass}"
+							valueChangeListener="#{EntityRepository.actionChangeDefinition}">
+							<f:selectItems value="#{EntityRepository.definitions}" />
+							<a4j:ajax event="change"
+								render="browseAttPanel" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					
+					<rich:tabPanel activeItem="#{EntityRepository.currentTab}" >
+					
+						<rich:tab header="Show all" name="Show all">
+							<a4j:commandButton value="Submit"
+								action="#{EntityRepository.actionShowAll}"
+								styleClass="button"
+								render="browseAttPanel"/>
+											
+            			</rich:tab>
+            			
+						<rich:tab header="Search by attributes" name="Search by attributes">
+							<h:panelGrid id="browseAttPanel">
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'PERSON'}">
+									<h:column>
+										<h:outputText value="Name (arabic)" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.personName}" />
+									</h:column>
+									<h:column>
+										<h:outputText value="Name Translit" style="width:100px;" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.personNameTranslit}" />
+									</h:column>
+								</h:panelGrid>
+		
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'TEXT'}">
+									<h:column>
+										<h:outputText value="Full Title (arabic)" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.textFullTitle}" />
+									</h:column>
+									<h:column>
+										<h:outputText value="Full Title Translit" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.textFullTitleTranslit}" />
+									</h:column>
+									<h:column>
+										<h:outputText value="Prime Alias" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.textShortTitle}" />
+									</h:column>
+								</h:panelGrid>
+		
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'ALIAS'}">
+									<h:column>
+										<h:outputText value="Alias" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.aliasAlias}" />
+									</h:column>
+								</h:panelGrid>
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'PLACE'}">
+									<h:column>
+										<h:outputText value="Name" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.placeName}" />
+									</h:column>
+								</h:panelGrid>
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'COLLECTION'}">
+									<h:column>
+										<h:outputText value="Name" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.collectionName}" />
+									</h:column>
+								</h:panelGrid>
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'WITNESS'}">
+									<h:column>
+										<h:outputText value="Ahlwardt No" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.witnessAhlwardtNo}" />
+									</h:column>
+								</h:panelGrid>
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'REPOSITORY'}">
+									<h:column>
+										<h:outputText value="Name" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.repositoryName}" />
+									</h:column>
+								</h:panelGrid>
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'CODEX'}">
+									<h:column>
+										<h:outputText value="Shelf Mark" />
+									</h:column>
+									<h:column>
+										<h:inputText value="#{EntityRepository.codexIdentifier}" />
+									</h:column>
+								</h:panelGrid>
+								<h:panelGrid columns="2"
+									rendered="#{EntityRepository.objectClass == 'SUBJECT'}">
+									<h:column>
+										<h:outputText value="Type" />
+									</h:column>
+									<h:column>
+										<h:selectOneMenu value="#{EntityRepository.subjectType}">
+											<f:selectItems
+												value="#{EntityRepository.suggestedSubjectTypes}" />
+										</h:selectOneMenu>
+									</h:column>
+								</h:panelGrid>
+								<a4j:commandButton value="Submit"
+									rendered="#{EntityRepository.renderedSearch}"
+									action="#{EntityRepository.actionSearchByAttributes}" styleClass="button"
+									render="browseAttPanel"/>
+							</h:panelGrid>
+							          				
+                		</rich:tab>
+						<rich:tab header="Search by own value" name="Search by own value">
+            				
+            				<h:panelGrid columns="2">
+            					<h:outputText value="Own Value"/>
+            					<h:inputText value="#{EntityRepository.ocTerm}"/>
+            					<h:outputText/>
+            					<a4j:commandButton value="Submit"
+									rendered="#{EntityRepository.renderedSearch}"
+									action="#{EntityRepository.actionSearchByOwnvalue}" styleClass="button"
+									render="browseAttPanel"/>
+            				</h:panelGrid>
+            				
+                		</rich:tab>                		
+					</rich:tabPanel> 
+
+
+				</h:panelGrid>
+				
+				<hr/>
+				
+				
+				<h:panelGrid columns="1"
+					style="margin-left: auto; margin-right: auto; text-align: center; width: 100%;"
+					rendered="#{EntityRepository.resultMode == 'advanced'}">
+					<ui:include src="components/advancedResult.xhtml" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="1"
+					style="margin-left: auto; margin-right: auto; text-align: center; width: 100%;"
+					rendered="#{EntityRepository.resultMode == 'all'}">
+					<ui:include src="components/showAllResult.xhtml" />
+				</h:panelGrid>
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

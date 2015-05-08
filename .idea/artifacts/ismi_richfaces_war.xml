@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ismi-richfaces:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="ismi-richfaces-1.0.war">
+      <element id="artifact" artifact-name="ismi-richfaces:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,1 @@
+WITNESS|source:is_exemplar_of|TEXT|source:was_created_by|PERSON

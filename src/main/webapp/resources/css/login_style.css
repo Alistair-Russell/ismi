@@ -1,0 +1,22 @@
+.loginForm{
+    //background-color: yellow;
+}
+
+.loginInputText{
+    width: 200px;
+}
+
+.loginWelcomePanel{
+    //background-color: red;
+    margin-left: auto;
+    margin-right: auto;
+    //padding-top: 100px;
+    //padding-bottom: 100px;	
+}
+
+.loginButton{
+	display: block;
+	margin-left: auto;
+    margin-right: auto;
+}
+

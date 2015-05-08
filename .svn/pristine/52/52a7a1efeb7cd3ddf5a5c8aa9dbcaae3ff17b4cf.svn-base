@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+
+		<h:panelGrid>
+			<h:panelGrid columns="2">
+				
+				<h:outputText value="Digitalization - [#{CurrentDigi.entity.id}] #{CurrentDigi.entity.ownValue}"
+					rendered="#{!empty CurrentDigi.entity.ownValue}"
+					style="font-size: 12pt;" styleClass="titlePanel" />
+				
+				<h:outputText value="Person"
+					rendered="#{empty CurrentDigi.entity.ownValue}"
+					style="font-size: 12pt; " styleClass="titlePanel"/>
+				<h:outputLink
+					value="#{ApplicationBean1.root}/imageServer/displayDigi.jsp?digiId=#{CurrentDigi.entity.id}" >
+					<h:graphicImage value="#{ApplicationBean1.displayImage}" width="20" height="20"/>
+				</h:outputLink>
+			</h:panelGrid>
+		</h:panelGrid>
+		
+		
+		
+		<h:panelGrid columns="3" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn" id="digiPanel">
+
+			<h:outputText value="Name" />
+			<h:inputText size="50"
+				value="#{CurrentDigi.attributes['name']}" />
+			<h:outputText />
+
+			<h:outputText value="Number of files" />
+			<h:inputText size="50"
+				value="#{CurrentDigi.attributes['num_files']}" />
+			<h:outputText />
+
+			<h:outputText value="Codex" styleClass="titlePanel"/>
+			<h:panelGrid columns="4" styleClass="createPanel"
+				columnClasses="createPanelFirstColumn" id="digiCodexPanel">
+	
+				<h:outputLabel value="Country" />
+				<ismi:autocomplete lo="#{CurrentDigi.countryLo}" />
+				<h:outputText />
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentDigi.countryLo.entity.id}"
+						actionListener="#{CurrentDigi.editThisCountryAction}" />
+				</h:panelGrid>
+	
+				<h:outputLabel value="Place/City" />
+				<ismi:autocomplete lo="#{CurrentDigi.cityLo}" />
+				<h:panelGrid>
+					<h:selectOneMenu
+						rendered="#{!empty CurrentDigi.citiesInCurrentCountry}"
+						valueChangeListener="#{CurrentDigi.inCurrentCountryListener}">
+						<f:selectItems value="#{CurrentDigi.citiesInCurrentCountry}" />
+						<a4j:ajax event="change" render="digiCodexPanel" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentDigi.cityLo.entity.id}"
+						actionListener="#{CurrentDigi.editThisCityAction}" />
+				</h:panelGrid>
+	
+	
+				<h:outputLabel value="Repository" />
+				<ismi:autocomplete lo="#{CurrentDigi.repositoryLo}" />
+				<h:panelGrid>
+					<h:selectOneMenu partialSubmit="true"
+						rendered="#{!empty CurrentDigi.repositoriesInCurrentCity}"
+						valueChangeListener="#{CurrentDigi.inCurrentCityListener}">
+						<f:selectItems value="#{CurrentDigi.repositoriesInCurrentCity}" />
+						<a4j:ajax event="change" render="digiCodexPanel" />
+					</h:selectOneMenu>
+					<h:outputText
+						rendered="#{empty CurrentDigi.repositoriesInCurrentCity}" />
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentDigi.repositoryLo.entity.id}"
+						actionListener="#{CurrentDigi.editThisRepositoryAction}" />
+				</h:panelGrid>
+	
+	
+				<h:outputLabel value="Collection" />
+				<ismi:autocomplete lo="#{CurrentDigi.collectionLo}" />
+				<h:panelGrid>
+					<h:selectOneMenu
+						rendered="#{!empty CurrentDigi.collectionsInCurrentRepository}"
+						valueChangeListener="#{CurrentDigi.inCurrentRepositoryListener}">
+						<f:selectItems
+							value="#{CurrentDigi.collectionsInCurrentRepository}" />
+						<a4j:ajax event="change" render="digiCodexPanel" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentDigi.collectionLo.entity.id}"
+						actionListener="#{CurrentDigi.editThisCollectionAction}" />
+				</h:panelGrid>
+	
+				<h:outputLabel value="Shelf Mark / Identifier" />
+				<h:panelGroup>
+					<h:outputText
+						rendered="#{!empty CurrentDigi.codexLo.attribute.ownValue}"
+						value="#{CurrentDigi.codexLo.term}"
+						style="font-style:normal;
+	                           font-size:15px;
+	                           font-weight:bold;
+	                           font-family:sans-serif;" />
+				</h:panelGroup>
+				<h:panelGrid>
+					<h:selectOneMenu
+						rendered="#{!empty CurrentDigi.shelfMarksInCurrentCollection}"
+						valueChangeListener="#{CurrentDigi.identifierChangedListener}">
+						<f:selectItems
+							value="#{CurrentDigi.shelfMarksInCurrentCollection}" />
+						<a4j:ajax event="change" render="digiCodexPanel" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentDigi.codexLo.entity.ownValue}"
+						actionListener="#{CurrentDigi.editThisCodexAction}" />
+				</h:panelGrid>				
+				
+				
+				<h:outputText />
+				<h:commandButton
+					actionListener="#{CurrentDigi.checkConsistencyFromCountryToCodex}"
+					value="Check Consistency From Country To Codex" />
+				<h:outputText />
+				<h:outputText />
+				
+				
+			</h:panelGrid>
+
+
+		</h:panelGrid>
+
+
+
+
+		<h:panelGrid columns="4">
+			<h:outputText value="ID of the Digitalization" />
+			<h:inputText value="#{CurrentDigi.currentId}" />
+			<h:commandButton value="Load By ID"
+				action="#{CurrentDigi.actionReloadEntity}"
+				onclick="confirm('Do you really want to reload the entity?');" />
+			<h:outputText value="#{CurrentDigi.currentIdMsg}"
+				style="color:red" />
+		</h:panelGrid>
+
+		<h:commandButton 
+			value="#{CurrentDigi.saveButtonLabel}"
+			rendered="#{CurrentDigi.renderSaveButton}"
+			action="#{CurrentDigi.save}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}" />
+		<h:commandButton value="Clear Form"
+			action="#{CurrentDigi.clearAction}"
+			onclick="#{ApplicationBean1.JSConfirmationCleanForm}" />
+
+	</ui:composition>
+</body>
+</html>

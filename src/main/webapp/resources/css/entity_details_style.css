@@ -1,0 +1,52 @@
+#entityDetails{
+    width: 700px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}
+
+#entityDetails form{
+	padding-bottom: 10px;
+}
+
+
+#entityDetailsTitle{
+    padding: 15px 0px 15px 0px;
+    text-align: center;
+    font-size: medium;
+}
+
+#entityDetails table{
+	/*
+    text-align:center; 
+    margin-left:auto; 
+    margin-right:auto;
+    width: 680px;*/ 
+    /*border: 2px solid red;*/
+}
+
+.mainPanel{
+	width: 700px;
+}
+
+.regionPanel{
+	text-align:center; 
+    margin-left:auto; 
+    margin-right:auto;
+    width: 100%;
+}
+
+.controlPanel{
+	text-align:center; 
+    margin-left:auto; 
+    margin-right:auto;
+    width: 300px;
+}
+
+#entityDetails td{
+    text-align:left;
+}
+
+.headerPanel{
+	text-align: center
+}

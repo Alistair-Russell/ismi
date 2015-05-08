@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition>
+		<h:panelGrid columns="1">
+			<h:outputText value="To create an alias, please go to the entry, whom you want to"/>
+			<h:outputText value="create an alias of, and create it there."/>
+			<h:outputText value="Alias - #{CurrentAlias.entity.ownValue}"
+				rendered="#{!empty CurrentAlias.entity.ownValue}"
+				styleClass="titlePanel"/>
+			<h:outputText value="Alias"
+				rendered="#{empty CurrentAlias.entity.ownValue}"
+				styleClass="titlePanel"/>
+		</h:panelGrid>
+
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputText value="Alias" />
+			<h:inputText size="100" value="#{CurrentAlias.attributes['alias']}" />
+
+			<h:outputText value="Alias (translit)"></h:outputText>
+			<h:inputText size="100"
+				value="#{CurrentAlias.attributes['alias_translit']}" />
+
+		</h:panelGrid>
+
+		<h:commandButton value="#{CurrentAlias.saveButtonLabel}"
+			rendered="#{CurrentAlias.renderSaveButton}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}"
+			action="#{CurrentAlias.save}" />
+
+		<h:outputText rendered="#{CurrentAlias.create_error}"
+			value="Alias already exists - not saved!" />
+
+		
+		
+	</ui:composition>
+</body>
+</html>

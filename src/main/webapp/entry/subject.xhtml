@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition>
+	
+		<h:panelGrid>
+			<h:outputText value="Subject - #{CurrentSubject.entity.ownValue}"
+				rendered="#{!empty CurrentSubject.entity.ownValue}"
+				styleClass="titlePanel"/>
+			<h:outputText value="Subject"
+				rendered="#{empty CurrentSubject.entity.ownValue}"
+				styleClass="titlePanel"/>
+		</h:panelGrid>
+
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputText value="Name" />
+			<h:inputText size="100" value="#{CurrentSubject.attributes['name']}" />
+
+			<h:outputText value="Type" />
+			<h:selectOneMenu
+				value="#{CurrentSubject.attributes['type']}">
+				<f:selectItems value="#{CurrentSubject.suggestedTypes}" />
+			</h:selectOneMenu>
+
+			<h:outputText value="General Category" />
+			<h:selectOneMenu value="#{CurrentSubject.idMainSubject}">
+				<f:selectItems value="#{CurrentSubject.suggestedCategories}" />
+			</h:selectOneMenu>
+			
+		</h:panelGrid>
+
+		<h:panelGrid columns="4">
+			<h:outputText value="ID of the Text" />
+			<h:inputText value="#{CurrentSubject.currentId}" />
+			<h:commandButton value="Load Subject By ID"
+				action="#{CurrentSubject.actionReloadEntity}"
+				onclick="confirm('Do you really want to reload the entity?');" />
+			<h:outputText value="#{CurrentSubject.currentIdMsg}"
+				style="color:red" />
+		</h:panelGrid>
+
+		<h:commandButton value="#{CurrentSubject.saveButtonLabel}"
+			rendered="#{CurrentSubject.renderSaveButton}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}"
+			action="#{CurrentSubject.save}" />
+
+		<h:commandButton value="Clear Form"
+			action="#{CurrentSubject.clearAction}"
+			onclick="#{ApplicationBean1.JSConfirmationCleanForm}" />
+
+	</ui:composition>
+</body>
+</html>

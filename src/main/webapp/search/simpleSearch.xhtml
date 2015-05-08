@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<body>
+    <ui:composition template="/templates/publicTemplate.xhtml">
+		<ui:define name="title">ISMI - simple search</ui:define>
+
+		<ui:define name="publicContent">
+		
+			<h:outputStylesheet name="/css/ismi-db/display.css" />
+			
+			<div id="simpleSearch">
+			
+				<div id="pageTitle">
+					<h:outputText value="Simple Search in Author and Title" />
+				</div>
+	
+				<h:panelGrid columns="1">
+					<h:form>
+						<h:panelGrid columns="1"
+							rendered="#{SimpleSearch.inputMethod!='arabic'}">						
+							<h:panelGroup>
+								<h:inputText id="search-input-enter"
+									value="#{SimpleSearch.searchTerm}"
+									actionListener="#{SimpleSearch.listenerSearch}" size="70"
+									autocomplete="off" />
+								<h:commandButton value="submit"
+									actionListener="#{SimpleSearch.listenerSearch}" />
+							</h:panelGroup>						
+						</h:panelGrid>
+	                
+						<h:panelGroup rendered="#{SimpleSearch.inputMethod=='arabic'}">						
+							<h:panelGroup>
+								<h:inputText id="arabicSearchTerm"
+									onfocus="changeTranslit(document.getElementById('selectConv').value, this.id)"
+									onkeypress="return doConvert(event, this.id);"
+									value="#{SimpleSearch.searchTerm}" size="70"
+									actionListener="#{SimpleSearch.listenerSearch}"
+									autocomplete="off" style="text-align:right;" />
+								<h:commandButton
+									value="submit"
+									actionListener="#{SimpleSearch.listenerSearch}" />
+							</h:panelGroup>						
+						</h:panelGroup>
+	
+						<h:panelGroup>						
+							<h:selectOneMenu partialSubmit="true"
+								value="#{SimpleSearch.inputMethod}">
+								<f:selectItem itemLabel="arabic" itemValue="arabic" />
+								<f:selectItem itemLabel="latin" itemValue="latin" />
+							</h:selectOneMenu>
+							<h:selectOneMenu value="#{SimpleSearch.selectedMode}"
+								valueChangeListener="#{SimpleSearch.listenerModeValueChange}"
+								partialSubmit="true">
+								<f:selectItems value="#{SimpleSearch.modeList}" />
+							</h:selectOneMenu>						
+						</h:panelGroup>
+	                </h:form>
+					<h:panelGroup rendered="#{SimpleSearch.inputMethod=='arabic'}">
+						<p>
+							Choose keyboard: <select id="selectConv"
+								onchange="changeTranslit(document.getElementById('selectConv').value);">
+								<option value="latin" selected="true">Arabic utf-8
+									keyboard (no transliteration)</option>
+								<option value="persian_arabic">Transliteration</option>
+							</select>
+						</p>
+						<div id="tableOfCorresp" class="tableOfCorresp">.</div>
+					</h:panelGroup>
+	
+	                
+					<h:form rendered="#{!empty SimpleSearch.resultMap}">
+						<div id="resultSet">
+						<h:panelGroup>
+							<h:outputText
+								value="Your results in ISMI - #{SimpleSearch.counter} entities found" />
+							<h:dataTable var="resultName"
+								value="#{SimpleSearch.resultSetNames}">
+								<h:column>
+									<h2>
+										Found in
+										<h:outputText
+											value="#{SimpleSearch.resultMap[resultName].name}" />
+									</h2>
+									
+									<div id="resultSetContent">
+									<h:dataTable 
+										var="entity"
+										value="#{SimpleSearch.resultMap[resultName].results}">
+										
+										<h:column>
+											<h:outputLink
+												value="#{ApplicationBean1.root}/search/displayAuthor.xhtml?personId=#{entity.id}"
+												rendered="#{SimpleSearch.resultMap[resultName].name != 'Title'}">
+												<h:outputText value="#{entity.ownValue} [#{entity.id}]"
+													style="color:#2200C1;font-size:medium;cursor:pointer;text-decoration:underline" />
+											</h:outputLink>
+	                                        
+											<h:outputLink
+												value="#{ApplicationBean1.root}/search/displayTitle.xhtml?textId=#{entity.id}"
+												rendered="#{SimpleSearch.resultMap[resultName].name == 'Title'}">
+												<h:outputText value="#{entity.ownValue} [#{entity.id}]"
+													style="color:#2200C1;font-size:medium;cursor:pointer;text-decoration:underline" />
+											</h:outputLink>
+											
+											<h:outputText
+												value="#{SimpleSearch.resultMap[resultName].descriptionMap[entity.id]}" />
+												
+												
+											
+											<h:outputLink
+												target="_blank" 
+												value="#{ApplicationBean1.root}/browse/entityDetails.xhtml?eid=#{entity.id}" 
+												title="Metadata of the entity"
+												styleClass="displayButton">
+												<h:graphicImage 
+													value="#{ApplicationBean1.imgNetwork32}"
+													width="20" height="20"/>
+											</h:outputLink>	
+											
+											<h:outputLink
+												value="#{ApplicationBean1.root}/entry/createEntity.xhtml?eid=#{entity.id}" 
+												title="Edit this entity"
+												styleClass="displayButton"
+												rendered="#{Session.canCreate}">
+												<h:graphicImage 
+													value="#{ApplicationBean1.imgEdit32}"
+													width="20" height="20"/>
+											</h:outputLink>						
+											
+										</h:column>
+										
+									</h:dataTable>
+									</div>
+	                                 
+								</h:column>
+							</h:dataTable>
+							 
+						</h:panelGroup>
+						</div>
+					</h:form>
+					
+				</h:panelGrid>
+				 
+	
+	
+			</div>
+		</ui:define>
+
+
+
+
+    </ui:composition>
+</body>
+</html>

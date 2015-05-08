@@ -1,0 +1,392 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+
+		<ui:include src="components/witnessPopups.xhtml" />
+
+		<h:panelGroup>
+			<h:panelGrid columns="2">
+
+				<h:outputLink value="#{CurrentWitness.displayUrl}"
+					title="Display this entity"
+					rendered="#{!empty CurrentWitness.displayUrl}">
+					<h:graphicImage url="#{ApplicationBean1.displayImage}" />
+				</h:outputLink>
+
+				<h:outputText value="Witness - #{CurrentWitness.entity.ownValue}"
+					rendered="#{!empty CurrentWitness.entity.ownValue}"
+					styleClass="titlePanel"/>
+				<h:outputText value="Witness"
+					rendered="#{empty CurrentWitness.entity.ownValue}"
+					styleClass="titlePanel"/>
+			</h:panelGrid>
+
+		</h:panelGroup>
+
+
+		<h:panelGrid columns="3" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn,createPanelColumn02">
+
+			<h:outputText value="State" />
+			<h:selectOneMenu value="#{CurrentWitness.entity.status}">
+				<f:selectItems value="#{ApplicationBean1.suggestedStatus}" />
+			</h:selectOneMenu>
+			<h:outputText />
+
+
+			<h:outputText value="Title" />
+			<h:panelGrid id="witnessTitlePanel">
+				<ismi:autocomplete lo="#{CurrentWitness.titleLo}" />
+			</h:panelGrid>
+			<h:panelGrid columns="1">
+				<h:commandButton value="Show all texts"
+					action="#{CurrentWitness.showAllTextsAction}" />
+				<h:commandButton value="Search (other) texts by this author"
+					action="#{CurrentWitness.showOtherTextsByAuthorAction}" />	
+			</h:panelGrid>
+
+			<h:outputText value="Full Name of Person" />
+			<h:panelGrid id="witnessAuthorPanel">
+				<ismi:autocomplete lo="#{CurrentWitness.authorLo}" />
+			</h:panelGrid>
+			<h:panelGrid columns="1">
+				<h:commandButton value="Show all authors"
+					action="#{CurrentWitness.showAllAuthorsAction}" />
+			</h:panelGrid>
+
+		</h:panelGrid>
+
+		<ismi:entityList value="#{CurrentWitness.possibleExamplerOfList}"
+			deploy="#{CurrentWitness.textUnknown}" />
+
+
+		<h:panelGrid columns="1" style="width:100%;"
+			rendered="#{!CurrentWitness.textUnknown}" id="witnessAliasPanel">
+
+			<h:panelGrid columns="2" styleClass="createPanel"
+				columnClasses="createPanelFirstColumn,createPanelColumn02">
+
+				<h:panelGrid columns="1">
+					<h:outputLabel value="Full Title" />
+					<h:outputText value="as written in" />
+					<h:outputText value="the manuscript (arabic)" />
+				</h:panelGrid>
+				<h:panelGrid columns="1">
+					<h:inputText value="#{CurrentWitness.valueTextWritten}"
+						valueChangeListener="#{CurrentWitness.listenerCreateTitleAlias}"
+						size="100" style="direction: rtl;" />
+					<h:selectOneListbox partialSubmit="true"
+						style="direction: rtl;width: 500px;" size="5"
+						rendered="#{!empty CurrentWitness.suggestedTitlesWritten}"
+						valueChangeListener="#{CurrentWitness.listenerChooseTitleAlias}"
+						value="#{CurrentWitness.valueTitleSelectedId}">
+						<f:selectItems value="#{CurrentWitness.suggestedTitlesWritten}" />
+						<a4j:ajax event="click" render="witnessAliasPanel" />
+					</h:selectOneListbox>
+				</h:panelGrid>
+
+				<h:panelGrid columns="1">
+					<h:outputText value="Full Author" />
+					<h:outputText value="as written in" />
+					<h:outputText value="the manuscript (arabic)" />
+				</h:panelGrid>
+				<h:panelGrid columns="1">
+					<h:inputText value="#{CurrentWitness.valueAuthorWritten}"
+						valueChangeListener="#{CurrentWitness.listenerCreateAuthorAlias}"
+						size="100" style="direction: rtl;" />
+					<h:selectOneListbox style="direction: rtl;width: 500px;" size="5"
+						rendered="#{!empty CurrentWitness.suggestedAuthorsWritten}"
+						valueChangeListener="#{CurrentWitness.listenerChooseAuthorAlias}"
+						value="#{CurrentWitness.valueAuthorSelectedId}">
+						<f:selectItems value="#{CurrentWitness.suggestedAuthorsWritten}" />
+						<a4j:ajax event="click" render="witnessAliasPanel" />
+					</h:selectOneListbox>
+				</h:panelGrid>
+			</h:panelGrid>
+
+		</h:panelGrid>
+
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn,createPanelColumn02">
+
+			<h:outputText value="Ahlwardt No." />
+			<h:inputText value="#{CurrentWitness.attributes['ahlwardt_no']}"
+				style="width: 300px;" />
+		</h:panelGrid>
+
+
+		<h:outputText value="Codex" styleClass="titlePanel"/>
+		<h:panelGrid columns="4" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn" id="witnessCodexPanel">
+
+			<h:outputLabel value="Country" />
+			<ismi:autocomplete lo="#{CurrentWitness.countryLo}" />
+			<h:outputText />
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentWitness.countryLo.entity.id}"
+					actionListener="#{CurrentWitness.editThisCountryAction}" />
+			</h:panelGrid>
+
+			<h:outputLabel value="Place/City" />
+			<ismi:autocomplete lo="#{CurrentWitness.cityLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu
+					rendered="#{!empty CurrentWitness.citiesInCurrentCountry}"
+					valueChangeListener="#{CurrentWitness.inCurrentCountryListener}">
+					<f:selectItems value="#{CurrentWitness.citiesInCurrentCountry}" />
+					<a4j:ajax event="change" render="witnessCodexPanel" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentWitness.cityLo.entity.id}"
+					actionListener="#{CurrentWitness.editThisCityAction}" />
+			</h:panelGrid>
+
+
+			<h:outputLabel value="Repository" />
+			<ismi:autocomplete lo="#{CurrentWitness.repositoryLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu partialSubmit="true"
+					rendered="#{!empty CurrentWitness.repositoriesInCurrentCity}"
+					valueChangeListener="#{CurrentWitness.inCurrentCityListener}">
+					<f:selectItems value="#{CurrentWitness.repositoriesInCurrentCity}" />
+					<a4j:ajax event="change" render="witnessCodexPanel" />
+				</h:selectOneMenu>
+				<h:outputText
+					rendered="#{empty CurrentWitness.repositoriesInCurrentCity}" />
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentWitness.repositoryLo.entity.id}"
+					actionListener="#{CurrentWitness.editThisRepositoryAction}" />
+			</h:panelGrid>
+
+
+			<h:outputLabel value="Collection" />
+			<ismi:autocomplete lo="#{CurrentWitness.collectionLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu
+					rendered="#{!empty CurrentWitness.collectionsInCurrentRepository}"
+					valueChangeListener="#{CurrentWitness.inCurrentRepositoryListener}">
+					<f:selectItems
+						value="#{CurrentWitness.collectionsInCurrentRepository}" />
+					<a4j:ajax event="change" render="witnessCodexPanel" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentWitness.collectionLo.entity.id}"
+					actionListener="#{CurrentWitness.editThisCollectionAction}" />
+			</h:panelGrid>
+
+			<h:outputLabel value="Shelf Mark / Identifier" />
+			<h:panelGroup>
+				<h:outputText
+					rendered="#{!empty CurrentWitness.codexLo.attribute.ownValue}"
+					value="#{CurrentWitness.codexLo.term}"
+					style="font-style:normal;
+                           font-size:15px;
+                           font-weight:bold;
+                           font-family:sans-serif;" />
+
+				<h:inputText
+					rendered="#{empty CurrentWitness.codexLo.attribute.ownValue}"
+					value="#{CurrentWitness.newIdentifier}" />
+			</h:panelGroup>
+			<h:panelGrid>
+				<h:selectOneMenu
+					rendered="#{!empty CurrentWitness.shelfMarksInCurrentCollection}"
+					valueChangeListener="#{CurrentWitness.identifierChangedListener}">
+					<f:selectItems
+						value="#{CurrentWitness.shelfMarksInCurrentCollection}" />
+					<a4j:ajax event="change" render="witnessCodexPanel" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentWitness.codexLo.entity.ownValue}"
+					actionListener="#{CurrentWitness.editThisCodexAction}" />
+			</h:panelGrid>
+
+
+			<h:outputText />
+			<h:commandButton
+				actionListener="#{CurrentWitness.checkConsistencyFromCountryToCodex}"
+				value="Check Consistency From Country To Codex" />
+			<h:outputText />
+			<h:outputText />
+		</h:panelGrid>
+
+		<h:outputText value="Copy" styleClass="titlePanel"/>
+		<h:panelGrid columns="3" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn" id="witnessCopyPanel">
+
+			<h:outputText value="Copyist" />
+			<ismi:autocomplete lo="#{CurrentWitness.copyistLo}" />
+			<h:commandButton value="Show all"
+				action="#{CurrentWitness.showAllCopyistsAction}" />
+
+
+			<h:outputText value="Copy (place)" />
+			<ismi:autocomplete lo="#{CurrentWitness.copyPlaceLo}" />
+			<h:outputLabel />
+
+			<h:outputText value="Copy Date (hijra)" />
+			<ismi:date date="#{CurrentWitness.copyDate}" />
+			<h:outputLabel />
+
+			<h:outputText value="Patronage of Witness" />
+			<ismi:autocomplete lo="#{CurrentWitness.patronageLo}" />
+			<h:commandButton value="Show all"
+				action="#{CurrentWitness.showAllPatronsAction}" />
+		</h:panelGrid>
+
+		<ismi:entityList value="#{CurrentWitness.studiedByList}" />
+
+		<h:outputText value="Identification information" styleClass="titlePanel"/>
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputText value="Table of Contents" />
+			<rich:editor
+				value="#{CurrentWitness.attributes['table_of_contents']}"
+				style="direction: rtl;" />
+
+			<h:outputText value="Incipit" />
+			<h:inputTextarea cols="80" rows="10" dir="rtl"
+				value="#{CurrentWitness.attributes['incipit']}" />
+
+			<h:outputText value="Explicit" />
+			<h:inputTextarea cols="80" rows="10" dir="rtl"
+				value="#{CurrentWitness.attributes['explicit']}" />
+
+			<h:outputText value="Colophon" />
+			<h:inputTextarea cols="80" rows="10" dir="rtl"
+				value="#{CurrentWitness.attributes['colophon']}" />
+
+			<h:outputText value="Folios" />
+			<h:inputText size="100"
+				value="#{CurrentWitness.attributes['folios']}" />
+
+			<h:outputText value="Is autograph" />
+			<h:selectOneMenu partialSubmit="true"
+				value="#{CurrentWitness.attributes['is_autograph']}">
+				<f:selectItems value="#{ApplicationBean1.yes_no}" />
+			</h:selectOneMenu>
+
+			<h:outputText value="Page dimensions" />
+			<h:inputText size="100"
+				value="#{CurrentWitness.attributes['page_dimensions']}" />
+
+			<h:outputText value="Written area dimensions" />
+			<h:inputText size="100"
+				value="#{CurrentWitness.attributes['written_area_dimensions']}" />
+
+			<h:outputText value="Lines per page" />
+			<h:inputText size="100"
+				value="#{CurrentWitness.attributes['lines_per_page']}" />
+
+
+			<h:outputText value="Writing surface" />
+			<h:selectOneMenu
+				value="#{CurrentWitness.attributes['writing_surface']}">
+				<f:selectItems value="#{ApplicationBean1.writingSurfaces}" />
+			</h:selectOneMenu>
+
+			<h:outputText value="Page layout" />
+			<h:selectOneMenu value="#{CurrentWitness.attributes['page_layout']}">
+				<f:selectItems value="#{ApplicationBean1.pageLayout}" />
+			</h:selectOneMenu>
+
+			<h:outputText value="Script" />
+			<h:selectOneMenu value="#{CurrentWitness.attributes['script']}">
+				<f:selectItems value="#{ApplicationBean1.scripts}" />
+			</h:selectOneMenu>
+
+			<h:outputText value="Other Features" />
+			<h:inputTextarea cols="80" rows="10"
+				value="#{CurrentWitness.attributes['other_features']}" />
+
+			<h:outputText value="Diagrams and Illustrations" />
+			<h:inputTextarea cols="80" rows="10"
+				value="#{CurrentWitness.attributes['diagrams_and_illustrations']}" />
+
+			<h:outputText value="Scans" />
+			<h:inputText size="100" value="#{CurrentWitness.attributes['scans']}" />
+
+		</h:panelGrid>
+
+
+		<h:outputText value="Notes" styleClass="titlePanel"/>
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputText value="Notes" />
+			<h:inputTextarea cols="80" rows="10"
+				value="#{CurrentWitness.attributes['notes']}" />
+			
+			<h:outputText value="Notes (old)" />
+			<h:inputTextarea cols="80" rows="10"
+				value="#{CurrentWitness.attributes['notes_old']}" />
+
+			<h:outputText value="Notes on Title and Author (old)" />
+			<h:inputTextarea cols="80" rows="10"
+				value="#{CurrentWitness.attributes['notes_on_title_author']}" />
+			<h:outputText value="Notes on Collation and Corrections  (old)" />
+			<h:inputTextarea cols="80" rows="10"
+				value="#{CurrentWitness.attributes['notes_on_collation_and_corrections']}" />
+			<h:outputText value="Notes on Ownership  (old)" />
+			<h:inputTextarea cols="80" rows="10"
+				value="#{CurrentWitness.attributes['notes_on_ownership']}" />
+			
+
+		</h:panelGrid>
+		
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+			<h:outputText value="Source of Information" />
+	        <h:selectOneMenu
+	            value="#{CurrentWitness.attributes['source_of_information']}">
+	            <f:selectItems value="#{ApplicationBean1.sourcesOfInformation}" />
+	        </h:selectOneMenu>
+		</h:panelGrid>	
+
+		<ismi:refWidget entityForm="#{CurrentWitness}" />
+
+		<h:panelGrid columns="4">
+			<h:outputText value="ID of the Witness" />
+			<h:inputText value="#{CurrentWitness.currentId}" />
+			<h:commandButton value="Load Witness By ID"
+				action="#{CurrentWitness.actionReloadEntity}"
+				onclick="confirm('Do you really want to reload the entity?');" />
+			<h:outputText value="#{CurrentWitness.currentIdMsg}"
+				style="color:red" />
+		</h:panelGrid>
+
+		<h:commandButton value="#{CurrentWitness.saveButtonLabel}"
+			rendered="#{CurrentWitness.renderSaveButton}"
+			action="#{CurrentWitness.save}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}" />
+
+		<h:commandButton value="Clear Form"
+			action="#{CurrentWitness.clearAction}"
+			onclick="#{ApplicationBean1.JSConfirmationCleanForm}" />
+
+		<h:commandButton value="Save as new Entity"
+			rendered="#{(CurrentWitness.entity.id != null and Session.canCreate)}"
+			action="#{CurrentWitness.saveAsNewEntity}"
+			onclick="#{ApplicationBean1.JSConfirmationSaveAsNew}" />
+
+	</ui:composition>
+</body>
+</html>

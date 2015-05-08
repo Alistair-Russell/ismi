@@ -1,0 +1,357 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/privateTemplate.xhtml">
+
+		<ui:define name="privateContent">
+			
+			<div id="pageTitle">
+				<h:outputText value="General Merge" />
+			</div>
+			
+			<h:panelGrid rendered="#{Session.user != null}"
+				styleClass="mainPanel" columns="1">
+			
+				
+
+				<h:panelGrid columns="2" styleClass="createPanel"
+					columnClasses="createPanelFirstColumn" id="loadingPanel">
+
+					<h:outputText value="Load Entities" />
+
+					<h:panelGrid columns="4">
+
+						<h:outputText value="First Entity ID" 
+							styleClass="textBack"/>
+						<h:inputText value="#{Session.generalMerge.firstId}" />
+						<a4j:commandButton value="Load"
+							actionListener="#{Session.generalMerge.loadFirstEntity}"
+							render="loadingPanel,mergingPanel" />
+						<h:column>
+							<h:outputText
+								value="#{Session.generalMerge.firstEntity.objectClass}= #{Session.generalMerge.firstEntity.ownValue} [#{Session.generalMerge.firstEntity.id}]"
+								rendered="#{!empty Session.generalMerge.firstEntity}" 
+								styleClass="textBack"/>
+						</h:column>
+
+						<h:outputText value="Second Entity ID" 
+							styleClass="textBack"/>
+						<h:inputText value="#{Session.generalMerge.secondId}" />
+						<a4j:commandButton value="Load"
+							actionListener="#{Session.generalMerge.loadSecondEntity}"
+							render="loadingPanel,mergingPanel" />
+						<h:column>
+							<h:outputText
+								value="#{Session.generalMerge.secondEntity.objectClass}= #{Session.generalMerge.secondEntity.ownValue} [#{Session.generalMerge.secondEntity.id}]"
+								rendered="#{!empty Session.generalMerge.secondEntity}"
+								styleClass="textBack"/>
+						</h:column>
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="1" id="mergingPanel">
+
+					<h:outputText value="Merge Mapping"
+						rendered="#{Session.generalMerge.entitiesLoaded}"
+						styleClass="titlePanel"/>
+
+					<h:panelGrid columns="3" styleClass="createPanel"
+						columnClasses="createPanelFirstColumn,createPanelColumn02,createPanelColumn02"
+						rendered="#{Session.generalMerge.entitiesLoaded}">
+
+
+						<h:outputText value="Attributes" />
+						<rich:dataTable var="attName"
+							value="#{Session.generalMerge.attLabels}"
+							rendered="#{!empty Session.generalMerge.attLabels}">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Attribute Name" />
+								</f:facet>
+								<h:outputText value="#{attName}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Value First Entity" />
+								</f:facet>
+								<h:outputText
+									value="#{Session.generalMerge.firstAttMap[attName]}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Value Second Entity" />
+								</f:facet>
+								<h:outputText
+									value="#{Session.generalMerge.secondAttMap[attName]}" />
+							</h:column>
+							<h:column style="width:300px;">
+								<f:facet name="header">
+									<h:outputText value="Select Value" />
+								</f:facet>
+								<h:selectOneRadio
+									value="#{Session.generalMerge.selectedAtts[attName]}">
+									<f:selectItems value="#{Session.generalMerge.attSelectItems}" />
+								</h:selectOneRadio>
+							</h:column>
+						</rich:dataTable>
+						<h:outputText />
+
+						<h:outputText value="Source Relations" />
+
+						<h:panelGrid columns="1">
+							<rich:dataTable var="srcRelation"
+								rendered="#{!empty Session.generalMerge.firstEntity.sourceRelations}"
+								value="#{Session.generalMerge.firstEntity.sourceRelations}">
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Relation Name" />
+									</f:facet>
+									<h:outputText value="#{srcRelation.ownValue}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="linked to this" />
+									</f:facet>
+									<h:outputText
+										value="#{srcRelation.target.ownValue} [#{srcRelation.target.objectClass}-#{srcRelation.targetId}]" />
+								</h:column>
+
+								<h:column>
+									<h:selectOneRadio
+										value="#{Session.generalMerge.selectedFirstSrcRelations[srcRelation.id]}">
+										<f:selectItems value="#{Session.generalMerge.relSelectItems}" />
+									</h:selectOneRadio>
+								</h:column>
+
+							</rich:dataTable>
+
+							<h:outputText
+								value="the first entity does not have source relations"
+								rendered="#{empty Session.generalMerge.firstEntity.sourceRelations}" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="1">
+
+							<rich:dataTable var="srcRelation"
+								rendered="#{!empty Session.generalMerge.secondEntity.sourceRelations}"
+								value="#{Session.generalMerge.secondEntity.sourceRelations}">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Relation Name" />
+									</f:facet>
+									<h:outputText value="#{srcRelation.ownValue}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="linked to this" />
+									</f:facet>
+									<h:outputText
+										value="#{srcRelation.target.ownValue} [#{srcRelation.target.objectClass}-#{srcRelation.targetId}]" />
+								</h:column>
+								<h:column>
+									<h:selectOneRadio
+										value="#{Session.generalMerge.selectedSecondSrcRelations[srcRelation.id]}">
+										<f:selectItems value="#{Session.generalMerge.relSelectItems}" />
+									</h:selectOneRadio>
+								</h:column>
+							</rich:dataTable>
+							
+							<h:outputText
+								value="The second entity does not have source relations"
+								rendered="#{empty Session.generalMerge.secondEntity.sourceRelations}" />
+
+						</h:panelGrid>
+
+
+						<h:outputText value="Target Relations" />
+
+						<h:panelGrid columns="1">
+							<rich:dataTable var="tarRelation"
+								rendered="#{!empty Session.generalMerge.firstEntity.targetRelations}"
+								value="#{Session.generalMerge.firstEntity.targetRelations}"
+								style="width:60%;">
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="linked from this" />
+									</f:facet>
+									<h:outputText
+										value="#{tarRelation.source.ownValue} [#{tarRelation.source.objectClass}-#{tarRelation.sourceId}]" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Relation Name" />
+									</f:facet>
+									<h:outputText value="#{tarRelation.ownValue}" />
+								</h:column>
+
+								<h:column>
+									<h:selectOneRadio
+										value="#{Session.generalMerge.selectedFirstTarRelations[tarRelation.id]}">
+										<f:selectItems value="#{Session.generalMerge.relSelectItems}" />
+									</h:selectOneRadio>
+								</h:column>
+							</rich:dataTable>
+							<h:outputText
+								value="the first entity does not have target relations."
+								rendered="#{empty Session.generalMerge.firstEntity.targetRelations}" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="1">
+
+							<rich:dataTable var="tarRelation"
+								rendered="#{!empty Session.generalMerge.secondEntity.targetRelations}"
+								value="#{Session.generalMerge.secondEntity.targetRelations}"
+								style="width:60%;">
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="linked from this" />
+									</f:facet>
+									<h:outputText
+										value="#{tarRelation.source.ownValue} [#{tarRelation.source.objectClass}-#{tarRelation.sourceId}]" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Relation Name" />
+									</f:facet>
+									<h:outputText value="#{tarRelation.ownValue}" />
+								</h:column>
+
+								<h:column>
+									<h:selectOneRadio
+										value="#{Session.generalMerge.selectedSecondTarRelations[tarRelation.id]}">
+										<f:selectItems value="#{Session.generalMerge.relSelectItems}" />
+									</h:selectOneRadio>
+								</h:column>
+
+							</rich:dataTable>
+
+							<h:outputText
+								value="The second entity does not have target relations"
+								rendered="#{empty Session.generalMerge.secondEntity.targetRelations}" />
+
+						</h:panelGrid>
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="controlPanel"
+						rendered="#{Session.generalMerge.entitiesLoaded}">
+
+						<a4j:commandButton value="Preview"
+							actionListener="#{Session.generalMerge.preview}"
+							rendered="#{Session.generalMerge.entitiesLoaded}"
+							render="mergingPanel" />
+
+						<a4j:commandButton value="Execute Merge"
+							actionListener="#{Session.generalMerge.listenerExecuteMerge }"
+							rendered="#{Session.generalMerge.entitiesLoaded}"
+							onclick="#{ApplicationBean1.JSConfirmationMerge}"
+							render="mergingPanel" />
+
+					</h:panelGrid>
+
+
+					<h:outputText value="Entity Preview"
+						rendered="#{!empty Session.generalMerge.entResult}"
+						styleClass="titlePanel"/>
+					<h:panelGrid columns="2" styleClass="createPanel"
+						columnClasses="createPanelFirstColumn"
+						rendered="#{!empty Session.generalMerge.entResult}">
+
+
+						<h:outputText value="Attributes" />
+						<rich:dataTable
+							value="#{Session.generalMerge.entResult.attributes}"
+							var="attribute" border="1">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Name" />
+								</f:facet>
+								<h:outputText value="#{attribute.objectClass}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Value" />
+								</f:facet>
+								<h:outputText value="#{attribute.ownValue}" />
+							</h:column>
+						</rich:dataTable>
+
+
+						<h:outputText value="Source Relations" />
+						<rich:dataTable
+							value="#{Session.generalMerge.entResult.sourceRelations}"
+							var="srcRelation" border="1">
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="linked from this" />
+								</f:facet>
+								<h:outputText value="#{'x'}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Relation Name" />
+								</f:facet>
+								<h:outputText value="#{srcRelation.ownValue}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="linked to this" />
+								</f:facet>
+								<h:outputText
+									value="#{srcRelation.target.ownValue} [#{srcRelation.target.objectClass}]" />
+							</h:column>
+						</rich:dataTable>
+
+						<h:outputText value="Target Relations" />
+						<rich:dataTable
+							value="#{Session.generalMerge.entResult.targetRelations}"
+							var="tarRelation" border="1">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="linked from this" />
+								</f:facet>
+								<h:outputText
+									value="#{tarRelation.source.ownValue} [#{tarRelation.source.objectClass}]" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Relation Name" />
+								</f:facet>
+								<h:outputText value="#{tarRelation.ownValue}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="linked to this" />
+								</f:facet>
+								<h:outputText value="#{'x'}" />
+							</h:column>
+						</rich:dataTable>
+
+
+					</h:panelGrid>
+
+
+
+				</h:panelGrid>
+
+
+
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

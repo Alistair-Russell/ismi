@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/privateTemplate.xhtml">
+
+		<ui:define name="privateContent">
+
+			<ui:include src="components/defEditorPopups.xhtml" />
+
+			<div id="pageTitle">
+				<h:outputText value="Definition Editor" />
+			</div>
+
+			<h:panelGrid rendered="#{Session.user != null}"
+				style="margin-left: auto; margin-right: auto; text-align: center; width: 700px">
+				
+
+				<h:panelGrid id="defEditorPanel"
+					style="margin-left: auto; margin-right: auto; text-align: center; width: 200px">
+
+					<a4j:commandButton value="New Definition"
+						rendered="#{Session.defForm.selectedLWDefinition == null}"
+						actionListener="#{Session.defForm.createDefinition}"
+						render="defPanel" />
+
+					<rich:dataTable var="def" value="#{Session.defForm.defList}"
+						rendered="#{Session.defForm.selectedLWDefinition == null}"
+						style="width: 100%;">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Label" />
+							</f:facet>
+							<a4j:commandLink value="#{def.ownValue}"
+								actionListener="#{Session.defForm.listenerShowDefinition}"
+								render="defEditorPanel,defPanel" />
+						</h:column>
+					</rich:dataTable>
+
+
+					<a4j:commandButton value="Close"
+						actionListener="#{Session.defForm.listenerCancelEdition}"
+						rendered="#{Session.defForm.selectedLWDefinition != null}"
+						render="defEditorPanel,defPanel" />
+
+				</h:panelGrid>
+
+				<h:panelGrid id="defPanel">
+					<h:panelGrid
+						rendered="#{Session.defForm.selectedLWDefinition != null}">
+
+
+						<h:outputText value="Attributes" 
+							styleClass="titlePanel"/>
+
+						<h:panelGrid columns="1">
+							<h:panelGrid columns="2">
+								<a4j:commandButton value="New attribute"
+									actionListener="#{Session.defForm.listenerCreateAttribute}"
+									render="defEditorPpPanel"/>
+								<a4j:commandButton value="Remove selected attributes"
+									rendered="#{!empty Session.defForm.attList}"
+									actionListener="#{Session.defForm.listenerDeleteAttributes}"
+									render="defPanel"
+									onclick="if(!confirm('Do you really want to remove the selected attributes?')){ return; };" />
+							</h:panelGrid>
+							<rich:dataTable var="attObj"
+								rendered="#{!empty Session.defForm.attList}"
+								value="#{Session.defForm.attList}" style="width:600px;">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="id" />
+									</f:facet>
+									<h:outputLabel value="#{attObj.obj.id}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="name" />
+									</f:facet>
+									<h:outputLabel value="#{attObj.obj.ownValue}"
+										style="width: 250px;" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="possible values" />
+									</f:facet>
+									<h:outputLabel value="#{attObj.obj.possibleValuesShort}"
+										style="width: 250px;" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="content type" />
+									</f:facet>
+									<h:outputLabel value="#{attObj.obj.contentType}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="edit" />
+									</f:facet>
+									<a4j:commandButton value="submit"
+										actionListener="#{Session.defForm.listenerEditAttribute}"
+										render="defEditorPpPanel"/>
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="select" />
+									</f:facet>
+									<h:selectBooleanCheckbox value="#{attObj.selected}" />
+								</h:column>
+							</rich:dataTable>
+						</h:panelGrid>
+
+
+						<h:outputText value="Source relations" 
+							styleClass="titlePanel"/>
+							
+						<h:panelGrid columns="1">
+							<h:panelGrid columns="2">
+								<a4j:commandButton value="New source relation"
+									actionListener="#{Session.defForm.listenerCreateSourceRelation}"
+									render="defEditorPpPanel"/>
+								<a4j:commandButton
+									rendered="#{!empty Session.defForm.srcRelList}"
+									value="Remove selected source relations"
+									actionListener="#{Session.defForm.listenerDeleteSourceRelations}"
+									render="defPanel"/>
+							</h:panelGrid>
+							<rich:dataTable var="relObj"
+								rendered="#{!empty Session.defForm.srcRelList}"
+								value="#{Session.defForm.srcRelList}" style="width:600px;">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="ID" />
+									</f:facet>
+									<h:outputLabel value="#{relObj.obj.id}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="from this" />
+									</f:facet>
+									<h:outputLabel value="#{relObj.obj.source.ownValue}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="name" />
+									</f:facet>
+									<h:outputLabel value="#{relObj.obj.ownValue}"
+										style="width: 250px;" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="to this" />
+									</f:facet>
+									<h:outputLabel value="#{relObj.obj.target.ownValue}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="edit" />
+									</f:facet>
+									<a4j:commandButton value="submit"
+										actionListener="#{Session.defForm.listenerEditSourceRelation}"
+										render="defEditorPpPanel"/>
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="select" />
+									</f:facet>
+									<h:selectBooleanCheckbox value="#{relObj.selected}" />
+								</h:column>
+							</rich:dataTable>
+
+						</h:panelGrid>
+
+						<h:outputText value="Target relations" 
+							styleClass="titlePanel"/>
+							
+						<h:panelGrid columns="1">
+							<h:panelGrid columns="2">
+								<a4j:commandButton value="New target relation"
+									actionListener="#{Session.defForm.listenerCreateTargetRelation}"
+									render="defEditorPpPanel"/>
+								<a4j:commandButton
+									rendered="#{!empty Session.defForm.tarRelList}"
+									value="Remove selected source relations"
+									actionListener="#{Session.defForm.listenerDeleteTargetRelations}"
+									render="defPanel"/>
+							</h:panelGrid>
+							<rich:dataTable var="relObj"
+								rendered="#{!empty Session.defForm.tarRelList}"
+								value="#{Session.defForm.tarRelList}" style="width:600px;">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="ID" />
+									</f:facet>
+									<h:outputLabel value="#{relObj.obj.id}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="from this" />
+									</f:facet>
+									<h:outputLabel value="#{relObj.obj.source.ownValue}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="name" />
+									</f:facet>
+									<h:outputLabel value="#{relObj.obj.ownValue}"
+										style="width: 250px;" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="to this" />
+									</f:facet>
+									<h:outputLabel value="#{relObj.obj.target.ownValue}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="edit" />
+									</f:facet>
+									<a4j:commandButton value="submit"
+										actionListener="#{Session.defForm.listenerEditTargetRelation}"
+										render="defEditorPpPanel"/>
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="select" />
+									</f:facet>
+									<h:selectBooleanCheckbox value="#{relObj.selected}" />
+								</h:column>
+							</rich:dataTable>
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- second level cache configuration -->
+		<!-- Enable/Disable the second-level cache -->
+		<property name="cache.use_second_level_cache">true</property>
+		<property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		<property name="cache.use_structured_entries">true</property>
+		<property name="cache.use_query_cache">false</property>
+		<property name="cache.use_minimal_puts">true</property>
+
+		<!-- property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property-->
+		<property name="hibernate.dialect">org.mpi.openmind.repository.utils.CustomMysqlDialect</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost/openmind?characterEncoding=UTF-8</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">admin</property>
+		<property name="hibernate.connection.charSet">UTF-8</property>
+		<!--property name="show_sql">true</property-->
+		<property name="current_session_context_class">thread</property>
+		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+		<!--property name="hbm2ddl.auto">create</property-->
+		<mapping class="org.mpi.openmind.repository.bo.Node" />
+		<mapping class="org.mpi.openmind.repository.bo.Attribute" />
+		<mapping class="org.mpi.openmind.repository.bo.Entity" />
+		<mapping class="org.mpi.openmind.repository.bo.Relation" />
+		<mapping class="org.mpi.openmind.repository.bo.View" />
+		<mapping class="org.mpi.openmind.repository.bo.utils.Sequence" />
+		<mapping class="org.mpi.openmind.security.bo.User" />
+		<mapping class="org.mpi.openmind.security.bo.Group" />
+		<mapping class="org.mpi.openmind.security.bo.Role" />
+		<mapping class="org.mpi.openmind.security.bo.Permission" />
+		<mapping class="org.mpi.openmind.security.bo.utils.UserRole" />
+		<mapping class="org.mpi.openmind.security.bo.utils.GroupRole" />
+		<mapping class="org.mpi.openmind.security.bo.utils.UserGroup" />
+		<mapping class="org.mpi.openmind.security.bo.utils.RolePermission" />
+	</session-factory>
+</hibernate-configuration>

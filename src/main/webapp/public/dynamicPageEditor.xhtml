@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/privateTemplate.xhtml">
+		
+		<ui:define name="privateContent">
+			
+			<h:outputStylesheet name="/css/ismi-db/display.css" />
+			
+			<div id="pageTitle">
+				<h:outputText value="Dynamic Page Editor" />
+			</div>
+
+			<h:panelGrid columns="1"
+				rendered="#{Session.user != null}"
+				styleClass="mainPanel"
+				id="pagePanel" >
+				
+				<h:panelGrid
+					id="controlPanel" 
+					columns="2">
+					<h:outputText value="Select Page"/>
+					
+					<h:selectOneMenu
+						value="#{Session.pageEditor.pageId}">
+						<f:selectItems value="#{Session.pageEditor.pageList}"/>
+						<a4j:ajax event="change" render="pagePanel" listener="#{Session.pageEditor.listenerSelectPage}" />	
+					</h:selectOneMenu>
+					<h:commandButton
+						value="Create Page"
+						actionListener="#{Session.pageEditor.listenerCreatePage}"/>						
+				</h:panelGrid>	
+				
+				<h:panelGrid
+					columns="2" 
+					rendered="#{Session.pageEditor.page != null}">
+				
+					<h:outputLabel value="Page" rendered="#{Session.pageEditor.page != null}"/>	
+					<h:panelGrid columns="2">
+					
+						<h:outputLabel value="Id"/>
+						<h:outputLabel value="#{Session.pageEditor.page.id}"/>
+						
+						<h:outputLabel value="Definition"/>
+						<h:selectOneMenu
+							value="#{Session.pageEditor.page.definition}">
+							<f:selectItems value="#{Session.pageEditor.definitionList}"/>	
+						</h:selectOneMenu>
+						
+						<h:outputLabel value="Label"/>
+						<h:inputText value="#{Session.pageEditor.page.label}"/>
+						
+						<h:outputText/>
+						<h:panelGrid columns="3">
+							<h:commandButton
+								value="Save"
+								actionListener="#{Session.pageEditor.listenerSavePage}"/>
+							<h:commandButton
+								actionListener="#{Session.pageEditor.listenerClean}"
+								value="Clean Selection"/>
+							<h:commandButton
+								value="Remove Page"/>
+							
+						</h:panelGrid>					
+					</h:panelGrid>
+					
+					<h:outputLabel value="Attributes" columns="2" rendered="#{Session.pageEditor.pagePersistent}"/>
+					<h:panelGrid
+						id="attsPanel" 
+						columns="1" rendered="#{Session.pageEditor.pagePersistent}">
+						
+						<h:commandButton 
+							value="Create Attribute"
+							actionListener="#{Session.pageEditor.listenerAddAtt}"/>
+						
+						<h:outputLabel value="List of attributes is empty!"
+							rendered="#{empty Session.pageEditor.attList}"/>
+						<rich:dataTable
+							value="#{Session.pageEditor.attList}"
+							var="att"
+							rendered="#{!empty Session.pageEditor.attList}">
+							
+							<rich:column>
+								<h:outputText 
+									value="#{att.obj.id}"/>						
+							</rich:column>
+							<rich:column>
+								<h:outputText 
+									value="#{att.obj.index}"/>						
+							</rich:column>
+
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Label" />
+								</f:facet>
+								<h:inputText value="#{att.obj.label}" style="width:100px;"/>						
+							</rich:column>
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Query" />
+								</f:facet>
+								<h:inputTextarea value="#{att.obj.query}" style="width:300px;"/>						
+							</rich:column>
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Display Mode" />
+								</f:facet>
+								<h:selectOneMenu
+									value="#{att.obj.displayMode}">
+									<f:selectItems value="#{Session.pageEditor.displayModeList}"/>
+								</h:selectOneMenu>
+							</rich:column>
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Text Align" />
+								</f:facet>
+								<h:selectOneMenu
+									value="#{att.obj.textAlign}">
+									<f:selectItems value="#{Session.pageEditor.suggestedTextAlign}"/>
+								</h:selectOneMenu>
+							</rich:column>			
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Content Type" />
+								</f:facet>
+								<h:selectOneMenu
+									value="#{att.obj.contentType}">
+									<f:selectItems value="#{Session.pageEditor.contentTypeList}"/>
+								</h:selectOneMenu>
+							</rich:column>												
+							
+							<rich:column>
+								<h:commandButton image="#{ApplicationBean1.imgDown32}"
+									actionListener="#{Session.pageEditor.listenerDown}"/>
+								<h:commandButton image="#{ApplicationBean1.imgUp32}"
+									actionListener="#{Session.pageEditor.listenerUp}"/>
+							</rich:column>
+							
+							<rich:column>
+								<h:selectBooleanCheckbox
+									value="#{att.selected}"/>
+							</rich:column>
+						
+						</rich:dataTable>
+						
+						<h:panelGrid columns="2">
+							<h:commandButton 
+								value="Save Attributes"
+								actionListener="#{Session.pageEditor.listenerSaveAll}"
+								rendered="#{!empty Session.pageEditor.attList}"/>
+							<h:commandButton
+								value="Delete Attributes"
+								actionListener="#{Session.pageEditor.listenerRemoveAttributes}"
+								rendered="#{!empty Session.pageEditor.attList}"
+							onclick="#{ApplicationBean1.JSConfirmationDelete}"/>
+						</h:panelGrid>
+					</h:panelGrid>
+				
+				</h:panelGrid>
+				
+				
+				
+				
+				
+				
+				
+			</h:panelGrid>
+		
+		</ui:define>
+	</ui:composition>
+</body>
+</html>
+						

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition>
+
+
+
+
+		<h:panelGrid columns="2" styleClass="displayPanel"
+			columnClasses="displayPanelColumn01,displayPanelColumn02">
+
+			<h:outputLabel value="Codex Shelf Mark / Identifier" />
+			<h:inputText
+				value="#{Session.advancedSearch.codexOwnershipQuery.codexShelfMark}" />
+
+			<h:panelGrid columns="1">
+				<h:outputLabel value="Person name" />
+				<h:outputLabel value="(name_translit, name, aliases)" />
+			</h:panelGrid>
+			<h:inputText
+				value="#{Session.advancedSearch.codexOwnershipQuery.personName}" />
+
+			<h:outputText />
+			<a4j:commandButton value="search"
+				actionListener="#{Session.advancedSearch.codexOwnershipQuery.listenerSearch}"
+				render="codexOwnershipPanel" />
+
+		</h:panelGrid>
+
+		<h:panelGrid id="codexOwnershipPanel" columns="1">
+
+			<h:panelGrid columns="3"
+				rendered="#{Session.advancedSearch.codexOwnershipQuery.searched}">
+				<h:outputLabel
+					value="Result set - size=#{Session.advancedSearch.codexOwnershipQuery.rsSize}" />
+				<h:outputLabel
+					value="Time execution [ms]=#{Session.advancedSearch.codexOwnershipQuery.timeExecution}" />
+				<h:commandButton value="reset"
+					actionListener="#{Session.advancedSearch.codexOwnershipQuery.listenerReset}" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="1"
+				rendered="#{!empty Session.advancedSearch.codexOwnershipQuery.rs}">
+
+				<rich:dataTable var="entry"
+					value="#{Session.advancedSearch.codexOwnershipQuery.rs}" rows="20">
+					
+					<f:facet name="header">
+                		<rich:dataScroller id="scroller" />
+            		</f:facet>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Person ID" />
+						</f:facet>
+						<h:outputText value="#{entry.personId}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Person Label" />
+						</f:facet>
+						<h:outputText value="#{entry.personOv}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Codex ID" />
+						</f:facet>
+						<h:outputText value="#{entry.codexId}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Codex Label" />
+						</f:facet>
+						<h:outputText value="#{entry.codexOv}" />
+					</h:column>
+
+
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Shelf Mark" />
+						</f:facet>
+						<h:outputText value="#{entry.shelfMark}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Collection" />
+						</f:facet>
+						<h:outputText value="#{entry.collection}" />
+					</h:column>
+
+				</rich:dataTable>
+			</h:panelGrid>
+
+		</h:panelGrid>
+
+
+
+	</ui:composition>
+</body>
+</html>

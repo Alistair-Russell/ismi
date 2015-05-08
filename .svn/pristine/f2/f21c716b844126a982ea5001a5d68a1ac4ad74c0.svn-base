@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="persistenceService" class="org.mpi.openmind.repository.services.PersistenceService">
+        <property name="configurationService" ref="configurationService"/>
+        <property name="ownValueGenerator" ref="ownValueGenerator"/>
+    </bean>
+
+    <bean id="cache" class="org.mpi.openmind.cache.CacheService">
+        <property name="ps" ref="persistenceService"/>
+    </bean>
+    
+    <bean id="wrapper" class="org.mpi.openmind.cache.WrapperService">
+        <property name="cache" ref="cache"/>
+    </bean>  
+    
+    
+    <bean id="searchService" class="org.mpi.openmind.search.SearchService">
+        <property name="om" ref="wrapper"/>
+    </bean>
+     
+    <bean id="ownValueGenerator" class="org.mpi.openmind.repository.utils.OwnValueGenerator">
+        <property name="configurationService" ref="configurationService"/>
+    </bean>
+    
+     <bean id="configurationService" class="org.mpi.openmind.configuration.ConfigurationService">
+    </bean>
+
+    <!-- 
+    <bean id="ontologyService" class="org.mpi.openmind.repository.services.OntologyService">
+        <property name="persistenceService" ref="persistenceService"/>
+        <property name="searchService" ref="searchService"/>
+    </bean>
+     -->
+    
+    <bean id="securityService" class="org.mpi.openmind.security.SecurityService">
+        <property name="persistenceService" ref="persistenceService"/>
+    </bean>
+    
+    
+    <!-- Scheduler for Date-Based Mailings -->
+    <bean id="scheduling" class="org.mpi.openmind.scheduling.utils.Scheduling">
+        <property name="persistenceService" ref="persistenceService"/>
+        <property name="configurationService" ref="configurationService"/>
+    </bean>
+    
+    <bean id="schedulingJobs" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="scheduling"/>
+        <property name="targetMethod" value="dailyKickOff"/>
+        <!--property name="concurrent" value="false"/-->
+    </bean>    
+    
+    <bean id="schedulingCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="schedulingJobs"/>
+        <!-- daily 6 AM -->
+        
+        <property name="cronExpression" value="0 0 6 * * ?"/>
+        <!-- 
+        every 5 minutes 
+        <property name="cronExpression" value="0 0/5 * * * ?"/>
+        -->
+        
+    </bean>
+        
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="schedulingCronTrigger"/>
+            </list>
+        </property>
+    </bean>        
+</beans>

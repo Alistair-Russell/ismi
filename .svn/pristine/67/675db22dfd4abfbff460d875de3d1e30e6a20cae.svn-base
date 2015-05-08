@@ -1,0 +1,40 @@
+<span class="titlePanel">Witness Information</span>
+<span id="witness-id"></span>
+<table class="table table-bordered table-condensed divaPanel">
+	<tr>
+		<td class="tdTitle">Title</td>
+		<td class="tdTitle" id="witness-title" style="width: 300px;">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Title as written in Witness</td>
+		<td class="tdTitle" id="witness-title-written-in-witness">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Author</td>
+		<td class="tdTitle" id="witness-author">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Author as written in Witness</td>
+		<td class="tdTitle" id="witness-author-written-in-witness">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Codex information</td>
+		<td class="tdTitle" id="witness-codex">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Ahlwardt no.</td>
+		<td class="tdTitle" id="witness-ahlwardt-no">
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<a id="witness-details-show-more" class="witness-details-show-more">Show more</a>
+		</td>
+	</tr>		
+</table>

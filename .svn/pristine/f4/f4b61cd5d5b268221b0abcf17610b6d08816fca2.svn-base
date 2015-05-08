@@ -1,0 +1,46 @@
+/*
+    Classes for the connection status indicator
+*/
+
+.iceOutConStatInactv, .iceOutConStatActv, .iceOutConStatCaution, .iceOutConStatDisconnect {
+    height: 33px;
+    width: 33px;
+    position: absolute;
+    margin-left: -10px;
+}
+
+.iceOutConStat {
+    margin: 10px;
+    width: 25px;
+    height: 25px;
+    border: none;
+    font-size: .5em;
+}
+
+.iceOutConStatInactv {
+    background: url( '/om4-ismi/resources/images/connectionStatus/connect_idle.gif' ) no-repeat center top;
+}
+
+.iceOutConStatActv {
+	width: 160px;
+    height: 160px;
+    background-color: red;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+	
+	
+    /*background: url( '/om4-ismi/resources/images/connectionStatus/connect_active.gif' ) no-repeat center top;*/
+    background: url( '/om4-ismi/resources/images/connectionStatus/connect_active_02.gif' ) no-repeat center top;
+}
+
+.iceOutConStatCaution {
+    background: url( '/om4-ismi/resources/images/connectionStatus/connect_caution.gif' ) no-repeat center top;
+}
+
+.iceOutConStatDisconnect {
+    background: url( '/om4-ismi/resources/images/connectionStatus/connect_disconnected.gif' ) no-repeat center top;
+}

@@ -1,0 +1,110 @@
+.controlPanel{
+	width: 50%;
+	margin-left: auto; 
+	margin-right: auto; 
+	text-align: center;
+}
+
+.controlPanel td{
+	color: #3B4186;
+}
+
+.attLink{
+	padding: 5px 5px 5px 5px;
+	
+}
+
+.controlPanel input{
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.entityDetailsPanel{
+	width: 100%;
+}
+
+/*
+.column01{
+	color: #3B4186;
+	text-align: left;
+	font-family: Arial,Verdana,sans-serif;
+    font-size: 12px;
+    padding: 5px 5px 5px 5px;
+    font-weight: bold;
+}
+
+.column02{
+	color: black;
+	text-align: left;
+	font-family: Arial,Verdana,sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+*/
+
+
+/******  Browse Repository  *****/
+
+
+.sumaryMsg{
+	color: #3B4186;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 5px 5px 5px 5px;
+}
+
+.rsPanel{
+	margin-left: auto; margin-right: auto; text-align: center; 
+	width: 80%;
+}
+
+.rsPanelColumn{
+	text-align: left;
+}
+
+/******  Entity Details: Sources's and Target's panels  *****/
+
+.internalPanel{
+	width: 100%;
+	font-weight: normal;
+	color: #3B4186;
+}
+
+.mainPanel{
+	width: 100%;
+}
+
+.mainPanelcolumn01{
+	width: 15%;
+	text-align: left;
+	color: #3B4186;
+	font-size: 12px;
+    font-weight: bold;
+    padding: 5px 5px 5px 5px;
+}
+
+.mainPanelcolumn02{
+	width: 85%;
+	color: black;
+	text-align: left;
+	font-family: Arial,Verdana,sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.internalPanelColumn{
+	text-align: center;
+	width: 33%;
+}
+
+.internalPanelColumnLeft{
+	text-align: left;
+	width: 33%;
+}
+
+.showLink{
+	padding: 5px 5px 5px 5px;
+}

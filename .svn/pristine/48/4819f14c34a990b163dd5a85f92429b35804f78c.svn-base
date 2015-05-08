@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+	
+	<ui:include src="components/textPopups.xhtml" />
+	
+		<h:panelGroup>
+
+			<h:panelGrid columns="2">
+				<h:outputLink value="#{CurrentText.displayUrl}"
+					title="Display this entity"
+					rendered="#{!empty CurrentText.displayUrl}">
+					<h:graphicImage url="#{ApplicationBean1.displayImage}" />
+				</h:outputLink>
+				<h:outputText value="Text - #{CurrentText.entity.ownValue}"
+					rendered="#{!empty CurrentText.entity.ownValue}"
+					styleClass="titlePanel"/>
+				<h:outputText value="Text"
+					rendered="#{empty CurrentText.entity.ownValue}"
+					styleClass="titlePanel"/>
+			</h:panelGrid>
+		</h:panelGroup>
+
+
+		<h:panelGrid columns="3" styleClass="createPanel" columnClasses="createPanelFirstColumn">
+
+			<h:outputText value="Full Title (arabic)" />
+			<h:inputText size="100" style="direction: rtl;"
+				value="#{CurrentText.attributes['full_title']}" />
+			<h:outputText />
+
+			<h:outputText value="Full Title (translit)" id="full_title_translit" />
+			
+			<h:panelGrid columns="1">
+				<h:inputText size="100"
+					data-attName="full_title_translit"
+					value="#{CurrentText.attributes['full_title_translit']}">
+					<a4j:ajax event="keyup" render="romanized_title" listener="#{CurrentText.listenerRomanizeTitleTranslit}" />
+				</h:inputText>
+				<h:outputText id="romanized_title" value="Romanization: #{CurrentText.romanizedTitle}" />
+			</h:panelGrid>
+			
+			<h:commandButton value="translit"
+				action="#{CurrentText.translitTitleAction}" />
+
+			<h:outputText value="Prime Alias"/>
+			<h:panelGrid columns="1">
+				<h:inputText
+					size="100" value="#{CurrentText.valueShortTitle}">
+					<a4j:ajax event="keyup" render="romanized_prime_alias" listener="#{CurrentText.listenerRomanizePrimaAlias}" />
+				</h:inputText>
+				<h:outputText id="romanized_prime_alias" value="Romanization: #{CurrentText.romanizedPrimaAlias}" />
+			</h:panelGrid>
+			<h:outputText />
+
+			<h:outputText value="Language" />
+			<h:selectOneMenu partialSubmit="true"
+				value="#{CurrentText.attributes['language']}">
+				<f:selectItems value="#{ApplicationBean1.suggestedLanguages}" />
+			</h:selectOneMenu>
+			<h:outputText />
+
+			<h:outputText value="Subject" />
+			<h:selectOneMenu partialSubmit="true"
+				value="#{CurrentText.idSubject}">
+				<f:selectItems value="#{ApplicationBean1.suggestedSubjects}" />
+			</h:selectOneMenu>
+			<h:outputText />
+
+
+			<h:outputText value="Created by" />
+			<a4j:outputPanel id="createByPanel">
+				<ismi:autocomplete lo="#{CurrentText.authorLo}" />
+			</a4j:outputPanel>
+			<h:commandButton value="Show all authors"
+				actionListener="#{CurrentText.listenerShowAllAuthors}">
+			</h:commandButton>	
+
+        	<h:outputText value="Misattributions" />
+        	<ui:include src="components/misattribution.xhtml" />
+        	<h:outputText />   
+
+
+			<h:outputText value="Created in" />
+			<ismi:autocomplete lo="#{CurrentText.placeLo}" />
+			<h:outputText />
+
+			<h:outputText value="Incipit" />
+			<h:inputTextarea cols="65" rows="10" dir="RTL"
+				value="#{CurrentText.attributes['incipit']}" />
+			<h:outputText />
+			<h:outputText value="Explicit" />
+			<h:inputTextarea cols="65" rows="10" dir="RTL"
+				value="#{CurrentText.attributes['explicit']}" />
+			<h:outputText />
+			<h:outputText value="Dedication" />
+			<h:inputTextarea cols="65" rows="10" dir="RTL"
+				value="#{CurrentText.attributes['dedication']}" />
+			<h:outputText />
+
+			<h:outputText value="Dedicated to" />
+			<a4j:outputPanel id="dedicatedToPanel">
+				<ismi:autocomplete lo="#{CurrentText.dedicatedPersonLo}" />
+			</a4j:outputPanel>
+			
+			<h:commandButton value="Show all persons"
+				actionListener="#{CurrentText.listenerShowAllDedicatedToPersons}" />
+
+			<h:outputText value="Creation Date" />
+			<ismi:date date="#{CurrentText.creationDate}" />
+			<h:outputText />
+
+			<h:outputText value="Text Type" />
+			<h:selectOneMenu partialSubmit="true"
+				value="#{CurrentText.attributes['text_type']}">
+				<f:selectItems value="#{ApplicationBean1.suggestedTextTypes}" />
+			</h:selectOneMenu>
+			<h:outputText />
+
+			<h:outputText value="Text arrangement" />
+			<h:inputTextarea cols="65" rows="10"
+				value="#{CurrentText.attributes['text_arrangement']}" />
+			<h:outputText />
+
+			<h:outputText value="Table of Contents" />
+			<h:inputTextarea cols="65" rows="10"
+				value="#{CurrentText.attributes['table_of_contents']}"
+				style="direction: rtl;" />
+			<h:outputText />
+
+			<h:outputText value="Notes" />
+			<h:inputTextarea cols="65" rows="10"
+				value="#{CurrentText.attributes['notes']}" />
+			<h:outputText />
+			
+			<h:outputText value="Notes (old)" />
+			<h:inputTextarea cols="65" rows="10"
+				value="#{CurrentText.attributes['notes_old']}" />
+			<h:outputText />
+
+			<h:outputText value="Commentary on" />
+			<ismi:autocomplete lo="#{CurrentText.commentaryLo}" />
+			<h:outputText/>
+
+			<h:outputText value="Translation of" />
+			<ismi:autocomplete lo="#{CurrentText.translationLo}" />
+			<h:outputText/>
+
+			<h:outputText value="Version of" />
+			<ismi:autocomplete lo="#{CurrentText.versionLo}" />
+			<h:outputText/>
+
+			<h:outputText value="Aliases for Title" />
+			<h:panelGrid columns="1" border="1">
+				<h:panelGrid columns="2">
+					<h:dataTable value="#{CurrentText.aliasList.entities}" var="item">
+						<h:column>
+							<h:outputText value="#{item.ownValue}" />
+						</h:column>
+						<h:column>
+							<h:selectBooleanCheckbox
+								value="#{CurrentText.aliasList.selections[item.id]}" />
+						</h:column>
+					</h:dataTable>
+					<h:commandButton value="Remove Selection"
+						actionListener="#{CurrentText.aliasList.listenerRemoveSelection}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<h:inputText value="#{CurrentText.aliasList.input}"
+						style="width:500px;" />
+					<h:commandButton value="CREATE"
+						actionListener="#{CurrentText.aliasList.listenerCreate}" />
+				</h:panelGrid>
+			</h:panelGrid>
+			<h:outputText />
+
+			<h:outputText value="Aliases for Explicit" />
+			<h:panelGrid columns="1" border="1">
+				<h:panelGrid columns="2">
+					<h:dataTable value="#{CurrentText.explicitAliasList.entities}"
+						var="item">
+						<h:column>
+							<h:outputText value="#{item.ownValue}" />
+						</h:column>
+						<h:column>
+							<h:selectBooleanCheckbox
+								value="#{CurrentText.explicitAliasList.selections[item.id]}" />
+						</h:column>
+					</h:dataTable>
+					<h:commandButton value="Remove Selection"
+						actionListener="#{CurrentText.explicitAliasList.listenerRemoveSelection}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<h:inputText value="#{CurrentText.explicitAliasList.input}"
+						style="direction: rtl;width:500px;" />
+					<h:commandButton value="CREATE"
+						actionListener="#{CurrentText.explicitAliasList.listenerCreate}" />
+				</h:panelGrid>
+			</h:panelGrid>
+			<h:outputText />
+
+			<h:outputText value="Aliases for Incipit" />
+			<h:panelGrid columns="1" border="1">
+				<h:panelGrid columns="2">
+					<h:dataTable value="#{CurrentText.incipitAliasList.entities}"
+						var="item">
+						<h:column>
+							<h:outputText value="#{item.ownValue}" />
+						</h:column>
+						<h:column>
+							<h:selectBooleanCheckbox
+								value="#{CurrentText.incipitAliasList.selections[item.id]}" />
+						</h:column>
+					</h:dataTable>
+					<h:commandButton value="Remove Selection"
+						actionListener="#{CurrentText.incipitAliasList.listenerRemoveSelection}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<h:inputText value="#{CurrentText.incipitAliasList.input}"
+						style="direction: rtl;width:500px;" />
+					<h:commandButton value="CREATE"
+						actionListener="#{CurrentText.incipitAliasList.listenerCreate}" />
+				</h:panelGrid>
+			</h:panelGrid>
+			<h:outputText />
+		</h:panelGrid>
+
+		<ismi:refWidget entityForm="#{CurrentText}" />
+
+		<h:panelGrid columns="4">
+			<h:outputText value="ID of the Text" />
+			<h:inputText value="#{CurrentText.currentId}" />
+			<h:commandButton value="Load Text By ID"
+				action="#{CurrentText.actionReloadEntity}"
+				onclick="confirm('Do you really want to reload the entity?');" />
+			<h:outputText value="#{CurrentText.currentIdMsg}" style="color:red" />
+		</h:panelGrid>
+
+		<h:commandButton value="#{CurrentText.saveButtonLabel}"
+			rendered="#{CurrentText.renderSaveButton}"
+			action="#{CurrentText.save}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}" />
+		<h:commandButton value="Clear Form"
+			action="#{CurrentText.clearAction}"
+			onclick="#{ApplicationBean1.JSConfirmationCleanForm}" />
+		<h:commandButton value="Save as new Entity"
+			onclick="#{ApplicationBean1.JSConfirmationSaveAsNew}"
+			rendered="#{(CurrentText.entity.id != null and Session.canCreate)}"
+			action="#{CurrentText.saveAsNewEntity}" />
+
+		<h:outputText rendered="#{CurrentText.create_error}"
+			value="City already exists - not saved!" />
+			
+		
+	</ui:composition>
+</body>
+</html>

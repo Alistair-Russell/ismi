@@ -1,0 +1,4 @@
+scheduling-path=/net/xserve02.mpiwg-berlin.mpg.de/Volumes/data/Users/jurzua/ismi/automatic-backup
+#scheduling-path=/home/jurzua/ismi/automatic-backup
+scheduling-enable=true
+debug-modus=false

@@ -1,0 +1,182 @@
+<project name="Script" default="print" basedir="../">
+
+    <path id="om.classpath">
+        <fileset dir="${basedir}/lib">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    
+
+    <target name="ShowRepositoryName">
+        <java classname="org.mpi.openmind.scripts.ShowRepositoryName" maxmemory="512m" fork="true" failonerror="true">
+            <arg value="" />
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="RepositoryName">
+        <java classname="org.mpi.openmind.scripts.RepositoryName" maxmemory="512m" fork="true" failonerror="true">
+            <arg value="" />
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target>   
+    
+    <target name="NormalizeOWEntities">
+        <java classname="org.mpi.openmind.scripts.NormalizeOW" maxmemory="1024m" fork="true" failonerror="true">
+            <arg value="ENTITY" />
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target> 
+    
+    <target name="NormalizeOWAttributes">
+        <java classname="org.mpi.openmind.scripts.NormalizeOW" maxmemory="1024m" fork="true" failonerror="true">
+            <arg value="ATTRIBUTE" />
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target>   
+    
+    <target name="DoubleRelationsShow">
+        <java classname="org.mpi.openmind.scripts.DoubleRelations" maxmemory="1024m" fork="true" failonerror="true">
+            <arg value="SHOW" />
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target>   
+    
+    <target name="DoubleRelationsReduce">
+        <java classname="org.mpi.openmind.scripts.DoubleRelations" maxmemory="1024m" fork="true" failonerror="true">
+            <arg value="REDUCE" />
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target>   
+	
+    <target name="RelationsWithoutSrcOrTar">
+        <java classname="org.mpi.openmind.scripts.RelationsWithoutSrcOrTar" maxmemory="1024m" fork="true" failonerror="true">
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target>
+	
+	<target name="RelationsWithoutSrcOrTarReduce">
+	        <java classname="org.mpi.openmind.scripts.RelationsWithoutSrcOrTar" maxmemory="1024m" fork="true" failonerror="true">
+	            <arg value="REDUCE" />
+	            <classpath>
+	                <pathelement path="${basedir}/classes" />
+	                <path refid="om.classpath" />
+	            </classpath>
+	        </java>
+	    </target>       
+    
+    <target name="GenerateWitnessOwnValue">
+        <java classname="org.mpi.openmind.scripts.WitnessOwnValueGenerator" maxmemory="1024m" fork="true" failonerror="true">
+            <arg value="" />
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target> 
+    
+    <target name="RoleToRelation">
+        <java classname="org.mpi.openmind.scripts.RoleToRelation" maxmemory="1024m" fork="true" failonerror="true">
+            <arg value="${filePath}" />
+            <classpath>
+                <pathelement path="${basedir}/classes" />
+                <path refid="om.classpath" />
+            </classpath>
+        </java>
+    </target>   
+    
+    <target name="CurrentVersionForRelations">
+            <java classname="org.mpi.openmind.scripts.CurrentVersionForRelations" maxmemory="1024m" fork="true" failonerror="true">
+                <arg value="${filePath}" />
+                <classpath>
+                    <pathelement path="${basedir}/classes" />
+                    <path refid="om.classpath" />
+                </classpath>
+            </java>
+    </target>
+	
+    <target name="CurrentVersionSrcRelation">
+            <java classname="org.mpi.openmind.scripts.CurrentVersionSrcRelation" maxmemory="1024m" fork="true" failonerror="true">
+                <arg value="${filePath}" />
+                <classpath>
+                    <pathelement path="${basedir}/classes" />
+                    <path refid="om.classpath" />
+                </classpath>
+            </java>
+    </target>	
+	
+    <target name="MakeEntitiesPrivate">
+            <java classname="org.mpi.openmind.scripts.ChangeEntityPrivacity" maxmemory="1024m" fork="true" failonerror="true">
+            	<arg value="false" />
+                <classpath>
+                    <pathelement path="${basedir}/classes" />
+                    <path refid="om.classpath" />
+                </classpath>
+            </java>
+    </target>   	
+    
+    <target name="MakeEntitiesPublic">
+            <java classname="org.mpi.openmind.scripts.ChangeEntityPrivacity" maxmemory="1024m" fork="true" failonerror="true">
+                <arg value="true" />
+                <classpath>
+                    <pathelement path="${basedir}/classes" />
+                    <path refid="om.classpath" />
+                </classpath>
+            </java>
+    </target>   
+    <target name="WitnessCreatedByText">
+            <java classname="org.mpi.openmind.scripts.WitnessCreatedByText" maxmemory="1024m" fork="true" failonerror="true">
+                <arg value="true" />
+                <classpath>
+                    <pathelement path="${basedir}/classes" />
+                    <path refid="om.classpath" />
+                </classpath>
+            </java>
+    </target>   	
+	
+    <target name="print">
+        <echo>
+            ### SCRIPTS COMMANDS ###
+                
+                *** commands list ***
+                ShowRepositoryName: show the amount of Repositories without name attribute.   
+                RepositoryName: create an attribute name for all repositories without one.
+                NormalizeOWEntities: generate the normalizedOW for the entities marked as CURRENT_VERSION.
+                NormalizeOWAttributes: generate the normalizedOW for the attributes marked as CURRENT_VERSION.
+                DoubleRelationsShow
+                DoubleRelationsReduce
+                GenerateWitnessOwnValue
+                CurrentVersionForRelations
+                RoleToRelation use -DfilePath to set location of the definition's file.
+        	    CurrentVersionSrcRelation
+        	    MakeEntitiesPrivate
+        	    MakeEntitiesPublic
+                WitnessCreatedByText removes the relations WITNES created by PERSON
+                RelationsWithoutSrcOrTar
+        	    RelationsWithoutSrcOrTarReduce
+                
+        </echo>
+    </target>
+    
+</project>

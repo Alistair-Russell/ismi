@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/publicTemplate.xhtml">
+
+		<ui:define name="publicContent">
+
+			<h:outputStylesheet name="/css/ismi-db/display.css" />
+
+			<div id="pageTitle">
+				<h:outputText value="Digitalization List" />
+			</div>
+			
+			<h:panelGrid columns="1" styleClass="mainPanel" id="digiListPanel">
+				
+				<h:panelGrid columns="3" style="width:300px;">
+					<h:selectOneMenu
+						value="#{Session.digiList.selectedFilter}">
+                		<f:selectItems value="#{Session.digiList.codexFilter}" />
+            		</h:selectOneMenu>
+					<a4j:commandButton
+						value="Refresh"
+						actionListener="#{Session.digiList.listenerRefresh}"
+						render="digiListPanel"/>
+					<h:outputText value="Items: #{Session.digiList.listSize}"/>
+				</h:panelGrid>
+				
+	
+				
+					<rich:dataTable 
+						value="#{Session.digiList.list}" 
+						var="digi"
+						rows="50"
+						styleClass="createPanel"
+						columnClasses="createPanelColumn02,createPanelColumn02,createPanelColumn02,createPanelColumn02">
+						
+						<rich:column style="border:none;">
+							<f:facet name="header">
+								<h:outputText value="Codex Id" />
+							</f:facet>
+							<h:outputText 
+								value="[#{digi.codexId}] #{digi.codexOv}"
+								rendered="#{digi.hasCodex}"/>						
+						</rich:column>
+						
+						<rich:column style="border:none;">
+							<f:facet name="header">
+								<h:outputText value="Digitalization" 
+									styleClass="rf-dt-shdr-c"/>
+								<br/>
+								<rich:autocomplete mode="client" autocompleteList="#{Session.digiList.suggesstionList}"
+	            					var="suggestion" fetchValue="#{suggestion}" layout="div"
+	            					value="#{Session.digiList.filterTerm}" >
+	            					<b>#{suggestion}</b>
+	            					<a4j:ajax event="change" render="digiListPanel" listener="#{Session.digiList.eventFilter}" />  
+	        					</rich:autocomplete>
+							</f:facet>
+							
+							<h:outputText value="[#{digi.entity.id}] #{digi.entity.ownValue}" />
+							
+							<h:outputLink value="#{ApplicationBean1.root}/imageServer/displayDigi.jsp?digiId=#{digi.entity.id}">
+								<h:graphicImage url="#{ApplicationBean1.displayImage}" width="18" height="18"/>
+							</h:outputLink>
+							
+							<h:outputLink
+								value="#{ApplicationBean1.root}/browse/entityDetails.xhtml?eid=#{digi.entity.id}" title="Metadata of the entity"
+								styleClass="displayButton">
+								<h:graphicImage 
+									value="#{ApplicationBean1.imgNetwork32}"
+									width="18" height="18"/>
+							</h:outputLink>								
+							
+							<h:commandButton alt="edit" 
+								image="#{ApplicationBean1.editImage}"
+								action="#{Session.digiList.actionEditDigi}" 
+								rendered="#{Session.canEdit}"/>						
+						</rich:column>
+						
+						<rich:column style="border:none;">
+							<f:facet name="header">
+								<h:outputText value="#Pages" />
+							</f:facet>
+							<h:outputText value="#{digi.pages}" />						
+						</rich:column>		
+						
+						<rich:column style="border:none;">
+							<f:facet name="header">
+								<h:outputText value="Titles in this Codex" />
+							</f:facet>
+							<h:outputText value="Known Witnesses" rendered="#{!empty digi.titlesInCodex}"/>
+							<rich:dataTable value="#{digi.titlesInCodex}" var="witness"  rendered="#{!empty digi.titlesInCodex}">
+								<h:column>
+									<h:outputText value="[#{witness.id}] #{witness.ownValue}" />
+									<h:outputLink value="#{ApplicationBean1.root}/search/displayTitle.xhtml?witnessId=#{witness.id}#witnesses">
+										<h:graphicImage url="#{ApplicationBean1.displayImage}" width="18" height="18"/>
+									</h:outputLink>
+									
+									<h:outputLink
+										value="#{ApplicationBean1.root}/browse/entityDetails.xhtml?eid=#{witness.id}" title="Metadata of the entity"
+										styleClass="displayButton">
+										<h:graphicImage 
+											value="#{ApplicationBean1.imgNetwork32}"
+											width="18" height="18"/>
+									</h:outputLink>		
+									
+									<h:commandButton alt="edit" 
+										image="#{ApplicationBean1.editImage}"
+										action="#{Session.digiList.actionEditWitness}" 
+										rendered="#{Session.canEdit}"/>					
+								</h:column>			
+							</rich:dataTable>						
+						</rich:column>
+								
+						<f:facet name="footer">
+	                		<rich:dataScroller id="scroller" />
+	            		</f:facet>
+	
+					</rich:dataTable>
+	
+				
+			</h:panelGrid>
+			
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

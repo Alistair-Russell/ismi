@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+
+		<h:panelGrid>
+			<h:panelGrid columns="2">
+				<h:outputLink value="#{CurrentPerson.displayUrl}"
+					title="Display this entity"
+					rendered="#{!empty CurrentPerson.displayUrl}">
+					<h:graphicImage url="#{ApplicationBean1.displayImage}" />
+				</h:outputLink>
+
+				<h:outputText value="Person - #{CurrentPerson.entity.ownValue}"
+					rendered="#{!empty CurrentPerson.entity.ownValue}"
+					style="font-size: 12pt;" styleClass="titlePanel" />
+				<h:outputText value="Person"
+					rendered="#{empty CurrentPerson.entity.ownValue}"
+					style="font-size: 12pt; " styleClass="titlePanel"/>
+			</h:panelGrid>
+		</h:panelGrid>
+
+		<h:panelGrid columns="3" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn" id="personPanel">
+
+			<h:outputText value="Name" />
+			<h:inputText size="100" style="direction: rtl"
+				value="#{CurrentPerson.attributes['name']}" />
+			<h:outputText />
+
+			<h:outputText value="Name (translit)" />
+			<h:panelGrid columns="1">
+				<h:inputText size="100"
+					value="#{CurrentPerson.attributes['name_translit']}" >
+					<a4j:ajax event="keyup" render="romanized_author_name" listener="#{CurrentPerson.listenerRomanizeNameTranslit}" />
+				</h:inputText>
+				<h:outputText id="romanized_author_name" value="Romanization: #{CurrentPerson.romanizedNameTranslit}" />
+			</h:panelGrid>
+			<h:commandButton value="translit"
+					action="#{CurrentPerson.translitNameAction}" />
+			
+			<h:outputText value="Prime Alias" />
+			<h:inputText
+				valueChangeListener="#{CurrentPerson.shortNameChangeListener}"
+				size="100" value="#{CurrentPerson.valueShortName}" />
+			<h:outputText />
+
+			<h:panelGrid>
+				<h:outputText value="Birth Date" />
+			</h:panelGrid>
+			<ismi:date date="#{CurrentPerson.calBirthDate}" />
+			<h:outputText />
+
+			<h:outputText value="Birth Date Text"
+				rendered="#{!empty CurrentPerson.attributes['birth_date_text']}" />
+			<h:inputText size="45"
+				value="#{CurrentPerson.attributes['birth_date_text']}"
+				rendered="#{!empty CurrentPerson.attributes['birth_date_text']}" />
+			<h:outputText
+				rendered="#{!empty CurrentPerson.attributes['birth_date_text']}" />
+
+			<h:outputText value="Death Date" />
+			<ismi:date date="#{CurrentPerson.calDeathDate}" />
+			<h:outputText />
+
+			<h:outputText value="Death Date Text"
+				rendered="#{!empty CurrentPerson.attributes['death_date_text']}" />
+			<h:inputText size="45"
+				value="#{CurrentPerson.attributes['death_date_text']}"
+				rendered="#{!empty CurrentPerson.attributes['death_date_text']}" />
+			<h:outputText
+				rendered="#{!empty CurrentPerson.attributes['death_date_text']}" />
+
+			<h:outputText value="Num Death Date"
+				rendered="#{!empty CurrentPerson.attributes['num_death_date']}" />
+			<h:inputText size="45"
+				value="#{CurrentPerson.attributes['num_death_date']}"
+				rendered="#{!empty CurrentPerson.attributes['num_death_date']}" />
+			<h:outputText
+				rendered="#{!empty CurrentPerson.attributes['num_death_date']}" />
+
+			<h:outputText value="Hijra Date Text"
+				rendered="#{!empty CurrentPerson.attributes['hijra_date']}" />
+			<h:inputText size="45"
+				value="#{CurrentPerson.attributes['hijra_date']}"
+				rendered="#{!empty CurrentPerson.attributes['hijra_date']}" />
+			<h:outputText
+				rendered="#{!empty CurrentPerson.attributes['hijra_date']}" />
+
+
+			<h:outputText value="URL (to biography)" />
+			<h:panelGrid columns="1" id="urlPerson">
+				<h:inputText size="70" value="#{CurrentPerson.attributes['url']}">
+					<a4j:ajax event="change" render="urlPerson" />
+				</h:inputText>
+				<a href="#{CurrentPerson.attributes['url']}" target="_blank"> <h:outputText
+						value="#{CurrentPerson.attributes['url']}" />
+				</a>
+			</h:panelGrid>
+			<h:outputText />
+
+			<h:outputText value="Authority ID (LoC)" />
+			<h:inputText size="70"
+				value="#{CurrentPerson.attributes['authority_id']}" />
+			<h:outputText />
+
+			<h:outputText value="Notes"/>
+			<h:inputTextarea cols="70" rows="10"
+				value="#{CurrentPerson.attributes['notes']}"/>
+			<h:outputText />
+
+			<h:outputText value="Notes (old)"/>
+			<h:inputTextarea cols="70" rows="10"
+				value="#{CurrentPerson.attributes['notes_old']}"/>
+			<h:outputText />
+
+			<h:outputText value="Born in" />
+			<ismi:autocomplete lo="#{CurrentPerson.birthPlaceLo}" />
+			<h:outputText />
+
+			<h:outputText value="Died in" />
+			<ismi:autocomplete lo="#{CurrentPerson.deathPlaceLo}" />
+			<h:outputText />
+
+			<h:outputText value="Lived in (event)" />
+			<h:panelGrid columns="2" id="livedInEventPanel">
+				<rich:dataTable var="item"
+					value="#{CurrentPerson.livedInPlaces.entities}"
+					rendered="#{!empty CurrentPerson.livedInPlaces.entities}"
+					style="width: 100%;">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Place" style="width: 100px;" />
+						</f:facet>
+						<h:outputText value="[#{item.id}] #{item.ownValue}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:panelGrid columns="1">
+							<h:outputText
+								value="#{CurrentPerson.livedInPlaces.calendarMap[item.id].calendarAsHtml}"
+								escape="false" />
+							<a4j:commandButton image="#{ApplicationBean1.editImage}"
+								actionListener="#{CurrentPerson.listenerEditCalendarForLivedInPlaces}"
+								render="livedInEventPanel,currentCalendarPP" />
+						</h:panelGrid>
+					</h:column>
+					<h:column>
+						<h:selectBooleanCheckbox
+							value="#{CurrentPerson.livedInPlaces.selections[item.id]}" />
+					</h:column>
+				</rich:dataTable>
+				<a4j:commandButton value="Remove Selection"
+					actionListener="#{CurrentPerson.livedInPlaces.listenerRemoveSelection}"
+					rendered="#{!empty CurrentPerson.livedInPlaces.entities}"
+					render="livedInEventPanel" />
+
+				<ismi:autocomplete lo="#{CurrentPerson.livedInPlaces.lo}" />
+				<a4j:commandButton value="ADD"
+					actionListener="#{CurrentPerson.livedInPlaces.listenerAdd}"
+					render="livedInEventPanel" />
+
+			</h:panelGrid>
+			<h:outputText />
+
+		</h:panelGrid>
+
+		<ismi:entityList value="#{CurrentPerson.studentOfList}" />
+
+		<h:panelGrid columns="3" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputText value="Floruit Dates" />
+			<h:panelGrid columns="1" id="floruitPanel">
+				<h:panelGrid columns="2">
+					<h:dataTable value="#{CurrentPerson.floruitList.entities}" var="item"
+						rendered="#{!empty CurrentPerson.floruitList.entities}">
+						<h:column>
+							<h:panelGrid columns="1">
+								<h:outputText
+									value="#{CurrentPerson.floruitList.calendarMap[item.id].calendarAsHtml}"
+									escape="false" />
+								<a4j:commandButton image="#{ApplicationBean1.editImage}"
+									actionListener="#{CurrentPerson.listenerEditCalendarForFloruitDate}"
+									render="floruitPanel,currentCalendarPP" />
+							</h:panelGrid>
+						</h:column>
+						<h:column>
+							<h:selectBooleanCheckbox
+								value="#{CurrentPerson.floruitList.selections[item.id]}" />
+						</h:column>						
+					</h:dataTable>
+					<h:commandButton value="Remove Selection"
+						actionListener="#{CurrentPerson.floruitList.listenerRemoveSelection}"
+						rendered="#{!empty CurrentPerson.floruitList.entities}" />					
+				</h:panelGrid>
+				<h:commandButton value="New Floruit Date"
+					actionListener="#{CurrentPerson.floruitList.listenerCreateNoUnique}" />
+			</h:panelGrid>
+			<h:outputText />
+			
+			<h:outputText value="Aliases" />
+			<h:panelGrid columns="1">
+				<h:panelGrid columns="2">
+					<h:dataTable value="#{CurrentPerson.aliasList.entities}" var="item"
+						rendered="#{!empty CurrentPerson.aliasList.entities}">
+						<h:column>
+							<h:outputText value="#{item.ownValue}" />
+						</h:column>
+						<h:column>
+							<h:selectBooleanCheckbox
+								value="#{CurrentPerson.aliasList.selections[item.id]}" />
+						</h:column>
+					</h:dataTable>
+					<h:commandButton value="Remove Selection"
+						actionListener="#{CurrentPerson.aliasList.listenerRemoveSelection}"
+						rendered="#{!empty CurrentPerson.aliasList.entities}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<h:inputText value="#{CurrentPerson.aliasList.input}" />
+					<h:commandButton value="CREATE"
+						actionListener="#{CurrentPerson.aliasList.listenerCreate}" />
+				</h:panelGrid>
+			</h:panelGrid>
+			<h:outputText />
+
+			<h:outputText value="Roles" />
+			<h:panelGrid columns="2">
+				<h:dataTable value="#{CurrentPerson.roleList.entities}" var="item"
+					rendered="#{!empty CurrentPerson.roleList.entities}">
+					<h:column>
+						<h:outputText value="#{item.ownValue}" />
+					</h:column>
+					<h:column>
+						<h:selectBooleanCheckbox
+							value="#{CurrentPerson.roleList.selections[item.id]}" />
+					</h:column>
+				</h:dataTable>
+				<h:commandButton value="Remove Selection"
+					rendered="#{!empty CurrentPerson.roleList.entities}"
+					actionListener="#{CurrentPerson.roleList.listenerRemoveSelection}" />
+
+				<h:selectOneMenu value="#{CurrentPerson.roleList.id}"
+					partialSubmit="true">
+					<f:selectItems value="#{ApplicationBean1.roleList}" />
+				</h:selectOneMenu>
+				<h:commandButton value="ADD"
+					actionListener="#{CurrentPerson.roleList.listenerAddRole}" />
+			</h:panelGrid>
+			<h:outputText />
+
+
+
+		</h:panelGrid>
+
+		<ismi:refWidget entityForm="#{CurrentPerson}" />
+
+
+		<h:panelGrid columns="4">
+			<h:outputText value="ID of the Person" />
+			<h:inputText value="#{CurrentPerson.currentId}" />
+			<h:commandButton value="Load Person By ID"
+				action="#{CurrentPerson.actionReloadEntity}"
+				onclick="confirm('Do you really want to reload the entity?');" />
+			<h:outputText value="#{CurrentPerson.currentIdMsg}"
+				style="color:red" />
+		</h:panelGrid>
+
+		<h:commandButton value="#{CurrentPerson.saveButtonLabel}"
+			rendered="#{CurrentPerson.renderSaveButton}"
+			action="#{CurrentPerson.save}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}" />
+		<h:commandButton value="Clear Form"
+			action="#{CurrentPerson.clearAction}"
+			onclick="#{ApplicationBean1.JSConfirmationCleanForm}" />
+
+	</ui:composition>
+</body>
+</html>

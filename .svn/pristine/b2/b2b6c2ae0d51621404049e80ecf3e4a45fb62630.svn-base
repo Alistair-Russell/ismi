@@ -1,0 +1,10 @@
+﻿body {margin: 0em;}
+a {color:#035289;}
+
+#header {font-family:Verdana,Arial,Helvetica,sans-serif; font-size: 0.8em;position: fixed; width:100%; z-index: 1;
+left:0; top:0; margin: 0em; background:url("/resources/images/bg.png") repeat; border-bottom: 1px solid #CCC;}
+
+div #linkBar {margin:1em 0em; padding:5px; display:block; background-color:white; color: #AAA;}
+div #navigationBar {float:right;}
+
+#content {display:block; margin: 5em 1em 1em 1em;}

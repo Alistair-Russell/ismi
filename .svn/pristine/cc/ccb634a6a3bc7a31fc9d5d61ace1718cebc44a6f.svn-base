@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="date" required="true" />
+</composite:interface>
+
+<composite:implementation>
+
+	<h:panelGrid columns="1">
+		
+		<h:selectOneMenu value="#{cc.attrs.date.state}">
+			<f:selectItems value="#{cc.attrs.date.stateList}" />
+			<a4j:ajax event="click" render="out" />
+		</h:selectOneMenu>
+		
+
+		<h:panelGrid columns="1" id="out">
+			
+			<h:panelGrid columns="2" 
+				styleClass="createPanel"
+				columnClasses="createPanelFirstColumn,createPanelColumn02"
+				rendered="#{cc.attrs.date.STATE_NOT_CHECKED == cc.attrs.date.state}">
+				
+				<h:outputText value="Date in text unformatted" />
+				<h:inputText value="#{cc.attrs.date.dateInText}" />
+				
+			</h:panelGrid>
+			
+			<h:panelGrid columns="1"
+				rendered="#{cc.attrs.date.STATE_KNOWN == cc.attrs.date.state}">
+				
+				<h:panelGrid columns="2" styleClass="createPanel"
+					columnClasses="createPanelFirstColumn,createPanelColumn02">
+					
+					<h:outputText value="Input form" />
+					<h:selectOneRadio value="#{cc.attrs.date.inputForm}">
+						<f:selectItems value="#{cc.attrs.date.inputFormList}" />
+						<a4j:ajax event="click" render="out" />
+					</h:selectOneRadio>
+					
+					<h:outputText value="Calendar type" />
+					<h:selectOneRadio value="#{cc.attrs.date.calendarType}">
+						<f:selectItems value="#{cc.attrs.date.calendarTypeList}" />
+						<a4j:ajax event="click" render="out" />
+					</h:selectOneRadio>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="createPanel"
+					columnClasses="createPanelFirstColumn,createPanelColumn02"
+					rendered="#{cc.attrs.date.INPUT_FORM_YEAR == cc.attrs.date.inputForm}">
+					<h:outputText value="Year" />
+					<h:inputText value="#{cc.attrs.date.currentYear}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="createPanel"
+					columnClasses="createPanelColumn01Longer,createPanelColumn02"
+					rendered="#{cc.attrs.date.INPUT_FORM_DATE == cc.attrs.date.inputForm}">
+					
+					<h:outputText value="Date [dayOfMonth/Month/Year]" />
+					<h:panelGrid columns="3">
+
+						<h:selectOneMenu value="#{cc.attrs.date.currentFrom.dayOfMonth}">
+							<f:selectItems value="#{cc.attrs.date.suggestedDaysOfMonth}" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_GREGORIAN == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentFrom.month}">
+							<f:selectItems value="#{cc.attrs.date.gregorianMonths}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_ISLAMIC == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentFrom.month}">
+							<f:selectItems value="#{cc.attrs.date.islamicMonths}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_JULIAN == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentFrom.month}">
+							<f:selectItems value="#{cc.attrs.date.julianMonths}" />
+						</h:selectOneMenu>
+
+						<h:inputText value="#{cc.attrs.date.currentFrom.year}" />
+					</h:panelGrid>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="createPanel"
+					columnClasses="createPanelColumn01Longer,createPanelColumn02"
+					rendered="#{cc.attrs.date.INPUT_FORM_RANGE == cc.attrs.date.inputForm}">
+					
+					<h:outputText value="From [dayOfMonth/Month/Year]" />
+					<h:panelGrid columns="3">
+
+						<h:selectOneMenu value="#{cc.attrs.date.currentFrom.dayOfMonth}">
+							<f:selectItems value="#{cc.attrs.date.suggestedDaysOfMonth}" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_GREGORIAN == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentFrom.month}">
+							<f:selectItems value="#{cc.attrs.date.gregorianMonths}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_ISLAMIC == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentFrom.month}">
+							<f:selectItems value="#{cc.attrs.date.islamicMonths}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_JULIAN == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentFrom.month}">
+							<f:selectItems value="#{cc.attrs.date.julianMonths}" />
+						</h:selectOneMenu>
+
+						<h:inputText value="#{cc.attrs.date.currentFrom.year}" />
+					</h:panelGrid>
+
+					<h:outputText value="Until [dayOfMonth/Month/Year]" />
+					<h:panelGrid columns="3">
+
+						<h:selectOneMenu value="#{cc.attrs.date.currentUntil.dayOfMonth}">
+							<f:selectItems value="#{cc.attrs.date.suggestedDaysOfMonth}" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_GREGORIAN == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentUntil.month}">
+							<f:selectItems value="#{cc.attrs.date.gregorianMonths}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_ISLAMIC == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentUntil.month}">
+							<f:selectItems value="#{cc.attrs.date.islamicMonths}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							rendered="#{cc.attrs.date.TYPE_JULIAN == cc.attrs.date.calendarType}"
+							value="#{cc.attrs.date.currentUntil.month}">
+							<f:selectItems value="#{cc.attrs.date.julianMonths}" />
+						</h:selectOneMenu>
+						<h:inputText value="#{cc.attrs.date.currentUntil.year}" />
+					</h:panelGrid>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="createPanel"
+					columnClasses="createPanelFirstColumn,createPanelColumn02">
+					
+					<h:outputText/>
+					<h:outputText value="Gregorian: #{cc.attrs.date.formattedRange}" />
+				
+					<h:outputText/>
+					<h:outputText
+						value="Islamic: #{cc.attrs.date.formattedIslamicRange}" />
+				
+					<h:outputText/>
+					<h:outputText value="Julian: #{cc.attrs.date.formattedJulianRange}" />
+				
+					<h:outputText/>
+					<h:commandButton value="update"
+						actionListener="#{cc.attrs.date.listenerUpdate}" />
+						
+					<h:outputText value="Additional information" />
+					<h:inputTextarea value="#{cc.attrs.date.additionalInfo}" />						
+				</h:panelGrid>
+
+			</h:panelGrid>
+		</h:panelGrid>
+		
+	</h:panelGrid>
+</composite:implementation>
+</html>

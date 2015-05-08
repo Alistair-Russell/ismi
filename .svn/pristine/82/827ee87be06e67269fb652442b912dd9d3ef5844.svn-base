@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+<body>
+	<ui:composition>
+
+		<h:panelGrid id="currentCalendarPP">
+			<h:panelGroup rendered="#{Session.currentCalendar != null}">
+
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" styleClass="ismi-pp-cntr"
+					style="margin-top: -200px; width: 450px; margin-left: -225px">
+
+					<div class="ismi-pp-hdr">
+						<div class="ismi-pp-hdr-cnt">Login</div>
+					</div>
+
+					<h:panelGrid columns="1" styleClass="ismi-pp-main-panel">
+
+							<ismi:date date="#{Session.currentCalendar}" />
+
+							<a4j:commandButton value="OK"
+								actionListener="#{Session.listenerSaveEditionCalendar}"
+								render="currentCalendarPP" />
+
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:panelGroup>
+		</h:panelGrid>
+
+
+	</ui:composition>
+</body>
+</html>

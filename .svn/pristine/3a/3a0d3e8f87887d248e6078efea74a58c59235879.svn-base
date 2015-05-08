@@ -1,0 +1,29 @@
+.xmlverb-default          { color: #333333; font-family: monospace; font-size:12;}
+.xmlverb-element-name     { color: #990000; }
+.xmlverb-element-nsprefix { color: #666600; }
+.xmlverb-attr-name        { color: #660000; }
+.xmlverb-attr-content     { color: #000099; font-weight: bold; }
+.xmlverb-ns-name          { color: #666600; }
+.xmlverb-ns-uri           { color: #330099; }
+.xmlverb-text             { color: #000000; font-weight: bold; white-space:nowrap;}
+.xmlverb-comment          { color: #006600; font-style: italic; }
+.xmlverb-pi-name          { color: #006600; font-style: italic; }
+.xmlverb-pi-content       { color: #006666; font-style: italic; }
+
+div { display:inline;  }
+
+div .title, .total { font-weight:bold;}
+
+div .message:before { display:block; content:"Record"; color:#8C8; font-size:14; text-align:right; background-color:#CFC; padding-right:1em;}
+div .message { display:block; background-color:#DFD; border:1px solid #CFC; padding-bottom:1em; margin-bottom:1em;}
+
+div .article:before { display:block; content:"Article metadata"; color:#C88; font-size:14; text-align:right; background-color:#FCC; padding-right:1em;}
+div .article { display:block; background-color:#FDD; border:1px solid #FCC; margin:0em 2em -1em 2em; padding-bottom:1em;}
+
+div .result:before { display:block; content:"Result Summary"; color:#AAA; font-size:14; text-align:right; background-color:#DEDEDE; padding-right:1em;}
+div .result { display:block; background-color:#EEE; border:1px solid #DEDEDE; padding-bottom:1em;}
+
+div .facet:before { display:block; content:"Facet information"; color:#888; font-size:14; text-align:right; background-color:#CCC; padding-right:1em;}
+div .facet { display:block; background-color:#EEE; border:1px solid #CCC; margin-bottom:1em; padding-bottom:1em;}
+
+div .mediaReference-img {display:block; float:right; margin-right:1em;}

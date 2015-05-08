@@ -1,0 +1,125 @@
+<span class="titlePanel">Witness Information</span>
+<span id="witness-id"></span>
+<table class="table table-bordered table-condensed divaPanel">
+	<tr>
+		<td class="tdTitle">Title</td>
+		<td class="tdTitle" id="witness-title" style="width: 300px;">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Title as written in Witness</td>
+		<td class="tdTitle" id="witness-title-written-in-witness">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Author</td>
+		<td class="tdTitle" id="witness-author">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Author as written in Witness</td>
+		<td class="tdTitle" id="witness-author-written-in-witness">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Codex information</td>
+		<td class="tdTitle" id="witness-codex">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Ahlwardt no.</td>
+		<td class="tdTitle" id="witness-ahlwardt-no">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Copyist</td>
+		<td class="tdTitle" id="witness-copyist">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Place of Copying</td>
+		<td class="tdTitle" id="witness-place-copyist">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Date of Copying</td>
+		<td class="tdTitle" id="witness-date-copyist">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Colophon</td>
+		<td class="tdTitle" id="witness-colophon">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Readers [Studied by]</td>
+		<td class="tdTitle" id="witness-readers">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Folios</td>
+		<td class="tdTitle" id="witness-folios">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Page dimensions</td>
+		<td class="tdTitle" id="witness-dimensions">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Written area dimensions</td>
+		<td class="tdTitle" id="witness-written-dimensions">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Lines per page</td>
+		<td class="tdTitle" id="witness-lines">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Writing surface</td>
+		<td class="tdTitle" id="witness-surface">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Page layout</td>
+		<td class="tdTitle" id="witness-layout">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Incipit</td>
+		<td class="tdTitle" id="witness-incipit">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Explicit</td>
+		<td class="tdTitle" id="witness-explicit">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Table of Contents</td>
+		<td class="tdTitle" id="witness-table-contents">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">Script</td>
+		<td class="tdTitle" id="witness-script">
+		</td>
+	</tr>	
+	<tr>
+		<td class="tdTitle">Notes</td>
+		<td class="tdTitle" id="witness-notes">
+		</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">References</td>
+		<td class="tdTitle" id="witness-refs">
+		</td>
+	</tr>		
+	<tr>
+		<td></td>
+		<td>
+			<a id="witness-details-show-less" class="witness-details-show-less">Show less</a>
+		</td>
+	</tr>		
+</table>

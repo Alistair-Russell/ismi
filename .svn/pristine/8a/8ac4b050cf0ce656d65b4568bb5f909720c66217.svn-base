@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+
+		<h:panelGrid>
+			<h:outputText
+				value="Repository - #{CurrentRepository.entity.ownValue}"
+				rendered="#{!empty CurrentRepository.entity.ownValue}"
+				styleClass="titlePanel"/>
+			<h:outputText value="Repository"
+				rendered="#{empty CurrentRepository.entity.ownValue}"
+				styleClass="titlePanel"/>
+		</h:panelGrid>
+
+		<h:panelGrid columns="4" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn" id="repoPanel">
+
+			<h:outputLabel value="Country" />
+			<ismi:autocomplete lo="#{CurrentRepository.countryLo}" />
+			<h:outputText />
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentRepository.countryLo.entity.id}"
+					actionListener="#{CurrentRepository.editThisCountryAction}" />
+			</h:panelGrid>
+
+			<h:outputLabel value="Place/City" />
+			<ismi:autocomplete lo="#{CurrentRepository.cityLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu
+					rendered="#{!empty CurrentRepository.citiesInCurrentCountry}"
+					valueChangeListener="#{CurrentRepository.inCurrentCountryListener}">
+					<f:selectItems value="#{CurrentRepository.citiesInCurrentCountry}" />
+					<a4j:ajax event="change" render="repoPanel" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentRepository.cityLo.entity.id}"
+					actionListener="#{CurrentRepository.editThisCityAction}" />
+			</h:panelGrid>
+
+			<h:outputText />
+			<h:commandButton
+				actionListener="#{CurrentRepository.checkConsistencyFromCountryToCodex}"
+				value="Check Consistency From Country To Codex" />
+			<h:outputText />
+			<h:outputText />
+
+			<h:outputLabel value="Repository Name" />
+			<h:inputText size="100"
+				value="#{CurrentRepository.attributes['name']}" />
+			<h:outputText />
+			<h:outputText />
+
+		</h:panelGrid>
+
+		<ismi:refWidget entityForm="#{CurrentRepository}" />
+
+		<h:panelGrid columns="4">
+			<h:outputText value="ID of the Repository" />
+			<h:inputText value="#{CurrentRepository.currentId}" />
+			<h:commandButton value="Load Repository By ID"
+				action="#{CurrentRepository.actionReloadEntity}"
+				onclick="confirm('Do you really want to reload the entity?');" />
+			<h:outputText value="#{CurrentRepository.currentIdMsg}"
+				style="color:red" />
+		</h:panelGrid>
+
+		<h:commandButton value="#{CurrentRepository.saveButtonLabel}"
+			rendered="#{CurrentRepository.renderSaveButton}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}"
+			action="#{CurrentRepository.save}" />
+		<h:commandButton value="Clear Form"
+			action="#{CurrentRepository.clearAction}"
+			onclick="#{ApplicationBean1.JSConfirmationCleanForm}" />
+		<h:commandButton value="Save as new Entity"
+			onclick="#{ApplicationBean1.JSConfirmationSaveAsNew}"
+			rendered="#{(CurrentRepository.entity.id != null and Session.canCreate)}"
+			action="#{CurrentRepository.saveAsNewEntity}" />
+
+		<h:outputText rendered="#{CurrentRepository.create_error}"
+			value="City already exists - not saved!" />
+			
+			
+		<!-- Unity Warning -->
+		<h:panelGrid id="repUnityWarningPP">
+			<h:panelGroup 
+				rendered="#{CurrentRepository.renderUnityCheckerDialog}">
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" class="rf-pp-cntr"
+					style="height: 100px; left: 100px; position: fixed; top: 50px; width: 300px; z-index: 100;">
+
+					<div class="rf-pp-shdw"
+						style="height: 100px; left: 100px; left: 5px; top: 5px; bottom: -5px; opacity: 0.1;">
+					</div>
+					<div class="rf-pp-hdr " style="cursor: default;">
+						<div class="rf-pp-hdr-cnt">Unity Warning</div>
+					</div>
+
+					<h:panelGrid columns="1" class="rf-pp-cnt-scrlr"
+						style="width: 300px; height: 200px;">
+
+                    <h:outputText value="#{CurrentRepository.unityCheckerMsg}"/>
+                    <h:panelGrid>
+                        <a4j:commandButton value="Load Entity" action="#{CurrentRepository.loadCloneEntity}"/>
+                        <a4j:commandButton value="Continue Editing" action="#{CurrentRepository.hideUnityCheckerDialog}" />
+                    </h:panelGrid>
+
+					</h:panelGrid>
+				</h:panelGrid>
+
+			</h:panelGroup>
+		</h:panelGrid>				
+
+	</ui:composition>
+</body>
+</html>

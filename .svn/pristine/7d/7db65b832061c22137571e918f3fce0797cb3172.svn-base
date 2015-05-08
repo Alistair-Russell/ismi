@@ -1,0 +1,1 @@
+mvn exec:java -Dexec.mainClass="de.mpiwg.itgroup.dm2e.DM2EConverter" -Dexec.args="/Users/jurzua/text.nl"

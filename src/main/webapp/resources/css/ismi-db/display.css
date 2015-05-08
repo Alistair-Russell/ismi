@@ -1,0 +1,151 @@
+
+.dynamicAttTable{
+	padding: 50px 10px 10px 10px;
+	background-color: white;
+	width: 500px;
+	margin-left: auto; 
+	margin-right: auto; 
+}
+
+.dynamicAttTable table{
+	background-color: #E8E8E8;
+	width: 100%;	
+	
+	
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-collapse: separate;
+    border-color: #DDDDDD #DDDDDD #DDDDDD -moz-use-text-color;
+    border-image: none;
+    border-radius: 4px;
+    border-style: solid solid solid none;
+    border-width: 1px 1px 1px 0;
+    
+    border-bottom: none !important;
+    border-right: none !important;	
+}
+
+.dynamicAttTable td{
+	color: #3B4186;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 10px;
+    font-weight: normal;
+    
+    border-bottom: none !important;
+    border-right: none !important;	
+}
+
+.displayButton{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.rf-p-b{
+	padding: 5px;	
+}
+
+.resultSetContentBiography{
+	/*background-color: #606060;*/
+	width: 100%;
+}
+
+.resultSetContentBiography td{
+	background-color: #FFFFFF;
+	text-align: left;
+	color: #606060;
+	width: 100%;
+}
+
+.resultSetBiography{
+	background-color: #F0F0F0;
+}
+
+.displayPanel{
+	width: 100%;
+	margin-left: auto; 
+	margin-right: auto; 
+}
+
+.displayPanel td{
+	
+	background-color: #E8E8E8;
+}
+
+.displayPanelColumn01{
+	color: #3B4186;
+	font-family: Arial,Verdana,sans-serif;
+	font-weight: bold;
+    font-size: 11px;
+    width: 100px;
+    text-align: left;
+    padding: 5px 5px 5px 5px;	
+}
+
+.displayPanelColumn02{
+	color: #000000;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 11px;
+    text-align: left;
+    padding: 5px 5px 5px 5px;	
+}
+
+.displayPanelColumn03{
+	color: #000000;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 11px;
+    text-align: left;	
+    padding: 5px 5px 5px 5px;
+}
+
+.select{
+	background-color: white !important;
+    
+    /*
+    display: block;
+    border-top: 1px solid #ABABAB !important;
+    border-right: 5px solid #666666 !important;
+    border-left: 1px solid #ABABAB !important;
+    border-bottom: 1px solid #333333 !important;
+    position: absolute !important;
+    */
+    
+    /*
+    border-collapse: collapse;
+    border-color: #C4C0C9;
+    border-style: solid;
+    border-width: 1px;
+    empty-cells: show;
+    */
+    
+    
+}
+
+.select td{
+	border: none;
+	padding: 0;
+}
+.selectItem{
+	/*background-color: #E0E0E0 ;*/
+	background-color: #FFFFFF;
+    color: #333333;  
+    text-decoration:none;  
+    /*
+    border-bottom: 1px solid #DEDEDE;
+    display: block;
+    position: relative;
+    padding: 2px 2px 2px 10px;
+    */
+    
+    padding: 4px;
+	height:100%;
+	width:100%;
+	text-align: left;
+	
+}	
+
+
+.selectItem:HOVER{
+    background-color: #99CCFF;
+}

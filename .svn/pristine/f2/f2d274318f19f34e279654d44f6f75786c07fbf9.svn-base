@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:composite="http://java.sun.com/jsf/composite">
+    <composite:interface>
+        <composite:attribute name="entityForm" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+    
+    <ice:panelPopup 
+        autoCentre="true" 
+        draggable="true" 
+        modal="true"
+        rendered="#{cc.attrs.entityForm.refDataTable.showDialog}">
+                    <f:facet name="header">
+                        <ice:outputText value="Bibliographical References"/>
+                    </f:facet>
+                   <f:facet name="body">
+                        <ice:panelGrid columns="1">
+                        
+                            <ice:panelGrid columns="1">
+                                <ice:panelGrid columns="6">
+	                                <ice:inputText value="#{cc.attrs.entityForm.refDataTable.term}"/>
+	                                <ice:commandButton value="Filter" actionListener="#{cc.attrs.entityForm.refDataTable.listenerFilter}"/>
+	                                <ice:commandButton value="Clean" actionListener="#{cc.attrs.entityForm.refDataTable.listenerReset}"/>
+	                                <ice:commandButton value="New" actionListener="#{cc.attrs.entityForm.refDataTable.listenerCreateReference}"/>
+	                                <ice:outputLabel value="Items size: #{cc.attrs.entityForm.refDataTable.itemsSize}"/>                                
+                                </ice:panelGrid>
+                                <ice:panelGrid columns="2">
+	                                <ice:outputLabel value="Sort by"/>
+	                                <ice:selectOneRadio 
+	                                    value="#{cc.attrs.entityForm.refDataTable.sortBy}"
+	                                    valueChangeListener="#{cc.attrs.entityForm.refDataTable.listenerSort}">
+	                                    <f:selectItems value="#{cc.attrs.entityForm.refDataTable.sortAlternatives}"/>
+	                                </ice:selectOneRadio>                                
+                                </ice:panelGrid>                                
+                            </ice:panelGrid>                 
+                            
+                            <ace:dataTable
+                                value="#{cc.attrs.entityForm.refDataTable.items}"
+                                rendered="#{!empty cc.attrs.entityForm.refDataTable.items}"
+                                var="refItem"
+                                paginator="true"
+                                rows="10">
+                                
+                                <ace:column headerText="Id">
+                                    <ice:commandLink 
+                                        value="#{refItem.publication.objid}" 
+                                        actionListener="#{cc.attrs.entityForm.refDataTable.listenerSelectRefItem}" />
+                                </ace:column>
+                                <ace:column headerText="Title" styleClass="tableColumnLeft">
+                                    <ice:commandLink 
+                                        value="#{refItem.publication.title}" 
+                                        actionListener="#{cc.attrs.entityForm.refDataTable.listenerSelectRefItem}" 
+                                        styleClass="elementTableColumnLeft"/>
+                                </ace:column>
+                                <ace:column headerText="Complete name" styleClass="tableColumnLeft">
+                                    <ice:commandLink 
+                                        value="#{refItem.publication.creatorsAsString}"
+                                        actionListener="#{cc.attrs.entityForm.refDataTable.listenerSelectRefItem}" 
+                                        styleClass="elementTableColumnLeft"/>
+                                </ace:column>
+                                <ace:column >
+                                    <ice:commandButton 
+                                        value="Edit"
+                                        actionListener="#{cc.attrs.entityForm.refDataTable.listenerEditItem}" 
+                                        styleClass="elementTableColumnLeft"
+                                        image="#{ApplicationBean1.editImage}"/>
+                                </ace:column>                                
+                                
+                            </ace:dataTable>       
+                            <ice:commandButton 
+                                value="Cancel"
+                                actionListener="#{cc.attrs.entityForm.refDataTable.listenerClose}" />
+                        </ice:panelGrid>
+                   </f:facet>
+    </ice:panelPopup>           
+    
+    </composite:implementation>
+</html>

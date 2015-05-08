@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="entityForm" required="true" />
+</composite:interface>
+
+<composite:implementation>
+
+	<h:panelGrid columns="3" styleClass="createPanel" columnClasses="createPanelFirstColumn" 
+		id="refArea">
+		
+		<h:panelGrid columns="1">
+			<h:outputText value="EndNote" />
+			<h:outputText value="References" />
+		</h:panelGrid>
+		
+		<h:panelGrid columns="1">
+
+			<h:panelGrid columns="1">
+
+				<rich:dataTable
+					rendered="#{!empty cc.attrs.entityForm.endNoteRefTable.list}"
+					value="#{cc.attrs.entityForm.endNoteRefTable.list}" 
+					var="item">
+
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="ISMI Id" />
+						</f:facet>
+						<h:outputText value="#{item.obj.ent.id}" />
+					</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="EndNote Id" />
+						</f:facet>
+						<h:outputText value="#{item.obj.endNoteId}" />
+					</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="ESciDoc Id" />
+						</f:facet>
+						<h:outputText value="#{item.obj.escidocId}" />
+					</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Additional Information" />
+						</f:facet>
+						<h:outputText value="#{item.obj.addInformation}" />
+					</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Edit" />
+						</f:facet>
+						<a4j:commandLink
+							action="#{cc.attrs.entityForm.endNoteRefTable.actionEditRef}">
+							<h:graphicImage url="#{ApplicationBean1.editImage}" />
+							<a4j:ajax event="click" render="refArea" />
+						</a4j:commandLink>
+					</rich:column>
+					<rich:column>
+						<h:selectBooleanCheckbox value="#{item.selected}"/>
+					</rich:column>
+				</rich:dataTable>
+
+				<h:panelGrid columns="2">
+					<h:commandButton value="Remove" title="Remove references"
+						image="#{ApplicationBean1.imgRemove16}"
+						action="#{cc.attrs.entityForm.endNoteRefTable.actionRemoveRef}"
+						rendered="#{cc.attrs.entityForm.endNoteRefTable.hasReferences}"
+						onclick="#{ApplicationBean1.JSConfirmationDelete}"
+						style="margin-right: 20px;" />
+
+					<h:commandButton value="New" title="New reference"
+						image="#{ApplicationBean1.imgNew16}"
+						action="#{cc.attrs.entityForm.endNoteRefTable.actionCreateRef}"
+						style="margin-right: 20px;" />
+				</h:panelGrid>
+
+			</h:panelGrid>
+
+		</h:panelGrid>
+		
+		<h:panelGroup rendered="#{!empty cc.attrs.entityForm.endNoteRefTable.ref}">
+			<div style="z-index: 100;" class="rf-pp-shade">
+				<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+			</div>
+
+			<h:panelGrid columns="1" class="rf-pp-cntr"
+				style="height: 100px; left: 100px; position: fixed; top: 50px; z-index: 100; width: 500px; ">
+
+				<div class="rf-pp-shdw"
+					style="opacity: 0.1; height: 100px; left: 5px; top: 5px; bottom: -5px;">
+				</div>
+				<div class="rf-pp-hdr " style="cursor: default;">
+					<div class="rf-pp-hdr-cnt">EndNote Reference</div>
+				</div>
+
+				<h:panelGrid columns="1" class="rf-pp-cnt-scrlr">
+					<h:panelGrid columns="1" class="rf-pp-cnt">
+
+						<h:panelGrid columns="2">
+							<h:outputLabel value="EndNote Id" />
+							<h:inputText value="#{cc.attrs.entityForm.endNoteRefTable.ref.endNoteId}" />
+
+							<h:outputLabel value="ESciDoc Id" />
+							<h:inputText value="#{cc.attrs.entityForm.endNoteRefTable.ref.escidocId}" />
+
+							<h:outputLabel value="EndNote Content" />
+							<h:inputTextarea
+								value="#{cc.attrs.entityForm.endNoteRefTable.ref.endNoteContent}"
+								rows="10" cols="50" />
+
+							<h:outputLabel value="Additional Information" />
+							<h:inputTextarea
+								value="#{cc.attrs.entityForm.endNoteRefTable.ref.addInformation}"
+								rows="3" cols="50" />
+
+							<h:outputText />
+							<h:panelGrid columns="2">
+								
+								<a4j:commandButton value="Save"
+									actionListener="#{cc.attrs.entityForm.endNoteRefTable.actionListenerSave}"
+									onclick="#{ApplicationBean1.JSConfirmationSaveAsNew}">
+									<a4j:ajax event="click" render="refArea" />
+								</a4j:commandButton>
+								
+								<a4j:commandButton value="Cancel"
+									actionListener="#{cc.attrs.entityForm.endNoteRefTable.listenerCancel}">
+									<a4j:ajax event="click" render="refArea" />
+								</a4j:commandButton>
+								
+							</h:panelGrid>
+						</h:panelGrid>
+
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:panelGroup>		
+		
+		
+	</h:panelGrid>
+
+</composite:implementation>
+</html>

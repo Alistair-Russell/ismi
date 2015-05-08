@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<composite:interface>
+	<composite:attribute name="value" required="true" />
+	<composite:attribute name="deploy" default="true" />
+</composite:interface>
+
+
+<composite:implementation>
+
+	<h:panelGrid rendered="#{cc.attrs.deploy}" width="100%">
+
+		<h:panelGrid columns="3" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn" id="entityListArea">
+
+
+			<h:outputText value="#{cc.attrs.value.title}" />
+
+			<h:panelGrid columns="2" width="100%">
+
+				<h:dataTable value="#{cc.attrs.value.entities}" var="item"
+					rendered="#{!empty cc.attrs.value.entities}">
+					<h:column>
+						<h:outputText value="[#{item.id}] #{item.ownValue}" />
+					</h:column>
+					<h:column>
+						<h:selectBooleanCheckbox
+							value="#{cc.attrs.value.selections[item.id]}" />
+					</h:column>
+				</h:dataTable>
+				<h:commandButton
+					rendered="#{!empty cc.attrs.value.entities}" 
+					value="Remove Selection"
+					actionListener="#{cc.attrs.value.listenerRemoveSelection}"
+					style="float: right;" />
+
+				<h:panelGrid id="witnessTitlePanel">
+					<ismi:autocomplete lo="#{cc.attrs.value.lo}" />
+				</h:panelGrid>
+				<h:commandButton value="Add"
+					actionListener="#{cc.attrs.value.listenerAdd}" />
+
+			</h:panelGrid>
+
+			<h:outputText />
+
+		</h:panelGrid>
+	</h:panelGrid>
+
+</composite:implementation>
+</html>

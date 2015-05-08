@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+<body>
+	<ui:composition>
+
+		<h:panelGrid id="misattArea">
+
+
+
+			<h:panelGroup rendered="#{CurrentText.misattTable.misatt != null}">
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" class="rf-pp-cntr"
+					style="height: 350px; left: 470px; position: fixed; top: 219px; width: 500px; z-index: 100;">
+
+					<div class="rf-pp-shdw"
+						style="opacity: 0.1; width: 500px; height: 350px; left: 5px; top: 5px; bottom: -5px;">
+					</div>
+					<div class="rf-pp-hdr " style="cursor: default;">
+						<div class="rf-pp-hdr-cnt">EndNote Reference</div>
+					</div>
+
+					<h:panelGrid columns="1" class="rf-pp-cnt-scrlr"
+						style="width: 500px; height: 329px;">
+						<h:panelGrid columns="1" class="rf-pp-cnt">
+
+							<h:panelGrid columns="1">
+								<h:panelGrid columns="2">
+
+									<h:outputLabel value="EndNote Id" />
+									<h:inputText
+										value="#{CurrentText.misattTable.misatt.ref.endNoteId}" />
+
+									<h:outputLabel value="ESciDoc Id" />
+									<h:inputText
+										value="#{CurrentText.misattTable.misatt.ref.escidocId}" />
+
+									<h:outputLabel value="EndNote Content" />
+									<h:inputTextarea
+										value="#{CurrentText.misattTable.misatt.ref.endNoteContent}"
+										rows="10" cols="200" />
+
+									<h:outputLabel value="Additional Information" />
+									<h:inputTextarea
+										value="#{CurrentText.misattTable.misatt.ref.addInformation}"
+										rows="3" cols="200" />
+
+								</h:panelGrid>
+								<a4j:commandButton value="OK"
+									actionListener="#{CurrentText.misattTable.listenerSaveRef}"
+									render="misattArea"/>
+							</h:panelGrid>
+
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:panelGrid>
+
+			</h:panelGroup>
+
+
+
+
+			<h:panelGrid border="0" columns="1">
+				<h:panelGrid columns="1"
+					rendered="#{!empty CurrentText.misattTable.list}">
+
+					<rich:dataTable value="#{CurrentText.misattTable.list}" var="item">
+
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Author" />
+							</f:facet>
+							<h:outputText
+								value="[#{item.obj.person.id}] #{item.obj.person.ownValue}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Ref EndNote" />
+							</f:facet>
+							<h:outputText value="#{item.obj.ref.endNoteId}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Ref Pubman" />
+							</f:facet>
+							<h:outputText value="#{item.obj.ref.escidocId}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Note" />
+							</f:facet>
+							<h:outputText value="#{item.obj.ref.addInformation}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Edit" />
+							</f:facet>
+							<a4j:commandLink
+								actionListener="#{CurrentText.misattTable.listenerEditRef}">
+								<h:graphicImage url="#{ApplicationBean1.editImage}" />
+								<a4j:ajax event="click" render="misattArea" />
+							</a4j:commandLink>
+						</rich:column>
+						<rich:column>
+							<h:selectBooleanCheckbox value="#{item.selected}" />
+						</rich:column>
+					</rich:dataTable>
+
+
+					<a4j:commandButton value="Remove"
+						actionListener="#{CurrentText.misattTable.listenerRemove}"
+						onclick="#{ApplicationBean1.JSConfirmationDelete}"
+						render="misattArea"/>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<ismi:autocomplete lo="#{CurrentText.misattTable.lo}" />
+					<a4j:commandButton value="Add"
+						actionListener="#{CurrentText.misattTable.listenerCreate}"
+						render="misattArea"/>
+				</h:panelGrid>
+			</h:panelGrid>
+
+		</h:panelGrid>
+
+	</ui:composition>
+</body>
+</html>

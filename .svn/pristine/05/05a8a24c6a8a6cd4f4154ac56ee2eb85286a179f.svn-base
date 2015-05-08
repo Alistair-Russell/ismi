@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<body>
+	<ui:composition>
+		<h:panelGrid id="textSelectAuthor">
+			<h:panelGroup rendered="#{CurrentText.selectPersonRendered}">
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" class="rf-pp-cntr"
+					style="height: 100px; left: 100px; position: fixed; top: 50px; width: 500px; z-index: 100;">
+
+					<div class="rf-pp-shdw"
+						style="height: 100px; left: 100px; left: 5px; top: 5px; bottom: -5px; opacity: 0.1;">
+					</div>
+					<div class="rf-pp-hdr " style="cursor: default;">
+						<div class="rf-pp-hdr-cnt">Select Person</div>
+					</div>
+
+					<h:panelGrid columns="1" class="rf-pp-cnt-scrlr"
+						style="width: 500px; height: 329px;">
+						<h:panelGrid columns="1" class="rf-pp-cnt">
+
+							<h:panelGrid columns="1">
+								<h:panelGroup>
+
+									<h:selectOneListbox size="10"
+										value="#{CurrentText.selectedPersonId}">
+										<f:selectItems value="#{CurrentText.personList}" />
+									</h:selectOneListbox>
+								</h:panelGroup>
+								
+								<h:panelGroup>
+                	Restrict by role author:<h:selectBooleanCheckbox
+										valueChangeListener="#{CurrentText.restrictedByRoleChange}"
+										value="#{CurrentText.restrictedByRole}">
+										<a4j:ajax event="click" render="textSelectAuthor" />
+									</h:selectBooleanCheckbox>
+								</h:panelGroup>
+								
+								<h:panelGrid columns="2">
+									<a4j:commandButton
+										actionListener="#{CurrentText.listenerSelectPerson}"
+										value="take"
+										render="createByPanel,dedicatedToPanel,textSelectAuthor">
+									</a4j:commandButton>
+
+									<a4j:commandButton
+										actionListener="#{CurrentText.listenerPersonCancel}"
+										value="cancel"
+										render="createByPanel,dedicatedToPanel,textSelectAuthor">
+									</a4j:commandButton>								
+								</h:panelGrid>
+							</h:panelGrid>
+
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:panelGrid>
+
+			</h:panelGroup>
+		</h:panelGrid>
+	</ui:composition>
+</body>
+</html>

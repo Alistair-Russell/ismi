@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/privateTemplate.xhtml">
+
+		<ui:define name="privateContent">
+
+			<h:outputStylesheet name="/css/ismi-db/display.css" />
+
+			<div id="pageTitle">
+				<h:outputText value="Public Codices" />
+			</div>
+			
+			<h:panelGrid columns="1" styleClass="publicCodices">
+					
+					<h:panelGroup>
+						<h:inputText 
+							value="#{Session.publicCodexBean.term}"
+							style="width: 200px;"/> 
+						<h:commandButton
+							value="Submit"
+							actionListener="#{Session.publicCodexBean.listenerSearch}"/>
+						<h:commandButton
+							value="Reset"
+							actionListener="#{Session.publicCodexBean.listenerReset}"/>							
+					</h:panelGroup>
+					
+					<rich:dataTable
+						value="#{Session.publicCodexBean.currentCodexList}"
+						var="codex">
+						
+						<rich:column style="border:none;">
+							<h:outputLink value="#{ApplicationBean1.root}/public/publicCodexOverview.xhtml?eid=#{codex.id}">
+								<h:outputText value="#{codex.ownValue}"/>
+							</h:outputLink>
+							
+						</rich:column>
+						
+					</rich:dataTable>	
+				
+				
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

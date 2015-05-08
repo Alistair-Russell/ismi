@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<body>
+	<ui:composition>
+
+    <h:outputText value="#{EntityRepository.resultSummaryMsg}"
+        rendered="#{!empty EntityRepository.resultSummaryMsg}" 
+        styleClass="sumaryMsg"/>
+        
+    <h:column rendered="#{!empty EntityRepository.entities}">
+        <h:outputText value="go to page" styleClass="sumaryMsg"/>
+        <h:inputText value="#{EntityRepository.page}" />
+        <h:commandButton value="submit"
+            actionListener="#{EntityRepository.listenerGoToPage}" />
+        <h:outputText value=" #{EntityRepository.pageMsg}"
+            rendered="#{!empty EntityRepository.pageMsg}" style="color:red" />
+    </h:column>
+
+
+    <h:column rendered="#{!empty EntityRepository.entities}">
+        <h:panelGroup>
+            <h:commandButton action="#{EntityRepository.first}" title="rewind"
+                image="/resources/css/xp/css-images/arrow-first.gif" />
+            <h:commandButton action="#{EntityRepository.fastRewind}"
+                title="fast rewind" image="/resources/css/xp/css-images//arrow-fr.gif" />
+            <h:commandButton action="#{EntityRepository.previous}" title="previous"
+                image="/resources/css/xp/css-images//arrow-previous.gif" />
+
+            <h:outputText value="#{EntityRepository.paginator.recordStatus}" styleClass="sumaryMsg"  />
+
+            <h:commandButton action="#{EntityRepository.next}" title="next"
+                image="/resources/css/xp/css-images//arrow-next.gif" />
+            <h:commandButton action="#{EntityRepository.fastForward}"
+                title="fast forward" image="/resources/css/xp/css-images//arrow-ff.gif" />
+            <h:commandButton action="#{EntityRepository.last}" title="fast forward"
+                image="/resources/css/xp/css-images//arrow-last.gif" />
+        </h:panelGroup>
+    </h:column>
+
+    <h:column>
+        <rich:dataTable id="entitiesDataTable"
+            value="#{EntityRepository.entities}"
+            rendered="#{!empty EntityRepository.entities}" var="entity"
+            styleClass="rsPanel"
+        	columnClasses="rsPanelColumn">
+            <h:column>
+                <h:outputText value="[#{entity.objectClass}] " />
+                <h:outputLink value="#{ApplicationBean1.root}/browse/entityDetails.xhtml?eid=#{entity.id}">
+                    <h:outputText value="#{entity.ownValue} - [#{entity.id}, #{entity.privacity}]" />
+                </h:outputLink>               
+                <h:commandButton action="#{EntityRepository.actionEdit}" 
+                    rendered="#{Session.canEdit}" 
+                    image="/resources/css/xp/css-images//edit16.gif"
+                    title="Edit this entity"/>
+            </h:column>
+
+        </rich:dataTable>
+
+    </h:column>
+
+    <h:column rendered="#{!empty EntityRepository.entities}">
+        <h:panelGroup>
+            <h:commandButton action="#{EntityRepository.first}" title="rewind"
+                image="/resources/css/xp/css-images/arrow-first.gif" />
+            <h:commandButton action="#{EntityRepository.fastRewind}"
+                title="fast rewind" image="/resources/css/xp/css-images//arrow-fr.gif" />
+            <h:commandButton action="#{EntityRepository.previous}" title="previous"
+                image="/resources/css/xp/css-images//arrow-previous.gif" />
+
+            <h:outputText value="#{EntityRepository.paginator.recordStatus}" styleClass="sumaryMsg" />
+
+            <h:commandButton action="#{EntityRepository.next}" title="next"
+                image="/resources/css/xp/css-images//arrow-next.gif" />
+            <h:commandButton action="#{EntityRepository.fastForward}"
+                title="fast forward" image="/resources/css/xp/css-images//arrow-ff.gif" />
+            <h:commandButton action="#{EntityRepository.last}" title="fast forward"
+                image="/resources/css/xp/css-images//arrow-last.gif" />
+        </h:panelGroup>
+    </h:column>
+
+	
+	</ui:composition>
+</body>
+</html>	

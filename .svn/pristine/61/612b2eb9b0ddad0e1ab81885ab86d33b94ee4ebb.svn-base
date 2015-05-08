@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+
+		<a4j:commandButton value="Create new study event"
+			actionListener="#{Session.listenerCreateStudyEvent}" />
+
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputLabel value="Own value" />
+			<h:outputLabel value="#{Session.studyEventForm.event.ownValue}" />
+
+			<h:outputText value="Text" />
+			<h:panelGrid columns="1">
+				<ismi:autocomplete lo="#{Session.studyEventForm.textLo}" />
+
+				<a4j:outputPanel ajaxRendered="true">
+					<h:selectOneMenu
+						rendered="#{Session.studyEventForm.textLo.statusImage.ok}"
+						value="#{Session.studyEventForm.witnessId}"
+						valueChangeListener="#{Session.studyEventForm.listenerChangeWitness}">
+						<f:selectItems value="#{Session.studyEventForm.witnessList}" />
+						<a4j:ajax event="change" render="selectedWitness" />
+					</h:selectOneMenu>
+
+					<h:panelGrid id="selectedWitness" style="width: 500px;" columns="1"
+						rendered="#{Session.studyEventForm.witness != null}">
+						<h:outputLabel value="Witness associated:" />
+						<h:outputLabel
+							value="#{Session.studyEventForm.witness.ownValue} [ID=#{Session.studyEventForm.witness.id}]" />
+					</h:panelGrid>
+					<h:outputLabel rendered="#{Session.studyEventForm.witness != null}" />
+				</a4j:outputPanel>
+
+			</h:panelGrid>
+
+
+			<h:panelGrid columns="1">
+				<h:outputText value="Person" />
+				<h:outputText value="(engaging with text)" />
+			</h:panelGrid>
+			<ismi:autocomplete lo="#{Session.studyEventForm.personLo}" />
+
+			<h:outputText value="Options for engagement" />
+			<h:selectOneMenu
+				value="#{Session.studyEventForm.attributes['options_for_engagement']}">
+				<f:selectItems
+					value="#{Session.studyEventForm.suggestedEngagementOptions}" />
+			</h:selectOneMenu>
+
+			<h:panelGrid columns="1">
+				<h:outputText value="Person with whom" />
+				<h:outputText value="one read, dictated or" />
+				<h:outputText value="studied the text" />
+			</h:panelGrid>
+			<ismi:autocomplete lo="#{Session.studyEventForm.advisorLo}" />
+
+			<h:outputText value="Place" />
+			<ismi:autocomplete lo="#{Session.studyEventForm.placeLo}" />
+
+			<h:outputText value="Institution" />
+			<ismi:autocomplete lo="#{Session.studyEventForm.repositoryLo}" />
+
+			<h:outputText value="Notes" />
+			<h:inputTextarea cols="80" rows="5"
+                    value="#{Session.studyEventForm.attributes['notes']}"/>
+
+			<h:outputText value="Date of Event" />
+			<ismi:date date="#{Session.studyEventForm.date}"/>
+
+			<h:outputText/>
+			<h:commandButton 
+	       		value="#{(empty Session.studyEventForm.event.id) ? 'Create' : 'Change'}"
+	       		actionListener="#{Session.studyEventForm.listenerSave}"/>
+	
+		</h:panelGrid>
+	</ui:composition>
+</body>
+
+</html>

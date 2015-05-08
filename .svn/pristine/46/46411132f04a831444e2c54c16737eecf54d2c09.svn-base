@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/privateTemplate.xhtml">
+		
+		<ui:define name="privateContent">
+
+		
+
+			<h:panelGrid columns="1"
+				rendered="#{Session.user != null}"
+				styleClass="mainPanel">
+				
+				<ui:include src="components/dateEditorPopup.xhtml" />
+				
+					
+					<rich:tabPanel 
+							id="tp"
+							activeItem="#{Session.selectedTab}"
+							itemChangeListener="#{Session.listenerEntityTabChange}">
+							
+							
+            			<rich:tab header="Witness" name="Witness">
+            				<ui:include src="witness.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Codex" name="Codex">
+                			<ui:include src="codex.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Collection" name="Collection">
+                			<ui:include src="collection.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Repository" name="Repository">
+                			<ui:include src="repository.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Place" name="Place">
+                			<ui:include src="place.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Text" name="Text">
+                			<ui:include src="text.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Person" name="Person">
+                			<ui:include src="person.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Alias" name="Alias">
+                			<ui:include src="alias.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Subject" name="Subject">
+                			<ui:include src="subject.xhtml" />
+                		</rich:tab>
+                		<rich:tab header="Role" name="Role">
+                			<ui:include src="role.xhtml" />
+                		</rich:tab>
+						<rich:tab header="Digi" name="Digi">
+                			<ui:include src="digi.xhtml" />
+                		</rich:tab>
+					</rich:tabPanel>
+					
+					<h:panelGroup>
+							Last ID loaded: <h:inputText
+							value="#{Session.editFormCurrentEntId}" />
+					</h:panelGroup>
+				
+			</h:panelGrid>
+		
+		</ui:define>
+	</ui:composition>
+</body>
+</html>
+		

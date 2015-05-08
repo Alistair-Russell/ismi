@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/publicTemplate.xhtml">
+
+		<ui:define name="publicContent">
+
+			<h:outputStylesheet name="/css/ismi-db/display.css" />
+
+			<div id="pageTitle">
+				<h:outputText
+					value="Title [#{Session.displayTitle.selectedTitleId}]" />
+			</div>
+
+			<h:panelGrid columns="1" styleClass="mainPanel">
+
+				<h:commandButton value="Edit form"
+					image="#{ApplicationBean1.editImage}" title="Edit This Entity"
+					action="#{Session.displayTitle.actionEditTitle}"
+					rendered="#{Session.user != null}" />
+
+
+				<h:panelGrid columns="2" styleClass="displayPanel"
+					columnClasses="displayPanelColumn01,displayPanelColumn02">
+
+					<h:outputText value="Permission" />
+					<h:panelGrid columns="2">
+						<h:outputText value="#{Session.displayTitle.title.privacity} - " />
+						<h:commandLink value="change" rendered="#{Session.user != null}"
+							actionListener="#{Session.displayTitle.changePrivacity4Title}"
+							onclick="if(!confirm('Do you really want to change the privacity of this title?')){ return; };" />
+					</h:panelGrid>
+
+					<h:outputText value="Title ID" />
+					<h:outputText value="#{Session.displayTitle.selectedTitleId}" />
+
+					<h:outputText value="Full title" />
+					<h:outputText value="#{Session.displayTitle.title.fullTitle}" />
+
+					<h:outputText value="Full title (translit)" />
+					<h:outputText
+						value="#{Session.displayTitle.title.fullTitleTranslit}" />
+
+					<h:outputText value="Aliases" />
+					<h:dataTable var="aliasTitle" style="border:none;"
+						value="#{Session.displayTitle.title.aliasList}">
+						<h:column style="border:none;">
+							<h:outputText value="#{aliasTitle}" />
+						</h:column>
+					</h:dataTable>
+					
+					<h:outputText value="Author"/>
+					<h:panelGroup rendered="#{Session.displayTitle.title.hasAuthor}">
+						<h:outputText value="#{Session.displayTitle.title.author}" />
+						<h:outputLink
+							target="_blank" 
+							value="#{ApplicationBean1.root}/search/displayAuthor.xhtml?personId=#{Session.displayTitle.title.authorId}" title="Person viewer"
+							styleClass="displayButton">
+							<h:graphicImage 
+								value="#{ApplicationBean1.displayImage}"
+								width="20" height="20"/>
+						</h:outputLink>	
+						<h:outputLink
+							target="_blank" 
+							value="#{ApplicationBean1.root}/browse/entityDetails.xhtml?eid=#{Session.displayTitle.title.authorId}" title="Metadata of the entity"
+							styleClass="displayButton">
+							<h:graphicImage 
+								value="#{ApplicationBean1.imgNetwork32}"
+								width="20" height="20"/>
+						</h:outputLink>							
+						
+					</h:panelGroup>
+					<h:outputText rendered="#{!Session.displayTitle.title.hasAuthor}"/>
+
+					<h:outputText value="Date" />
+					<h:outputText value="#{Session.displayTitle.title.creationDate}"
+						escape="false" />
+
+					<h:outputText value="Create in" />
+					<h:outputText value="#{Session.displayTitle.title.createIn}" />
+
+					<h:outputText value="Language" />
+					<h:outputText value="#{Session.displayTitle.title.language}" />
+
+					<h:outputText value="Subject" />
+					<h:outputText value="#{Session.displayTitle.title.category}" />
+
+					<h:outputText value="Notes" />
+					<h:outputText value="#{Session.displayTitle.title.notes}" />
+
+					<h:outputText value="Incipit" />
+					<h:outputText value="#{Session.displayTitle.title.incipit}" />
+
+					<h:outputText value="Explicit" />
+					<h:outputText value="#{Session.displayTitle.title.explicit}"
+						dir="RTL" />
+
+					<h:outputText value="Dedication" />
+					<h:outputText value="#{Session.displayTitle.title.dedication}"
+						dir="RTL" />
+
+					<h:outputText value="Table of Contents" />
+					<h:outputText value="#{Session.displayTitle.title.tableOfContents}"
+						escape="false" />
+
+					<h:outputText value="Bibliographical References" />
+					<h:panelGrid columns="1">
+						<rich:dataTable var="item" style="border:none;width: 700px;"
+							value="#{Session.displayTitle.title.referenceList}"
+							rendered="#{!empty Session.displayTitle.title.referenceList}">
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="endnote-id" />
+								</f:facet>
+								<h:outputText value="#{item.endnoteId}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="endnote-content" />
+								</f:facet>
+								<h:outputText value="#{item.endnoteContent}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="escidoc label" />
+								</f:facet>
+								<h:outputText value="#{item.escidocLabel}" escape="false" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="additional_information" />
+								</f:facet>
+								<h:outputText value="#{item.additionalInf}" />
+							</h:column>
+						</rich:dataTable>
+					</h:panelGrid>
+
+
+
+				</h:panelGrid>
+				<h:panelGrid id="witnessesPanel">
+					<a name="witnesses" />
+					<h:outputText
+						value="Witnesses (#{Session.displayTitle.witnessItemsSize})"
+						rendered="#{!empty Session.displayTitle.witnessItems}"
+						styleClass="titlePanel" />
+
+					<h:panelGrid columns="1"
+						rendered="#{(!empty Session.displayTitle.witnessItems) and Session.user != null}">
+						<h:commandLink value="Make all public"
+							actionListener="#{Session.displayTitle.listenerMakeAllWitnessesPublic}"
+							onclick="if(!confirm('Do you really want to change the privacity these witnesses?\nThis action can take some minutes.')){ return; };" />
+						<h:commandLink value="Make all private"
+							actionListener="#{Session.displayTitle.listenerMakeAllWitnessesPrivate}"
+							onclick="if(!confirm('Do you really want to change the privacity these witnesses?\nThis action can take some minutes.')){ return; };" />
+					</h:panelGrid>
+				</h:panelGrid>
+
+				<rich:dataTable
+					rendered="#{!empty Session.displayTitle.witnessItems}"
+					value="#{Session.displayTitle.witnessItems}" var="witnessItem"
+					styleClass="select"
+					rows="10">
+					<rich:column>
+						<h:commandLink id="selectItem"
+							actionListener="#{Session.displayTitle.listenerShowWitness0}"
+							style="text-decoration:none;">
+							<div class="selectItem" style="#{witnessItem.style}">#{witnessItem.label}</div>
+						</h:commandLink>
+					</rich:column>
+					<f:facet name="footer">
+						<rich:dataScroller id="scroller" rendered="#{Session.displayTitle.witnessItemsSize > 10}"/>
+					</f:facet>
+				</rich:dataTable>
+
+				<h:panelGrid id="witnessPanel" columns="1" style="width: 100%;"
+					rendered="#{Session.displayTitle.selectedWitnessId != null}">
+
+					<h:commandButton value="edit or view this witness"
+						action="#{Session.displayTitle.actionEditWitness}"
+						rendered="#{Session.canEdit}" />
+
+					<h:panelGrid columns="2" styleClass="displayPanel"
+						columnClasses="displayPanelColumn01,displayPanelColumn02">
+
+						<h:outputText value="Permission" />
+						<h:panelGrid columns="2">
+							<h:outputText
+								value="#{Session.displayTitle.witness.privacity} - " />
+							<h:commandLink value="change" rendered="#{Session.user != null}"
+								actionListener="#{Session.displayTitle.changePrivacity4Witness}"
+								onclick="if(!confirm('Do you really want to change the privacity of this witness?')){ return; };" />
+						</h:panelGrid>
+
+						<h:outputText value="Witness ID" />
+						<h:outputText value="#{Session.displayTitle.selectedWitnessId}" />
+
+						<h:outputText value="State" />
+						<h:outputText value="#{Session.displayTitle.witness.status}" />
+
+						<h:outputText value="Country" />
+						<h:outputText value="#{Session.displayTitle.witness.country}" />
+
+						<h:outputText value="City" />
+						<h:outputText value="#{Session.displayTitle.witness.city}" />
+
+						<h:outputText value="Repository" />
+						<h:outputText value="#{Session.displayTitle.witness.repository}" />
+
+						<h:outputText value="Collection" />
+						<h:outputText value="#{Session.displayTitle.witness.collection}" />
+
+						<h:outputText value="Codex Identifier" />
+						<h:outputText value="#{Session.displayTitle.witness.codex}" />
+
+						<h:outputText value="Codex Owned by" />
+						<h:panelGrid columns="1">
+							<h:dataTable var="item" style="border:none;"
+								value="#{Session.displayTitle.witness.ownedByList}"
+								rendered="#{!empty Session.displayTitle.witness.ownedByList}">
+								<h:column style="border:none;">
+									<f:facet name="header">
+										<h:outputText value="Owner" />
+									</f:facet>
+									<h:outputText value="#{item}" />
+								</h:column>
+								<h:column style="border:none;">
+									<f:facet name="header">
+										<h:outputText value="Date" />
+									</f:facet>
+									<h:outputText
+										value="#{Session.displayTitle.witness.ownedByMap[item]}"
+										escape="false" />
+								</h:column>
+							</h:dataTable>
+
+						</h:panelGrid>
+
+
+						<h:outputText value="Codex Read by" />
+						<h:panelGrid columns="1">
+							<h:dataTable var="item" style="border:none;"
+								value="#{Session.displayTitle.witness.readByList}"
+								rendered="#{!empty Session.displayTitle.witness.readByList}">
+								<h:column style="border:none;">
+									<f:facet name="header">
+										<h:outputText value="Reader" />
+									</f:facet>
+									<h:outputText value="#{item}" />
+								</h:column>
+								<h:column style="border:none;">
+									<f:facet name="header">
+										<h:outputText value="Date" />
+									</f:facet>
+									<h:outputText
+										value="#{Session.displayTitle.witness.readByMap[item]}"
+										escape="false" />
+								</h:column>
+							</h:dataTable>
+						</h:panelGrid>
+
+						<h:outputText value="Notes" />
+						<h:outputText value="#{Session.displayTitle.witness.notes}" />
+
+						<h:outputText value="Table of Contents" />
+						<h:outputText
+							value="#{Session.displayTitle.witness.tableOfContents}"
+							escape="false" />
+
+						<h:outputText value="Bibliographical References" />
+						<h:panelGrid columns="1">
+							<rich:dataTable var="item" style="border:none;width: 700px;"
+								value="#{Session.displayTitle.witness.referenceList}"
+								rendered="#{!empty Session.displayTitle.title.referenceList}">
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="endnote-id" />
+									</f:facet>
+									<h:outputText value="#{item.endnoteId}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="endnote-content" />
+									</f:facet>
+									<h:outputText value="#{item.endnoteContent}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="escidoc label" />
+									</f:facet>
+									<h:outputText value="#{item.escidocLabel}" escape="false" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="additional_information" />
+									</f:facet>
+									<h:outputText value="#{item.additionalInf}" />
+								</h:column>
+							</rich:dataTable>
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+				</h:panelGrid>
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/publicTemplate.xhtml">
+
+		<ui:define name="publicContent">
+
+			<h:outputStylesheet name="/css/ismi-db/display.css" />
+
+			<div id="pageTitle">
+				<h:outputText value="Codex Overview" />
+			</div>
+			
+			<h:panelGrid columns="1" styleClass="codexOverview">
+				
+				<h:panelGrid columns="2" columnClasses="codexOverviewTableColumn01,codexOverviewTableColumn02">
+					<h:panelGroup>
+						<h:outputLink value="#{ApplicationBean1.root}/public/publicCodex.jsp?eid=#{Session.publicCodexView.codex.id}">
+							<h:outputLabel value="#{Session.publicCodexView.codex.ownValue}"/>
+						</h:outputLink>
+					</h:panelGroup>
+					
+					<h:panelGrid columns="1">
+						<rich:dataTable value="#{Session.publicCodexView.witnessList}" var="witness"  rendered="#{!empty Session.publicCodexView.witnessList}">
+							<rich:column >
+				                <f:facet name="header">
+				                    <h:outputText value="Titles" />
+				                </f:facet>							
+								<h:outputLink value="#{ApplicationBean1.root}/public/publicWitness.jsp?eid=#{witness.id}">
+									<h:outputText value="#{witness.label}" />
+								</h:outputLink>
+							</rich:column>			
+						</rich:dataTable>						
+					</h:panelGrid>
+					
+				</h:panelGrid>	
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

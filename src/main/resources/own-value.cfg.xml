@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<own-value-configuration>
+	<own-value-rules>
+	
+        <own-value-rule id="place0">
+            <attribute name="name" end-node="true"/>
+        </own-value-rule>	
+        
+        <own-value-rule id="reference0">
+            <attribute name="endnote-id" end-node="true"/>
+        </own-value-rule>	        
+        
+        <own-value-rule id="role0">
+            <attribute name="name" end-node="true"/>
+        </own-value-rule>   
+        
+        <own-value-rule id="repository0">
+            <attribute name="name" end-node="true"/>
+        </own-value-rule>   
+        
+        <own-value-rule id="floruit">
+            <attribute name="date" end-node="true"/>
+        </own-value-rule>   
+        
+        <own-value-rule id="collection0">
+            <attribute name="name" end-node="true"/>
+        </own-value-rule>          
+
+        <own-value-rule id="alias0">
+            <attribute name="alias" end-node="true"/>
+        </own-value-rule>
+
+        <own-value-rule id="alias1">
+            <attribute name="alias_translit" end-node="true"/>
+        </own-value-rule>
+        
+        <own-value-rule id="alias2">
+          <xor>
+            <rule ref="alias1"/>
+            <rule ref="alias0"/>
+            <rule type="constant" value="alias-empty"/>
+          </xor>
+        </own-value-rule>
+
+        <own-value-rule id="misattr_01">
+            <target-relation name="has_author_misattribution" substring="false">
+                <source object-class="TEXT">
+                    <attribute name="full_title_translit" end-node="true"/>
+                </source>
+            </target-relation>
+        </own-value-rule>                                
+
+        <own-value-rule id="misattr_02">
+            <source-relation name="misattributed_to" substring="false">
+                <target object-class="PERSON">
+                    <attribute name="name_translit" end-node="true"/>
+                </target>
+            </source-relation>
+        </own-value-rule>
+
+
+        <own-value-rule id="eventCopy_witness">
+            <source-relation name="is_a_copy_of" substring="false">
+                <target object-class="WITNESS">
+                    <source-relation name="is_exemplar_of" substring="false">
+                        <target object-class="TEXT">
+                            <attribute name="full_title_translit" end-node="true"/>
+                        </target>
+                    </source-relation>
+                </target>
+            </source-relation>
+        </own-value-rule>
+        
+        <own-value-rule id="eventTransfer_witness">
+            <source-relation name="is_a_transfer_of" substring="false">
+                <target object-class="WITNESS">
+                    <source-relation name="is_exemplar_of" substring="false">
+                        <target object-class="TEXT">
+                            <attribute name="full_title_translit" end-node="true"/>
+                        </target>
+                    </source-relation>
+                </target>
+            </source-relation>
+        </own-value-rule>
+        
+        <own-value-rule id="eventStudy_witness">
+            <source-relation name="is_a_study_of" substring="false">
+                <target object-class="WITNESS">
+                    <source-relation name="is_exemplar_of" substring="false">
+                        <target object-class="TEXT">
+                            <attribute name="full_title_translit" end-node="true"/>
+                        </target>
+                    </source-relation>
+                </target>
+            </source-relation>
+        </own-value-rule>        
+        
+        <own-value-rule id="eventStudy_person">
+            <source-relation name="was_studied_by" substring="false">
+                <target object-class="PERSON">
+                    <attribute name="name_translit" end-node="true"/>
+                </target>
+            </source-relation>
+        </own-value-rule>
+        
+
+        <own-value-rule id="eventStudy_repository">
+            <source-relation name="was_studied_in" substring="false">
+                <target object-class="REPOSITORY">
+                    <attribute name="name" end-node="true"/>
+                </target>
+            </source-relation>
+        </own-value-rule>        
+        
+        <own-value-rule id="text0">
+            <target-relation name="is_prime_alias_title_of" substring="false">
+                <source object-class="ALIAS">
+                    <attribute name="alias" end-node="true"/>
+                </source>
+            </target-relation>
+        </own-value-rule>
+                
+        <own-value-rule id="text1">
+            <attribute name="full_title_translit" end-node="true"/>
+        </own-value-rule> 
+        
+        <own-value-rule id="text2">
+          <xor>
+            <rule ref="text1"/>
+            <rule ref="text0"/>
+            <rule type="constant" value="empty"/>
+          </xor>
+        </own-value-rule>        
+                        
+        <own-value-rule id="person0">
+            <target-relation name="is_prime_alias_name_of" substring="false">
+                <source object-class="ALIAS">
+                    <attribute name="alias" end-node="true"/>
+                </source>
+            </target-relation>
+        </own-value-rule>
+        
+        <own-value-rule id="person1">
+            <attribute name="name_translit" end-node="true"/>
+        </own-value-rule>    
+        
+        <own-value-rule id="subject0">
+            <attribute name="name" end-node="true"/>
+        </own-value-rule>   
+        
+        <own-value-rule id="person2">
+          <xor>
+            <rule ref="person1"/>
+            <rule ref="person0"/>
+            <rule type="constant" value="empty"/>
+          </xor>
+        </own-value-rule>    
+
+		<own-value-rule id="codex0">
+			<source-relation name="is_part_of" substring="false">
+				<target object-class="COLLECTION">
+					<attribute name="name" end-node="true"/>
+				</target>
+			</source-relation>
+		</own-value-rule>
+		
+		<own-value-rule id="codex1">
+			<source-relation name="is_part_of" substring="false">
+				<target object-class="REPOSITORY">
+					<attribute name="name" end-node="true"/>
+				</target>
+			</source-relation>
+		</own-value-rule>
+		
+		<own-value-rule id="codex2">
+		  <xor>
+		    <rule ref="codex0"/>
+		    <rule ref="codex1"/>
+		    <rule type="constant" value="empty"/>
+		  </xor>
+		</own-value-rule>
+		
+		
+	
+        <own-value-rule id="codex_identifier" object-class="CODEX">
+            <attribute name="identifier" end-node="true" />
+        </own-value-rule>
+
+		<own-value-rule id="codex_identifier2">
+		  <xor>
+		    <rule ref="codex_identifier"/>
+			
+		    <rule type="constant" value="empty"/>
+		  </xor>
+		</own-value-rule>
+		
+		<own-value-rule id="witness-text">
+			<source-relation name="is_exemplar_of" substring="false">
+				<target object-class="TEXT" end-node="true"/>
+			</source-relation>
+		</own-value-rule>
+		
+		<own-value-rule id="witness-codex">
+			<source-relation name="is_part_of" substring="false">
+				<target object-class="CODEX" end-node="true">
+				    <!-- attribute name="identifier" end-node="true" /-->
+				</target>
+			</source-relation>
+		</own-value-rule>
+		
+		<!-- Temporal necessary only for the clean up -->
+        <own-value-rule id="witness-place">
+            <source-relation name="is_part_of" substring="false">
+                <target object-class="CODEX">
+                    <source-relation name="is_part_of" substring="false">
+                        <target object-class="COLLECTION">
+                            <source-relation name="is_part_of" substring="false">
+                                <target object-class="REPOSITORY">
+                                    <source-relation name="is_in" substring="false">
+                                        <target object-class="PLACE"  end-node="true"/>
+                                    </source-relation>
+                                </target>
+                            </source-relation>
+                        </target>
+                    </source-relation>
+                </target>
+            </source-relation>
+        </own-value-rule>		
+        <own-value-rule id="witness-repository">
+            <source-relation name="is_part_of" substring="false">
+                <target object-class="CODEX">
+                    <source-relation name="is_part_of" substring="false">
+                        <target object-class="COLLECTION">
+                            <source-relation name="is_part_of" substring="false">
+                                <target object-class="REPOSITORY" end-node="true"/>
+                            </source-relation>
+                        </target>
+                    </source-relation>
+                </target>
+            </source-relation>
+        </own-value-rule>           	
+	</own-value-rules>
+	
+	<print-rules>	
+	    <print-rule for="PERSON">
+            <formatstr value="%person2%"/>
+            <entry own-value-rule="person2"/>
+        </print-rule>
+        
+        <print-rule for="TEXT">
+            <formatstr value="%text2%"/>
+            <entry own-value-rule="text2"/>
+        </print-rule>        
+        
+        <print-rule for="ALIAS">
+            <formatstr value="%alias2%"/>
+            <entry own-value-rule="alias2"/>
+        </print-rule>
+        
+        <print-rule for="ROLE">
+            <formatstr value="%role0%"/>
+            <entry own-value-rule="role0"/>
+        </print-rule>        
+        
+		<print-rule for="CODEX">
+			<formatstr value="%codex2%_%codex_identifier2%"/>
+			<entry own-value-rule="codex2"/>
+			<entry own-value-rule="codex_identifier2"/>
+		</print-rule>
+	
+        <print-rule for="WITNESS">
+			<formatstr value="%witness-text%_%witness-place%_%witness-repository%_%witness-codex%"/>
+			<entry own-value-rule="witness-text"/>
+			<entry own-value-rule="witness-codex"/>
+			<entry own-value-rule="witness-place"/>
+			<entry own-value-rule="witness-repository"/>
+		</print-rule>
+		
+		<!-- 
+		<print-rule for="TEXT">
+			<formatstr value="%text3%"/>
+			<entry own-value-rule="text3"/>
+		</print-rule>
+		 -->
+		
+        <print-rule for="PLACE">
+            <formatstr value="%place0%"/>
+            <entry own-value-rule="place0"/>
+        </print-rule>		
+
+        <print-rule for="SUBJECT">
+            <formatstr value="%subject0%"/>
+            <entry own-value-rule="subject0"/>
+        </print-rule>   
+                
+        <print-rule for="REPOSITORY">
+            <formatstr value="%repository0%"/>
+            <entry own-value-rule="repository0"/>
+        </print-rule>               
+        
+        <print-rule for="COLLECTION">
+            <formatstr value="%collection0%"/>
+            <entry own-value-rule="collection0"/>
+        </print-rule>      
+        
+        <print-rule for="STUDY_EVENT">
+            <formatstr value="Study of %eventStudy_witness% by %eventStudy_person% in %eventStudy_repository%"/>
+            <entry own-value-rule="eventStudy_witness"/>
+            <entry own-value-rule="eventStudy_person"/>
+            <entry own-value-rule="eventStudy_repository"/>
+        </print-rule>
+        
+        <print-rule for="COPY_EVENT">
+            <formatstr value="Copy of %eventCopy_witness%"/>
+            <entry own-value-rule="eventCopy_witness"/>
+        </print-rule>   
+        
+        <print-rule for="TRANSFER_EVENT">
+            <formatstr value="Transfer of %eventTransfer_witness%"/>
+            <entry own-value-rule="eventTransfer_witness"/>
+        </print-rule>
+        
+        <print-rule for="MISATTRIBUTION">
+            <formatstr value="%misattr_01% to %misattr_02%"/>
+            <entry own-value-rule="misattr_01"/>
+            <entry own-value-rule="misattr_02"/>
+        </print-rule>    
+            
+        <print-rule for="REFERENCE">
+            <formatstr value="%reference0%"/>
+            <entry own-value-rule="reference0"/>
+        </print-rule>             
+        
+		<print-rule for="FLORUIT_DATE">
+            <formatstr value="%floruit%"/>
+            <entry own-value-rule="floruit"/>
+        </print-rule>                     
+                            
+	</print-rules>
+	
+</own-value-configuration>
+

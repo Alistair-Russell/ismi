@@ -1,0 +1,407 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+	
+		<ui:include src="components/codexPopups.xhtml" />
+	
+		<h:panelGrid>
+			<h:outputText value="Codex - #{CurrentCodex.entity.ownValue}"
+				rendered="#{!empty CurrentCodex.entity.ownValue}"
+				styleClass="titlePanel"/>
+			<h:outputText value="Codex"
+				rendered="#{empty CurrentCodex.entity.ownValue}"
+				styleClass="titlePanel"/>
+		</h:panelGrid>
+
+
+		<h:panelGrid columns="4" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn" id="codexCollectionPanel">
+
+			<h:outputLabel value="Country" />
+			<ismi:autocomplete lo="#{CurrentCodex.countryLo}" />
+			<h:outputText />
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentCodex.countryLo.entity.id}"
+					actionListener="#{CurrentCodex.editThisCountryAction}" />
+			</h:panelGrid>
+
+			<h:outputLabel value="Place/City" />
+			<ismi:autocomplete lo="#{CurrentCodex.cityLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu
+					rendered="#{!empty CurrentCodex.citiesInCurrentCountry}"
+					valueChangeListener="#{CurrentCodex.inCurrentCountryListener}">
+					<f:selectItems value="#{CurrentCodex.citiesInCurrentCountry}" />
+					<a4j:ajax event="change" render="codexCollectionPanel" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentCodex.cityLo.entity.id}"
+					actionListener="#{CurrentCodex.editThisCityAction}" />
+			</h:panelGrid>
+
+
+			<h:outputLabel value="Repository" />
+			<ismi:autocomplete lo="#{CurrentCodex.repositoryLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu partialSubmit="true"
+					rendered="#{!empty CurrentCodex.repositoriesInCurrentCity}"
+					valueChangeListener="#{CurrentCodex.inCurrentCityListener}">
+					<f:selectItems value="#{CurrentCodex.repositoriesInCurrentCity}" />
+					<a4j:ajax event="change" render="codexCollectionPanel" />
+				</h:selectOneMenu>
+				<h:outputText
+					rendered="#{empty CurrentCodex.repositoriesInCurrentCity}" />
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentCodex.repositoryLo.entity.id}"
+					actionListener="#{CurrentCodex.editThisRepositoryAction}" />
+			</h:panelGrid>
+
+
+			<h:outputLabel value="Collection" />
+			<ismi:autocomplete lo="#{CurrentCodex.collectionLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu
+					rendered="#{!empty CurrentCodex.collectionsInCurrentRepository}"
+					valueChangeListener="#{CurrentCodex.inCurrentRepositoryListener}">
+					<f:selectItems
+						value="#{CurrentCodex.collectionsInCurrentRepository}" />
+					<a4j:ajax event="change" render="codexCollectionPanel" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentCodex.collectionLo.entity.id}"
+					actionListener="#{CurrentCodex.editThisCollectionAction}" />
+			</h:panelGrid>
+
+			<h:outputText />
+			<h:commandButton
+				actionListener="#{CurrentCodex.checkConsistencyFromCountryToCodex}"
+				value="Check Consistency From Country To Codex" />
+			<h:outputText />
+			<h:outputText />
+
+			<h:outputLabel value="Shelf Mark / Identifier" />
+			<h:inputText rows="6" width="500"
+				value="#{CurrentCodex.attributes['identifier']}"
+				style="font-style:normal;
+							font-size:15px;
+							font-weight:bold;
+							font-family:sans-serif ;" />
+			<h:outputText />
+			<h:outputText />
+
+		</h:panelGrid>
+
+		<h:outputText value="Alias" styleClass="titlePanel"/>
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+			<h:outputText value="Is this codex alias?" />
+			<h:selectBooleanCheckbox value="#{CurrentCodex.isAlias}">
+				<a4j:ajax event="click" render="codexAliasPanel" />
+			</h:selectBooleanCheckbox>
+		</h:panelGrid>
+		
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+			<h:outputText value="Public?"/>
+			<h:selectOneMenu value="#{CurrentCodex.attributes['public']}">
+				<f:selectItems value="#{ApplicationBean1.suggestedBoolean}" />
+			</h:selectOneMenu>
+		</h:panelGrid>	
+			
+
+		<h:panelGrid columns="1" id="codexAliasPanel">
+
+			<h:outputText value="Referenced Alias"
+				rendered="#{CurrentCodex.isAlias}" 
+				styleClass="titlePanel"/>
+
+			<h:panelGrid columns="4" styleClass="createPanel"
+				columnClasses="createPanelFirstColumn"
+				rendered="#{CurrentCodex.isAlias}">
+
+				<h:outputLabel value="Country" />
+				<ismi:autocomplete
+					lo="#{CurrentCodex.referencedCodexTemplate.countryLo}" />
+				<h:outputText />
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.countryLo.entity.id}"
+						actionListener="#{CurrentCodex.referencedCodexTemplate.editThisCountryAction}" />
+				</h:panelGrid>
+
+				<h:outputLabel value="Place/City" />
+				<ismi:autocomplete
+					lo="#{CurrentCodex.referencedCodexTemplate.cityLo}" />
+				<h:panelGrid>
+					<h:selectOneMenu
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.citiesInCurrentCountry}"
+						valueChangeListener="#{CurrentCodex.referencedCodexTemplate.inCurrentCountryListener}">
+						<f:selectItems
+							value="#{CurrentCodex.referencedCodexTemplate.citiesInCurrentCountry}" />
+						<a4j:ajax event="change" render="codexAliasPanel" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.cityLo.entity.id}"
+						actionListener="#{CurrentCodex.referencedCodexTemplate.editThisCityAction}" />
+				</h:panelGrid>
+
+
+				<h:outputLabel value="Repository" />
+				<ismi:autocomplete
+					lo="#{CurrentCodex.referencedCodexTemplate.repositoryLo}" />
+				<h:panelGrid>
+					<h:selectOneMenu partialSubmit="true"
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.repositoriesInCurrentCity}"
+						valueChangeListener="#{CurrentCodex.referencedCodexTemplate.inCurrentCityListener}">
+						<f:selectItems
+							value="#{CurrentCodex.referencedCodexTemplate.repositoriesInCurrentCity}" />
+						<a4j:ajax event="change" render="codexAliasPanel" />
+					</h:selectOneMenu>
+					<h:outputText
+						rendered="#{empty CurrentCodex.referencedCodexTemplate.repositoriesInCurrentCity}" />
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.repositoryLo.entity.id}"
+						actionListener="#{CurrentCodex.referencedCodexTemplate.editThisRepositoryAction}" />
+				</h:panelGrid>
+
+
+				<h:outputLabel value="Collection" />
+				<ismi:autocomplete
+					lo="#{CurrentCodex.referencedCodexTemplate.collectionLo}" />
+				<h:panelGrid>
+					<h:selectOneMenu
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.collectionsInCurrentRepository}"
+						valueChangeListener="#{CurrentCodex.referencedCodexTemplate.inCurrentRepositoryListener}">
+						<f:selectItems
+							value="#{CurrentCodex.referencedCodexTemplate.collectionsInCurrentRepository}" />
+						<a4j:ajax event="change" render="codexAliasPanel" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.collectionLo.entity.id}"
+						actionListener="#{CurrentCodex.referencedCodexTemplate.editThisCollectionAction}" />
+				</h:panelGrid>
+
+				<h:outputLabel value="Shelf Mark / Identifier" />
+				<ismi:autocomplete
+					lo="#{CurrentCodex.referencedCodexTemplate.codexLo}" />
+				<h:panelGrid>
+					<h:selectOneMenu
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.shelfMarksInCurrentCollection}"
+						valueChangeListener="#{CurrentCodex.referencedCodexTemplate.identifierChangedListener}">
+						<f:selectItems
+							value="#{CurrentCodex.referencedCodexTemplate.shelfMarksInCurrentCollection}" />
+						<a4j:ajax event="change" render="codexAliasPanel" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid>
+					<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+						rendered="#{!empty CurrentCodex.referencedCodexTemplate.codexLo.entity.ownValue}"
+						actionListener="#{CurrentCodex.referencedCodexTemplate.editThisCodexAction}" />
+				</h:panelGrid>
+
+
+				<h:outputText />
+				<h:commandButton
+					actionListener="#{CurrentCodex.referencedCodexTemplate.checkConsistencyFromCountryToCodex}"
+					value="Check Consistency From Country To Codex" />
+				<h:outputText />
+				<h:outputText />
+			</h:panelGrid>
+		</h:panelGrid>
+
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputText value="Owned By (event)" />
+
+			<h:panelGrid columns="2" id="ownedEventPanel">
+				<rich:dataTable value="#{CurrentCodex.ownedByPeople.entities}"
+					var="item" rendered="#{!empty CurrentCodex.ownedByPeople.entities}">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Owner" style="width: 100px;" />
+						</f:facet>
+						<h:outputText value="[#{item.id}] #{item.ownValue}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:panelGrid columns="1">
+							<h:outputText
+								value="#{CurrentCodex.ownedByPeople.calendarMap[item.id].calendarAsHtml}"
+								escape="false" />
+							<a4j:commandButton image="#{ApplicationBean1.editImage}"
+								actionListener="#{CurrentCodex.listenerEditCalendarOwnedBy}"
+								render="ownedEventPanel,currentCalendarPP" />
+						</h:panelGrid>
+					</h:column>
+					<h:column>
+						<h:selectBooleanCheckbox
+							value="#{CurrentCodex.ownedByPeople.selections[item.id]}" />
+					</h:column>
+				</rich:dataTable>
+				<a4j:commandButton value="Remove Selection"
+					rendered="#{!empty CurrentCodex.ownedByPeople.entities}"
+					actionListener="#{CurrentCodex.ownedByPeople.listenerRemoveSelection}"
+					render="ownedEventPanel" />
+
+
+				<ismi:autocomplete lo="#{CurrentCodex.ownedByPeople.lo}" />
+				<a4j:commandButton value="ADD"
+					actionListener="#{CurrentCodex.ownedByPeople.listenerAdd}"
+					render="ownedEventPanel" />
+			</h:panelGrid>
+
+
+			<h:outputText value="Read by (event)" />
+			<h:panelGrid columns="2" id="readByEventPanel">
+
+				<rich:dataTable value="#{CurrentCodex.readByPeople.entities}"
+					var="item" rendered="#{!empty CurrentCodex.readByPeople.entities}">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Reader" style="width: 100px;" />
+						</f:facet>
+						<h:outputText value="[#{item.id}] #{item.ownValue}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:panelGrid columns="1">
+							<h:outputText
+								value="#{CurrentCodex.readByPeople.calendarMap[item.id].calendarAsHtml}"
+								escape="false" />
+							<a4j:commandButton image="#{ApplicationBean1.editImage}"
+								actionListener="#{CurrentCodex.listenerEditCalendarReadBy}"
+								render="readByEventPanel,currentCalendarPP" />
+						</h:panelGrid>
+					</h:column>
+					<h:column>
+						<h:selectBooleanCheckbox
+							value="#{CurrentCodex.readByPeople.selections[item.id]}" />
+					</h:column>
+				</rich:dataTable>
+				<a4j:commandButton value="Remove Selection"
+					actionListener="#{CurrentCodex.readByPeople.listenerRemoveSelection}"
+					render="readByEventPanel"
+					rendered="#{!empty CurrentCodex.readByPeople.entities}" />
+
+				<ismi:autocomplete lo="#{CurrentCodex.readByPeople.lo}" />
+				<a4j:commandButton value="ADD"
+					actionListener="#{CurrentCodex.readByPeople.listenerAdd}"
+					render="readByEventPanel" />
+
+
+			</h:panelGrid>
+		</h:panelGrid>
+
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputText value="URL Digitized Codex" />
+			<h:panelGrid columns="1" id="urlCodex">
+				<h:inputText size="100"
+					value="#{CurrentCodex.attributes['url_digitized_codex']}">
+					<a4j:ajax event="change" render="urlCodex" />
+				</h:inputText>
+				<a href="#{CurrentCodex.attributes['url_digitized_codex']}"
+					target="_blank"> <h:outputText
+						value="#{CurrentCodex.attributes['url_digitized_codex']}" />
+				</a>
+			</h:panelGrid>
+
+
+			<h:outputText value="Number of Folios" />
+			<h:inputText size="100"
+				value="#{CurrentCodex.attributes['number_of_folios']}" />
+
+			<h:outputText value="Dimensions" />
+			<h:inputText size="100"
+				value="#{CurrentCodex.attributes['dimensions']}" />
+
+			<h:outputText value="Binding" />
+			<h:panelGroup>
+				<h:selectOneMenu value="#{CurrentCodex.attributes['binding']}">
+					<f:selectItems value="#{CurrentCodex.suggestedBindingList}" />
+				</h:selectOneMenu>
+				<h:commandButton value="Refresh list"
+					actionListener="#{CurrentCodex.listenerRefreshBindingList}" />
+			</h:panelGroup>
+
+			<h:outputText value="Distinguishing Features" />
+			<h:inputTextarea cols="100" rows="10"
+				value="#{CurrentCodex.attributes['distinguishing_features']}" />
+			
+			<h:outputText value="Notes" />
+			<h:inputTextarea cols="100" rows="10"
+				value="#{CurrentCodex.attributes['notes']}" />
+
+			<h:outputText value="Notes (old)" />
+			<h:inputTextarea cols="100" rows="10"
+				value="#{CurrentCodex.attributes['notes_old']}" />
+			
+			<h:outputText value="Notes on ownership (old)" />
+			<h:inputTextarea cols="100" rows="10"
+				value="#{CurrentCodex.attributes['notes_on_ownership']}" />
+
+		</h:panelGrid>
+
+		<ismi:refWidget entityForm="#{CurrentCodex}" />
+
+		<h:panelGrid columns="4">
+			<h:outputText value="ID of the Codex" />
+			<h:inputText value="#{CurrentCodex.currentId}" />
+			<h:commandButton value="Load Codex By ID"
+				action="#{CurrentCodex.actionReloadEntity}"
+				onclick="confirm('Do you really want to reload the entity?');" />
+			<h:outputText value="#{CurrentCodex.currentIdMsg}"
+				style="color:red" />
+		</h:panelGrid>
+
+		<h:commandButton value="#{CurrentCodex.saveButtonLabel}"
+			rendered="#{CurrentCodex.renderSaveButton}"
+			action="#{CurrentCodex.save}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}" />
+
+		<h:commandButton value="Clear Form"
+			action="#{CurrentCodex.clearAction}"
+			onclick="#{ApplicationBean1.JSConfirmationCleanForm}" />
+
+		<h:commandButton value="Save as new Entity"
+			onclick="#{ApplicationBean1.JSConfirmationSaveAsNew}"
+			rendered="#{(CurrentCodex.entity.id != null and Session.canCreate)}"
+			action="#{CurrentCodex.saveAsNewEntity}" />
+
+		<h:outputText rendered="#{CurrentCodex.create_error}"
+			value="City already exists - not saved!" />
+
+		<h:outputText rendered="#{CurrentCity.create_error}"
+			value="City already exists - not saved!" />
+
+
+	</ui:composition>
+</body>
+</html>

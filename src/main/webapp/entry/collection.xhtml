@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+		
+		<h:panelGrid>
+			<h:outputText
+				value="Collection - #{CurrentCollection.entity.ownValue}"
+				rendered="#{!empty CurrentCollection.entity.ownValue}"
+				styleClass="titlePanel" />
+			<h:outputText value="Collection"
+				rendered="#{empty CurrentCollection.entity.ownValue}"
+				styleClass="titlePanel" />
+		</h:panelGrid>
+
+		<h:panelGrid columns="4" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn" id="collectionRepoPanel">
+
+			<h:outputLabel value="Country" />
+			<ismi:autocomplete lo="#{CurrentCollection.countryLo}" />
+			<h:outputText />
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentCollection.countryLo.entity.id}"
+					actionListener="#{CurrentCollection.editThisCountryAction}" />
+			</h:panelGrid>
+
+			<h:outputLabel value="Place/City" />
+			<ismi:autocomplete lo="#{CurrentCollection.cityLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu
+					rendered="#{!empty CurrentCollection.citiesInCurrentCountry}"
+					valueChangeListener="#{CurrentCollection.inCurrentCountryListener}">
+					<f:selectItems value="#{CurrentCollection.citiesInCurrentCountry}" />
+					<a4j:ajax event="change" render="collectionRepoPanel" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentCollection.cityLo.entity.id}"
+					actionListener="#{CurrentCollection.editThisCityAction}" />
+			</h:panelGrid>
+
+
+			<h:outputLabel value="Repository" />
+			<ismi:autocomplete lo="#{CurrentCollection.repositoryLo}" />
+			<h:panelGrid>
+				<h:selectOneMenu partialSubmit="true"
+					rendered="#{!empty CurrentCollection.repositoriesInCurrentCity}"
+					valueChangeListener="#{CurrentCollection.inCurrentCityListener}">
+					<f:selectItems
+						value="#{CurrentCollection.repositoriesInCurrentCity}" />
+					<a4j:ajax event="change" render="collectionRepoPanel" />
+				</h:selectOneMenu>
+				<h:outputText
+					rendered="#{empty CurrentCollection.repositoriesInCurrentCity}" />
+			</h:panelGrid>
+			<h:panelGrid>
+				<h:commandButton alt="edit" image="#{ApplicationBean1.editImage}"
+					rendered="#{!empty CurrentCollection.repositoryLo.entity.id}"
+					actionListener="#{CurrentCollection.editThisRepositoryAction}" />
+			</h:panelGrid>
+
+			<h:outputText />
+			<h:commandButton
+				actionListener="#{CurrentCollection.checkConsistencyFromCountryToCodex}"
+				value="Check Consistency From Country To Codex" />
+			<h:outputText />
+			<h:outputText />
+
+			<h:outputLabel value="Collection name" />
+			<h:inputText size="100"
+				value="#{CurrentCollection.attributes['name']}" />
+			<h:outputText />
+			<h:outputText />
+
+		</h:panelGrid>
+
+		<ismi:refWidget entityForm="#{CurrentCollection}" />
+
+	    <h:panelGrid columns="4">
+	        <h:outputText value="ID of the Collection"/>
+	        <h:inputText value="#{CurrentCollection.currentId}"/>
+	        <h:commandButton value="Load Collection By ID" action="#{CurrentCollection.actionReloadEntity}" 
+	            onclick="confirm('Do you really want to reload the entity?');"/>
+	        <h:outputText value="#{CurrentCollection.currentIdMsg}" style="color:red"/>
+	    </h:panelGrid>	
+
+		<h:commandButton value="#{CurrentCollection.saveButtonLabel}"
+			rendered="#{CurrentCollection.renderSaveButton}"
+			action="#{CurrentCollection.save}"
+			onclick="#{ApplicationBean1.JSConfirmationSave}" />
+		<h:commandButton value="Clear Form"
+			action="#{CurrentCollection.clearAction}"
+			onclick="#{ApplicationBean1.JSConfirmationCleanForm}" />
+		<h:commandButton value="Save as new Entity"
+			onclick="#{ApplicationBean1.JSConfirmationSaveAsNew}"
+			rendered="#{(CurrentCollection.entity.id != null and Session.canCreate)}"
+			action="#{CurrentCollection.saveAsNewEntity}" />
+
+
+
+		<!-- Unity Warning -->
+		<h:panelGrid id="collUnityWarningPP">
+			<h:panelGroup 
+				rendered="#{CurrentCollection.renderUnityCheckerDialog}">
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" class="rf-pp-cntr"
+					style="height: 100px; left: 100px; position: fixed; top: 50px; width: 300px; z-index: 100;">
+
+					<div class="rf-pp-shdw"
+						style="height: 100px; left: 100px; left: 5px; top: 5px; bottom: -5px; opacity: 0.1;">
+					</div>
+					<div class="rf-pp-hdr " style="cursor: default;">
+						<div class="rf-pp-hdr-cnt">Unity Warning</div>
+					</div>
+
+					<h:panelGrid columns="1" class="rf-pp-cnt-scrlr"
+						style="width: 300px; height: 200px;">
+
+                    <h:outputText value="#{CurrentCollection.unityCheckerMsg}"/>
+                    <h:panelGrid>
+                        <a4j:commandButton value="Load Entity" action="#{CurrentCollection.loadCloneEntity}"/>
+                        <a4j:commandButton value="Continue Editing" action="#{CurrentCollection.hideUnityCheckerDialog}" />
+                    </h:panelGrid>
+
+					</h:panelGrid>
+				</h:panelGrid>
+
+			</h:panelGroup>
+		</h:panelGrid>		
+
+
+	</ui:composition>
+</body>
+</html>

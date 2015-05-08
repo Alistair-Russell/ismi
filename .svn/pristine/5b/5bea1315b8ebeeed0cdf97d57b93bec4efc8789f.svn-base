@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition>
+
+
+
+		<h:panelGrid columns="2" styleClass="displayPanel"
+			columnClasses="displayPanelColumn01,displayPanelColumn02">
+
+			<h:outputLabel value="Description" />
+			<h:panelGrid columns="1">
+				<h:outputLabel value="Select PERSON, TEXT, ROLE, SUBJECT" />
+				<h:outputLabel value="WHERE" />
+				<h:outputLabel
+					value="(PERSON.name = 'XX' OR PERSON.name_translit = 'XX' OR " />
+				<h:outputLabel
+					value="ALIAS.[name = 'XX''] is_alias_name_of PERSON OR ALIAS.[name = 'XX'] is_prime_alias_name_of PERSON) AND" />
+				<h:outputLabel value="PERSON has_role ROLE AND" />
+				<h:outputLabel value="(TEXT was_created_by PERSON OR  " />
+				<h:outputLabel value="TEXT had_patron PERSON OR" />
+				<h:outputLabel value="TEXT was_dedicated_to PERSON OR" />
+				<h:outputLabel
+					value="(TEXT is_exemplar_of WITNESS is_part_of CODEX owned_by PERSON) ) " />
+			</h:panelGrid>
+
+			<h:outputLabel value="Role" />
+			<h:selectOneRadio
+				value="#{Session.advancedSearch.titles4PersonQuery.roleName}">
+				<f:selectItems
+					value="#{Session.advancedSearch.titles4PersonQuery.roleList}" />
+			</h:selectOneRadio>
+
+			<h:panelGrid columns="1">
+				<h:outputLabel value="Person name" />
+				<h:outputLabel value="(name_translit, name, aliases)" />
+			</h:panelGrid>
+			<h:inputText
+				value="#{Session.advancedSearch.titles4PersonQuery.personName}" />
+
+			<h:outputText />
+			<a4j:commandButton value="search"
+				actionListener="#{Session.advancedSearch.titles4PersonQuery.listenerSearch}"
+				render="titles4PersonPanel" />
+
+		</h:panelGrid>
+
+		<h:panelGrid id="titles4PersonPanel" columns="1">
+
+			<h:panelGrid columns="3"
+				rendered="#{Session.advancedSearch.titles4PersonQuery.searched}">
+				<h:outputLabel
+					value="Result set - size=#{Session.advancedSearch.titles4PersonQuery.rsSize}" />
+				<h:outputLabel
+					value="Time execution [ms]=#{Session.advancedSearch.titles4PersonQuery.timeExecution}" />
+				<h:commandButton value="reset"
+					actionListener="#{Session.advancedSearch.titles4PersonQuery.listenerReset}" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="1"
+				rendered="#{!empty Session.advancedSearch.titles4PersonQuery.rs}">
+
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Export mode (Dirk system)" />
+					<h:selectOneRadio
+						value="#{Session.advancedSearch.titles4PersonQuery.modeExportDirk}"
+						valueChangeListener="#{Session.advancedSearch.titles4PersonQuery.listenerChangeModeExportDirk}"
+						partialSubmit="true">
+						<f:selectItems
+							value="#{Session.advancedSearch.titles4PersonQuery.modeExportDirkList}" />
+					</h:selectOneRadio>
+				</h:panelGrid>
+
+				<h:outputLink
+					value="#{Session.advancedSearch.titles4PersonQuery.exportDirkUrl}">
+					<h:outputText
+						value="https://openmind-ismi-dev.mpiwg-berlin.mpg.de/ISMI/database/export..."
+						style="color:#2200C1;font-size:small;cursor:pointer;text-decoration:underline" />
+				</h:outputLink>
+
+				<rich:dataTable var="entry"
+					value="#{Session.advancedSearch.titles4PersonQuery.rs}"
+					paginator="true" rows="20">
+
+					<f:facet name="header">
+                		<rich:dataScroller id="scroller" />
+            		</f:facet>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Person ID" />
+						</f:facet>
+						<h:outputText value="#{entry.personId}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Person Label" />
+						</f:facet>
+						<h:outputText value="#{entry.personOv}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Role" />
+						</f:facet>
+						<h:outputText value="#{entry.role}" />
+					</h:column>
+
+					<h:column
+						rendered="#{Session.advancedSearch.titles4PersonQuery.displayAlias}">
+						<f:facet name="header">
+							<h:outputText value="Alias 2 Person" />
+						</f:facet>
+						<h:outputText value="#{entry.alias2Person}" />
+					</h:column>
+
+					<h:column
+						rendered="#{Session.advancedSearch.titles4PersonQuery.displayAlias}">
+						<f:facet name="header">
+							<h:outputText value="Alias" />
+						</f:facet>
+						<h:outputText value="#{entry.alias}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Subject" />
+						</f:facet>
+						<h:outputText value="#{entry.subject}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Tilte ID" />
+						</f:facet>
+						<h:outputText value="#{entry.titleId}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Subject" />
+						</f:facet>
+						<h:outputText value="#{entry.subject}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Title Label" />
+						</f:facet>
+						<h:outputText value="#{entry.titleOv}" />
+					</h:column>
+
+					<h:column
+						rendered="#{Session.advancedSearch.titles4PersonQuery.displayCodex}">
+						<f:facet name="header">
+							<h:outputText value="Codex Id" />
+						</f:facet>
+						<h:outputText value="#{entry.codexId}" />
+					</h:column>
+
+					<h:column
+						rendered="#{Session.advancedSearch.titles4PersonQuery.displayCodex}">
+						<f:facet name="header">
+							<h:outputText value="Codex Label" />
+						</f:facet>
+						<h:outputText value="#{entry.codexOv}" />
+					</h:column>
+
+					<h:column
+						rendered="#{Session.advancedSearch.titles4PersonQuery.displayCodex}">
+						<f:facet name="header">
+							<h:outputText value="Witness Id" />
+						</f:facet>
+						<h:outputText value="#{entry.witnessId}" />
+					</h:column>
+
+					<h:column
+						rendered="#{Session.advancedSearch.titles4PersonQuery.displayCodex}">
+						<f:facet name="header">
+							<h:outputText value="Witness Label" />
+						</f:facet>
+						<h:outputText value="#{entry.witnessOv}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Query" />
+						</f:facet>
+						<h:outputText value="#{entry.query}" />
+					</h:column>
+				</rich:dataTable>
+
+
+
+			</h:panelGrid>
+
+		</h:panelGrid>
+
+
+
+
+
+
+	</ui:composition>
+</body>
+</html>

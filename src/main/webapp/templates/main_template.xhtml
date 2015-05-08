@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<h:head>
+	<title>ismi</title>
+	<h:outputStylesheet name="/css/ismi-db/default.css" />
+	<h:outputStylesheet name="/css/ismi-db/popupPanel.css" />
+
+
+	<h:outputScript name="/js/autocomplete.js" />
+	<h:outputScript name="/js/autocomplete.js" />
+	
+	<!-- 
+	<h:outputStylesheet name="/imageServer/css/diva.min.css" />
+	<h:outputStylesheet name="/imageServer/css/bootstrap.css" />
+	<h:outputStylesheet name="/imageServer/css/bootstrap-responsive.min.css" />
+	<h:outputStylesheet name="/imageServer/css/style.css" />
+	
+	<h:outputScript name="imageServer/js/jquery.min.js" />
+	 -->
+	<!--  <h:outputScript name="imageServer/js/diva.min.js" /> -->
+	
+	<!-- <script type="text/javascript" src="http://localhost:8080/ismi-richfaces/resources/imageServer/js/diva.min.js"/> -->
+	<!-- 
+	<h:outputScript name="imageServer/js/diva.js" />
+	<h:outputScript name="imageServer/js/bootstrap.min.js" />
+	<h:outputScript name="imageServer/js/typeahead.js" />
+
+	<h:outputScript name="imageServer/js/jurzua/shared.js" />
+ 	-->
+	
+</h:head>
+
+<h:body>
+
+	<h:form>
+
+		<!-- Message -->
+		<h:panelGrid id="msgPp">
+			<a4j:outputPanel ajaxRendered="true">
+
+
+				<h:panelGroup rendered="#{!empty Session.generalMsgList}">
+					<div style="z-index: 100;" class="rf-pp-shade">
+						<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+					</div>
+
+					<h:panelGrid columns="1" styleClass="ismi-pp-cntr">
+
+						<div class="ismi-pp-hdr">
+							<div class="ismi-pp-hdr-cnt">Message</div>
+						</div>
+
+						<h:panelGrid columns="1" styleClass="ismi-pp-main-panel">
+							<h:panelGrid columns="2">
+								<h:graphicImage url="/resources/images/info_32.png" />
+								<h:panelGrid style="text-align:left">
+									<h:dataTable value="#{Session.generalMsgList}" var="msg"
+										rows="10">
+										<h:column>
+											<h:outputText value="#{msg}" />
+										</h:column>
+									</h:dataTable>
+								</h:panelGrid>
+							</h:panelGrid>
+							<a4j:commandButton value="OK"
+								actionListener="#{Session.actionCloseGeneralMsgDialog}"
+								render="msgPp" />
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+				</h:panelGroup>
+			</a4j:outputPanel>
+		</h:panelGrid>
+
+		<!-- Message -->
+		<h:panelGrid id="errorMsgPp">
+			<a4j:outputPanel ajaxRendered="true">
+				<h:panelGroup rendered="#{!empty Session.errorMsgList}">
+					<div style="z-index: 100;" class="rf-pp-shade">
+						<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+					</div>
+
+					<h:panelGrid columns="1" styleClass="ismi-pp-cntr">
+
+						<div class="ismi-pp-hdr">
+							<div class="ismi-pp-hdr-cnt">Message Error</div>
+						</div>
+
+						<h:panelGrid columns="1" styleClass="ismi-pp-main-panel">
+							<h:panelGrid columns="2">
+								<h:graphicImage url="/resources/images/error_32.png" />
+								<h:panelGrid style="text-align:left">
+									<h:dataTable value="#{Session.errorMsgList}" var="msg"
+										rows="10">
+										<h:column>
+											<h:outputText value="#{msg}" />
+										</h:column>
+									</h:dataTable>
+								</h:panelGrid>
+							</h:panelGrid>
+							<a4j:commandButton value="OK"
+								actionListener="#{Session.actionCloseErrorMsgDialog}"
+								render="errorMsgPp" />
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:panelGroup>
+			</a4j:outputPanel>
+		</h:panelGrid>
+
+		<div id="header">
+
+			<div id="icon">
+				<div id="iconContent">
+					<h:graphicImage
+						url="/resources/images/ismi_icon.png" width="90"/>
+						<!-- 
+					<h:graphicImage
+						url="http://www.mpiwg-berlin.mpg.de/en/images/logo.png" />
+						 -->
+				</div>
+			</div>
+			<div id="headerContent">
+				<h1>
+					<a href="#{ApplicationBean1.root}">ISMI</a>
+				</h1>
+				<p>Islamic Scientific Manuscripts Initiative</p>
+			</div>
+		</div>
+
+
+		<div id="login">
+			<div id="loginContent">
+				<h:panelGrid columns="4">
+					<h:commandLink value="login" rendered="#{Session.user == null}"
+						actionListener="#{Session.listenerDisplayLoginDialog}" />
+					<h:outputText value="Logged in as: #{Session.username}"
+						rendered="#{Session.user != null}" />
+					
+					<h:commandLink value="logout" action="#{Session.logout}"
+						rendered="#{Session.user != null}"
+						onclick="#{ApplicationBean1.JSConfirmationLogout}" />
+					
+					<h:outputText value="|" rendered="#{Session.user != null}" />
+					<h:commandLink value="change password"
+						action="#{Session.toProfile}" rendered="#{Session.user != null}" />
+				</h:panelGrid>
+			</div>
+		</div>
+
+		<!-- ################ Menu ################ -->
+		<rich:toolbar height="26px" styleClass="menu">
+			
+			
+			<rich:dropDownMenu mode="ajax" rendered="#{Session.canCreate}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="Create" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuItem label="Create Entry"
+					onclick="document.location.href='#{ApplicationBean1.root}/entry/createEntity.xhtml'">
+				</rich:menuItem>
+				<rich:menuItem label="Create Event"
+					onclick="document.location.href='#{ApplicationBean1.root}/events/eventForm.xhtml'">
+				</rich:menuItem>
+			</rich:dropDownMenu>
+
+			<h:outputLink rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/merge/generalMerge.xhtml">Merge</h:outputLink>
+
+			<h:outputLink  rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/browse/entityRepository.xhtml">Browse Repository</h:outputLink>
+
+			<h:outputLink  rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/browse/entityDetails.xhtml">Entity Details</h:outputLink>
+
+			<rich:dropDownMenu mode="ajax">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="Search" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuItem label="Simple Search"
+					onclick="document.location.href='#{ApplicationBean1.root}/search/simpleSearch.xhtml'">
+				</rich:menuItem>
+				<rich:menuItem label="Advanced Search"
+					onclick="document.location.href='#{ApplicationBean1.root}/search/advancedSearch.xhtml'">
+				</rich:menuItem>
+			</rich:dropDownMenu>
+			
+			<h:outputLink rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/public/publicCodices.xhtml">Codices marked as public</h:outputLink>
+			
+			<h:outputLink  rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/search/biographies.xhtml">Biographies</h:outputLink>
+				
+			<h:outputLink rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/imageServer/displayDigiList.xhtml">Image Server</h:outputLink>
+			
+			<h:outputLink rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/public/dynamicPageEditor.xhtml">Dynamic Page Editor</h:outputLink>
+			
+			<h:outputLink rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/defs/defEditor.xhtml">Definition Editor</h:outputLink>
+
+			<h:outputLink rendered="#{Session.canCreate}"
+				value="#{ApplicationBean1.root}/admin/admin.xhtml">Admin</h:outputLink>
+				
+							
+
+		</rich:toolbar>
+
+		<h:panelGrid styleClass="ajaxStatus">
+			<a4j:outputPanel ajaxRendered="true">
+			<a4j:status>
+				<f:facet name="start">
+					<h:graphicImage
+						value="/resources/images/connectionStatus/connect_active_03.gif" />
+				</f:facet>
+			</a4j:status>
+			</a4j:outputPanel>
+		</h:panelGrid>
+
+		<div id="page">
+			<ui:insert name="content" />
+		</div>
+
+	</h:form>
+
+</h:body>
+
+</html>

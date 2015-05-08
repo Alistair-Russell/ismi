@@ -1,0 +1,245 @@
+#witness-table-contents table tr td {
+    text-align:right;
+    color: #3b4186;
+    font-size: 10px;
+
+}
+
+
+#witness-date-copyist table tr th {
+    color: #3b4186;
+    font-size: 10px;
+
+}
+
+
+#title-date-composition table tr th {
+    color: #3b4186;
+    font-size: 10px;
+
+}
+
+#title-incipit {
+    text-align:right;
+}
+
+#title-explicit {
+    text-align:right;
+}
+
+#title-colophon {
+    text-align:right;
+}
+
+#title-table-contents {
+ text-align:right;
+}
+
+
+#witness-incipit {
+    text-align:right;
+}
+
+#witness-explicit {
+    text-align:right;
+}
+
+#witness-colophon {
+    text-align:right;
+}
+
+#witness-table-contents {
+ text-align:right;
+}
+
+
+
+.ismi-fullscreen-icon {
+	
+	z-index: 100;
+	position: absolute;
+	
+	top: 5px;
+	left: 5px;
+	
+	height: 26px;
+	width: 26px;
+	
+	background: url("../img/fullscreen.png") no-repeat
+}
+
+.ismi-fullscreen-icon:hover {
+	background-position: -26px 0
+}
+
+
+.attPanel{
+	margin-top: 40px;
+}
+
+.divaBackgroud {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #C4C0B9;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 11px;
+    padding: 10px;
+    margin-top: 10px;
+    width: 90%;
+	margin-left: auto; 
+	margin-right: auto;
+}
+
+.titlePanel {
+    color: #3B4186;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.tdContent{
+	color: #000000;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    text-align: left;
+    width: 85%;
+}
+
+.tableHead{
+	color: #000000;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.page {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #FCF2DF;
+    box-shadow: 0 0 5px 3px #D0D0D0;
+    padding-bottom:  50px;
+    position: relative;
+}
+
+.divaPanel{
+	width: 100%;
+	margin-left: auto; 
+	margin-right: auto; 
+}
+
+.divaPanel td{
+	background-color: #E8E8E8;
+	text-align: left;
+}
+
+a{
+	color: #3B4186 !important;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 11px;
+}
+	
+a:hover{
+	//color: blue !important;
+}
+
+.tdTitle{
+	color: #3B4186;
+	font-family: Arial,Verdana,sans-serif;
+	font-weight: normal;
+    font-size: 10px;
+    width: 170px;
+    text-align: left;
+    padding: 5px 5px 5px 5px;	
+}
+
+.tableContent{
+	background-color: yellow;
+	width: 200px;	
+}
+
+.tableContent td{
+	//background-color: red;
+	width: 200px;
+	
+	color: #3B4186;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 10px;
+    font-weight: normal;
+    text-align: left;
+	
+}
+
+.inputPageNumber{
+	width: 40px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;	
+}
+
+.columnCentered{
+	color: #3B4186;
+	font-family: Arial,Verdana,sans-serif;
+	font-weight: bold;
+    font-size: 9px;
+    width: 40px;
+    text-align: center;	
+}
+
+.witnessTableDetail{
+	font-family: Arial,Verdana,sans-serif;
+	font-weight: bold;
+    font-size: 8px;
+}
+
+
+.ismi-button {
+	margin: 3px 0px 3px 0px; 
+	
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+	background-color:#ededed;
+	-webkit-border-top-left-radius:6px;
+	-moz-border-radius-topleft:6px;
+	border-top-left-radius:6px;
+	-webkit-border-top-right-radius:6px;
+	-moz-border-radius-topright:6px;
+	border-top-right-radius:6px;
+	-webkit-border-bottom-right-radius:6px;
+	-moz-border-radius-bottomright:6px;
+	border-bottom-right-radius:6px;
+	-webkit-border-bottom-left-radius:6px;
+	-moz-border-radius-bottomleft:6px;
+	border-bottom-left-radius:6px;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	/*color:#777777;*/
+	color: black;
+	font-family:arial;
+	font-size:8px;
+	font-weight:bold;
+	font-style:normal;
+	height:20px;
+	line-height:20px;
+	width:60px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #ffffff;
+}
+.ismi-button:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+	background-color:#dfdfdf;
+}.ismi-button:active {
+	position:relative;
+	top:1px;
+}

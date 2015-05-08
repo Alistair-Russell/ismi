@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<body>
+	<ui:composition>
+
+ 	<h:outputText value="#{EntityRepository.resultSummaryMsg}"
+        rendered="#{!empty EntityRepository.resultSummaryMsg}" 
+        styleClass="sumaryMsg"/>
+
+    <h:column 
+    	rendered="#{!empty EntityRepository.entities}">
+        <h:outputText value="go to page" styleClass="sumaryMsg"/>
+        <h:inputText value="#{EntityRepository.page}" />
+        <h:commandButton value="submit"
+            actionListener="#{EntityRepository.actionGoToPageAdvancedResult}" />
+        <h:outputText value=" #{EntityRepository.pageMsg}"
+            rendered="#{!empty EntityRepository.pageMsg}" style="color:red" />
+    </h:column>
+    
+    
+    <h:column rendered="#{!empty EntityRepository.entities}">
+        <h:panelGroup>
+            <h:commandButton image="/resources/css/xp/css-images//arrow-first.gif"
+            style="border:none;" title="First Page" 
+            action="#{EntityRepository.advancedFirst}"/> 
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-fr.gif"
+            style="border:none;" title="Fast Backwards" 
+            action="#{EntityRepository.advancedFastRewind}"/> 
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-previous.gif"
+            style="border:none;" title="Previous Page" 
+            action="#{EntityRepository.advancedPrevious}"/>     
+            
+            <h:outputText value="#{EntityRepository.advancedPaginator.recordStatus}" styleClass="sumaryMsg" /> 
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-next.gif"
+            style="border:none;" title="Next Page" 
+            action="#{EntityRepository.advancedNext}"/>
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-ff.gif"
+            style="border:none;" title="Fast Forward" 
+            action="#{EntityRepository.advancedFastForward}"/>      
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-last.gif"
+            style="border:none;" title="Last Page" 
+            action="#{EntityRepository.advancedLast}"/>      
+        </h:panelGroup>
+    </h:column>   
+    
+    <rich:dataTable id="advancedDataTable" rows="10"
+        value="#{EntityRepository.currentEntities}"
+        rendered="#{!empty EntityRepository.currentEntities}" var="entity"
+        styleClass="rsPanel"
+        columnClasses="rsPanelColumn">
+        <h:column>
+            <h:outputText value="[#{entity.objectClass}] " />
+            <h:outputLink value="#{ApplicationBean1.root}/browse/entityDetails.xhtml?eid=#{entity.id}">
+                    <h:outputText value="#{entity.ownValue} - [#{entity.id}, #{entity.privacity}]" />
+            </h:outputLink>       
+            <h:commandButton action="#{EntityRepository.actionEdit}" 
+                 rendered="#{Session.canEdit}" 
+                 image="/resources/css/xp/css-images//edit16.gif" 
+                 title="Edit this entity"/>
+        </h:column>
+    </rich:dataTable>
+    
+    <h:column rendered="#{!empty EntityRepository.entities}">
+        <h:panelGroup>
+            <h:commandButton image="/resources/css/xp/css-images//arrow-first.gif"
+            style="border:none;" title="First Page" 
+            action="#{EntityRepository.advancedFirst}"/> 
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-fr.gif"
+            style="border:none;" title="Fast Backwards" 
+            action="#{EntityRepository.advancedFastRewind}"/> 
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-previous.gif"
+            style="border:none;" title="Previous Page" 
+            action="#{EntityRepository.advancedPrevious}"/>     
+            
+            <h:outputText value="#{EntityRepository.advancedPaginator.recordStatus}" styleClass="sumaryMsg" />
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-next.gif"
+            style="border:none;" title="Next Page" 
+            action="#{EntityRepository.advancedNext}"/>
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-ff.gif"
+            style="border:none;" title="Fast Forward" 
+            action="#{EntityRepository.advancedFastForward}"/>      
+            
+            <h:commandButton image="/resources/css/xp/css-images//arrow-last.gif"
+            style="border:none;" title="Last Page" 
+            action="#{EntityRepository.advancedLast}"/>      
+        </h:panelGroup>
+    </h:column>      
+	
+	</ui:composition>
+</body>
+</html>	

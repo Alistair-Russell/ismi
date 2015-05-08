@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<body>
+	<ui:composition template="/templates/publicTemplate.xhtml">
+		
+		<ui:define name="publicContent">
+			
+			<h:outputStylesheet name="/css/ismi-db/repository.css" />
+			
+			<div id="pageTitle">
+				<h:outputText value="Entity Details" />
+			</div>
+
+			<h:panelGrid columns="1"
+				style="margin-left: auto; margin-right: auto; text-align: center; width: 700px">
+
+
+				<hr/>
+				
+				<h:panelGrid columns="3" styleClass="controlPanel">
+					<h:outputLabel value="ID" />
+					<h:inputText value="#{Session.entDetailsForm.currentEntityId}" />
+					<a4j:commandButton value="Submit"
+						actionListener="#{Session.entDetailsForm.listenerShowEntity}"
+						render="entityDetailsPanel" />
+				</h:panelGrid>
+				
+				<hr/>
+				
+				<h:panelGrid columns="1"
+					rendered="#{Session.entDetailsForm.entity.id != null}"
+					style="width: 100%;">
+
+					<h:panelGrid columns="1" style="text-align:left;color: #3B4186;">
+						<h:outputText
+                        		value="#{Session.entDetailsForm.entity.objectClass}: #{Session.entDetailsForm.entity.ownValue}" />
+                    	
+						<h:outputText
+							value="[ID=#{Session.entDetailsForm.entity.id}, Version=#{Session.entDetailsForm.entity.version}, #{Session.entDetailsForm.entity.privacity}]"
+							style="font-size: 9pt;"/>
+						<h:panelGroup
+							style="display: block;margin-left: auto;margin-right: auto;">
+							<h:commandButton value="Edit" title="Edit this entity"
+								image="#{ApplicationBean1.imgEdit32}"
+								rendered="#{Session.canEdit}"
+								action="#{Session.entDetailsForm.actionEdit}"
+								style="margin-right: 20px;" />
+							<h:commandButton value="Get previous versions"
+								title="Get previous versions" rendered="#{Session.canEdit}"
+								image="#{ApplicationBean1.imgVersions32}"
+								actionListener="#{Session.entDetailsForm.listenerGetPreviousVersions}"
+								style="margin-right: 20px;" />
+							<h:commandButton value="Remove" title="Remove this entity"
+								rendered="#{Session.canDelete}"
+								image="#{ApplicationBean1.imgRemove32}"
+								onclick="if(!confirm('Do you really want to remove this entity?')){ return; };"
+								action="#{Session.entDetailsForm.listenerDeleteEntity}"
+								style="margin-right: 20px;" />
+						</h:panelGroup>
+						<h:outputText
+							value="Modified by: #{Session.entDetailsForm.entity.user} - Last modification: #{Session.entDetailsForm.entity.timeStamp}"
+							style="font-size: 9pt;"/>
+					</h:panelGrid>
+					
+					<hr/>
+
+					<h:panelGrid id="entityDetailsPanel" columns="1"
+						styleClass="entityDetailsPanel" columnClasses="createPanelFirstColumn">
+
+						<h:outputText value="Attributes" styleClass="titlePanel"/>
+						
+						<rich:dataTable id="entity"
+							value="#{Session.entDetailsForm.attributeList}" var="attribute"
+							rendered="#{!empty Session.entDetailsForm.attributeList}"
+							styleClass="mainPanel"
+							columnClasses="mainPanelcolumn01,mainPanelcolumn02">
+							
+							<h:column rendered="#{ApplicationBean1.confService.debugModus}">
+								<f:facet name="header">
+									<h:outputText value="Debug" />
+								</f:facet>
+								<h:outputText value="#{attribute.id} - #{attribute.rowId}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Name" />
+								</f:facet>
+								<h:outputText value="#{attribute.name}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Value" />
+								</f:facet>
+								<h:outputText value="#{attribute.value}" />
+							</h:column>
+						</rich:dataTable>
+
+						<h:outputText value="Source Relations" styleClass="titlePanel"/>
+						
+						<rich:dataTable var="srcName" 
+							value="#{Session.entDetailsForm.sourceRelationNames}"
+							styleClass="mainPanel"
+							columnClasses="mainPanelcolumn01">
+							<h:column
+								rendered="#{Session.entDetailsForm.sourceRelationCount[srcName] != '0'}">
+
+								<h:outputText
+									value="#{srcName} [#{Session.entDetailsForm.sourceRelationCount[srcName]}]" />
+								<h:commandLink value="show"
+									actionListener="#{Session.entDetailsForm.listenerShowSourceRelations}"
+									rendered="#{empty Session.entDetailsForm.sourceRelations[srcName]}"
+									styleClass="showLink"/>
+
+								<rich:dataTable var="srcRelation"
+									value="#{Session.entDetailsForm.sourceRelations[srcName]}"
+									rendered="#{!empty Session.entDetailsForm.sourceRelations[srcName]}"
+									styleClass="internalPanel"
+									columnClasses="internalPanelColumn,internalPanelColumn,internalPanelColumnLeft">
+
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="linked from this" />
+										</f:facet>
+										<h:outputText value="#{'x'}" />
+									</h:column>
+
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Relation Name" />
+										</f:facet>
+										<h:outputText value="#{srcRelation.ownValue}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="linked to this" />
+										</f:facet>
+										<h:panelGrid styleClass="attLink">
+											<h:outputLink
+												value="#{ApplicationBean1.root}/browse/entityDetails.xhtml?eid=#{srcRelation.target.id}">
+												<h:outputText
+													value="[#{srcRelation.target.objectClass}] #{srcRelation.target.ownValue} [#{srcRelation.target.id}]" />
+											</h:outputLink>
+										</h:panelGrid>									
+										
+									</h:column>
+									<h:column rendered="#{ApplicationBean1.confService.debugModus}">
+										<h:panelGrid columns="1">
+											<h:outputLabel value="user=#{srcRelation.user}" />
+											<h:outputLabel value="id=#{srcRelation.id}" />
+											<h:outputLabel value="rowId=#{srcRelation.rowId}" />
+										</h:panelGrid>
+									</h:column>
+								</rich:dataTable>
+
+							</h:column>
+						</rich:dataTable>
+
+						<h:outputText value="Target Relations"  styleClass="titlePanel"/>
+						
+						<rich:dataTable var="tarName"
+							value="#{Session.entDetailsForm.targetRelationNames}"
+							styleClass="mainPanel"
+							columnClasses="mainPanelcolumn01">
+							<h:column
+								rendered="#{Session.entDetailsForm.targetRelationCount[tarName] != '0'}">
+
+								<h:outputText
+									value="#{tarName} [#{Session.entDetailsForm.targetRelationCount[tarName]}]" />
+								<h:commandLink value="show"
+									actionListener="#{Session.entDetailsForm.listenerShowTargetRelations}"
+									rendered="#{empty Session.entDetailsForm.targetRelations[tarName]}"
+									styleClass="showLink"/>
+
+								<rich:dataTable var="tarRelation"
+									value="#{Session.entDetailsForm.targetRelations[tarName]}"
+									rendered="#{!empty Session.entDetailsForm.targetRelations[tarName]}"
+									styleClass="internalPanel"
+									columnClasses="internalPanelColumnLeft,internalPanelColumn,internalPanelColumn">
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="linked from this" />
+										</f:facet>
+										<h:panelGrid styleClass="attLink">
+											<h:outputLink
+												value="#{ApplicationBean1.root}/browse/entityDetails.xhtml?eid=#{tarRelation.source.id}">
+												<h:outputText
+													value="[#{tarRelation.source.objectClass}] #{tarRelation.source.ownValue} [#{tarRelation.source.id}]" />
+											</h:outputLink>
+										</h:panelGrid>
+										
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Relation Name" />
+										</f:facet>
+										<h:outputText value="#{tarRelation.ownValue}" />
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="linked to this" />
+										</f:facet>
+										<h:outputText value="#{'x'}" />
+									</h:column>
+
+									<h:column rendered="#{ApplicationBean1.confService.debugModus}">
+										<h:panelGrid columns="1">
+											<h:outputLabel value="user=#{tarRelation.user}" />
+											<h:outputLabel value="id=#{tarRelation.id}" />
+											<h:outputLabel value="rowId=#{tarRelation.rowId}" />
+										</h:panelGrid>
+									</h:column>
+								</rich:dataTable>
+							</h:column>
+						</rich:dataTable>
+
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:panelGrid>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="lo" required="true" />
+</composite:interface>
+
+<composite:implementation>
+
+	<h:panelGrid border="0" columns="1">
+
+		<h:panelGrid columns="2">
+			
+			<h:panelGrid columns="1">
+				<h:inputText value="#{cc.attrs.lo.term}"
+					valueChangeListener="#{cc.attrs.lo.valueChangeMethod}" size="100"
+					styleClass="inputTextAutocomplete" autocomplete="off">
+					<a4j:ajax event="keyup" render="out" />
+					<a4j:ajax event="click" listener="#{cc.attrs.lo.onClick}"
+						render="out,smile,displayEntity" />
+				</h:inputText>		
+				
+				<div class="suggestionArea">
+					<rich:dataTable id="out" var="item"
+						value="#{cc.attrs.lo.suggestedItems}" rows="10"
+						styleClass="suggestionTable">
+						<rich:column>
+							<h:commandLink 
+								id="selectItem" 
+								style="text-decoration:none;"
+								actionListener="#{cc.attrs.lo.actionListenerSelect}">
+								<div 
+									class="suggestionItem" 
+									id="suggestionItem">
+									#{item.label}</div>
+							</h:commandLink>
+						</rich:column>
+					</rich:dataTable>
+				</div>					
+			</h:panelGrid>
+			
+			<h:graphicImage binding="#{cc.attrs.lo.statusImage}" id="smile"/>
+			
+		</h:panelGrid>
+		
+		<h:panelGrid columns="2" id="displayEntity">
+		
+			<h:outputText value="#{cc.attrs.lo.entityInfo}"
+				rendered="#{cc.attrs.lo.renderInfo}" />
+			
+			<h:outputLink value="#{cc.attrs.lo.displayUrl}"
+				title="Display this entity"
+				rendered="#{!empty cc.attrs.lo.displayUrl}">
+				<h:graphicImage url="#{ApplicationBean1.displayImage}" />
+			</h:outputLink>		
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+
+</composite:implementation>
+
+</html>

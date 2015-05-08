@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ismi="http://java.sun.com/jsf/composite/components/ismi">
+
+<body>
+	<ui:composition>
+	
+		<a4j:commandButton value="Create new transfer event"
+			actionListener="#{Session.listenerCreateTransferEvent}" />
+
+		<h:panelGrid columns="2" styleClass="createPanel"
+			columnClasses="createPanelFirstColumn">
+
+			<h:outputLabel value="Own value" />
+			<h:outputLabel value="#{Session.transferEventForm.event.ownValue}" />
+			
+			<h:outputLabel value="Text"/>
+			<h:panelGrid columns="1">
+				<ismi:autocomplete lo="#{Session.transferEventForm.textLo}" />
+
+				<a4j:outputPanel ajaxRendered="true">
+					<h:selectOneMenu
+						rendered="#{Session.transferEventForm.textLo.statusImage.ok}"
+						value="#{Session.transferEventForm.witnessId}"
+						valueChangeListener="#{Session.transferEventForm.listenerChangeWitness}">
+						<f:selectItems value="#{Session.transferEventForm.witnessList}" />
+						<a4j:ajax event="change" render="selectedWitness1" />
+					</h:selectOneMenu>
+
+					<h:panelGrid id="selectedWitness1" style="width: 500px;" columns="1"
+						rendered="#{Session.transferEventForm.witness != null}">
+						<h:outputLabel value="Witness associated:" />
+						<h:outputLabel
+							value="#{Session.transferEventForm.witness.ownValue} [ID=#{Session.transferEventForm.witness.id}]" />
+					</h:panelGrid>
+					<h:outputLabel rendered="#{Session.transferEventForm.witness != null}" />
+				</a4j:outputPanel>
+
+			</h:panelGrid>			
+			
+			
+			<h:outputLabel value="From"/>
+			<h:panelGrid columns="1">
+				<a4j:commandLink 
+					value="#{(Session.transferEventForm.selectedPersonFrom) ? 'Change to institution' : 'Change to person'}" 
+					actionListener="#{Session.transferEventForm.listenerChangeSelectionFrom}"
+					render="fromPanel"/>
+				
+				<h:panelGrid 
+					columns="1" 
+					id="fromPanel">
+					
+					<h:panelGrid rendered="#{Session.transferEventForm.selectedPersonFrom}">
+						<h:outputLabel value="Person from whom transfer was made"/>
+						<ismi:autocomplete lo="#{Session.transferEventForm.personFromLo}" />
+					</h:panelGrid>
+					
+					<h:panelGrid rendered="#{!Session.transferEventForm.selectedPersonFrom}">
+						<h:outputLabel value="Institution from which transfer was made"/>
+						<ismi:autocomplete lo="#{Session.transferEventForm.repositoryFromLo}" />
+                   	</h:panelGrid>
+				</h:panelGrid>
+				
+					
+			</h:panelGrid>
+			
+			<h:outputLabel value="To"/>
+			<h:panelGrid columns="1">
+				
+				<a4j:commandLink 
+					value="#{(Session.transferEventForm.selectedPersonTo) ? 'Change to institution' : 'Change to person'}" 
+					actionListener="#{Session.transferEventForm.listenerChangeSelectionTo}"
+					render="toPanel"/>
+					
+				<h:panelGrid 
+					columns="1" 
+					id="toPanel">
+					
+					<h:panelGrid  rendered="#{Session.transferEventForm.selectedPersonTo}">
+						<h:outputLabel value="Person to whom transfer was made"/>
+						<ismi:autocomplete lo="#{Session.transferEventForm.personToLo}" />
+					</h:panelGrid>
+
+					<h:panelGrid rendered="#{!Session.transferEventForm.selectedPersonTo}">
+						<h:outputLabel value="Institution to which transfer was made"/>
+						<ismi:autocomplete lo="#{Session.transferEventForm.repositoryToLo}" />					
+					</h:panelGrid>
+					
+				</h:panelGrid>	
+				
+			</h:panelGrid>
+			
+			<h:outputLabel value="Options for transfer"/>
+			<h:selectOneMenu
+                    value="#{Session.transferEventForm.attributes['options_for_transfer']}">
+                    <f:selectItems value="#{Session.transferEventForm.suggestedTransferOptions}"/>
+                </h:selectOneMenu>
+			
+			<h:outputLabel value="Price"/>
+			<h:inputText value="#{Session.transferEventForm.attributes['price']}"/>
+			
+			<h:outputLabel value="Original location"/>
+			<h:panelGrid columns="1">
+				<a4j:commandLink 
+					value="#{(Session.transferEventForm.selectedPlaceOriginalLocation) ? 'Change to institution' : 'Change to place'}" 
+					actionListener="#{Session.transferEventForm.listenerChangeSelectionOriginalLocation}"
+					render="originalLocationPanel"/>
+				
+				<h:panelGrid columns="1"
+					id="originalLocationPanel">
+					
+					<h:panelGrid rendered="#{Session.transferEventForm.selectedPlaceOriginalLocation}">
+						<h:outputLabel value="Place"/>
+						<ismi:autocomplete lo="#{Session.transferEventForm.placeOriginalLocationLo}" />		
+					</h:panelGrid>
+					
+					<h:panelGrid rendered="#{!Session.transferEventForm.selectedPlaceOriginalLocation}">
+						<h:outputLabel value="Institution"/>
+						<ismi:autocomplete lo="#{Session.transferEventForm.repositoryOriginalLocationLo}" />		
+					</h:panelGrid>
+					
+				</h:panelGrid>
+
+			</h:panelGrid>
+
+			<h:outputLabel value="New location"/>
+			<h:panelGrid columns="1">
+				<a4j:commandLink 
+					value="#{(Session.transferEventForm.selectedPlaceNewLocation) ? 'Change to institution' : 'Change to place'}" 
+					actionListener="#{Session.transferEventForm.listenerChangeSelectionNewLocation}"
+					render="newLocationPanel"/>
+				
+				<h:panelGrid columns="1"
+					id="newLocationPanel">
+					
+					<h:panelGrid rendered="#{Session.transferEventForm.selectedPlaceNewLocation}">
+						<h:outputLabel value="Place"/>
+						<ismi:autocomplete lo="#{Session.transferEventForm.placeNewLocationLo}" />		
+					</h:panelGrid>
+					
+					<h:panelGrid rendered="#{!Session.transferEventForm.selectedPlaceNewLocation}">
+						<h:outputLabel value="Institution"/>
+						<ismi:autocomplete lo="#{Session.transferEventForm.repositoryNewLocationLo}" />		
+					</h:panelGrid>
+					
+				</h:panelGrid>
+
+			</h:panelGrid>			
+			
+			<h:outputLabel value="Notes"/>
+			<h:inputTextarea cols="80" rows="5"
+                    value="#{Session.transferEventForm.attributes['notes']}"/>
+			
+			<h:outputLabel value="Date of Event"/>
+			<ismi:date date="#{Session.transferEventForm.date}"/>
+			
+			<h:outputLabel/>
+			<h:commandButton 
+           		value="#{(empty Session.transferEventForm.event.id) ? 'Create' : 'Change'}"
+           		actionListener="#{Session.transferEventForm.listenerSave}"/>    
+			
+			
+		</h:panelGrid>	
+	
+	</ui:composition>
+</body>
+</html>

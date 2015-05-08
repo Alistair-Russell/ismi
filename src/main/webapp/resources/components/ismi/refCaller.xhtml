@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ace="http://www.icefaces.org/icefaces/components"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+	<composite:interface>
+	    <composite:attribute name="entityForm" required="true"/>
+	</composite:interface>
+
+	<composite:implementation>
+	
+		<ice:panelGrid columns="1">
+	
+			<ace:dataTable rendered="#{!empty cc.attrs.entityForm.selectedItems.list}" value="#{cc.attrs.entityForm.selectedItems.list}" var="item">
+				<ace:column>
+					<ice:outputText value="#{item.publication.HTMLLabel}" escape="false" />
+				</ace:column>
+				<ace:column headerText="Additional info">
+					<ice:inputText value="#{item.publication.additionalInformation}" />
+				</ace:column>
+				<ace:column>
+					<ice:selectBooleanCheckbox
+						value="#{cc.attrs.entityForm.selectedItems.map[item.objId]}" />
+				</ace:column>
+			</ace:dataTable>
+			<ice:panelGrid columns="1">
+				
+				<ice:commandButton value="Remove selection"
+					actionListener="#{cc.attrs.entityForm.listenerRemoveReference}"
+					rendered="#{!empty cc.attrs.entityForm.selectedItems.list}" />
+				
+				<ice:commandButton value="Search"
+					actionListener="#{cc.attrs.entityForm.refDataTable.listenerOpen}" />
+					
+			</ice:panelGrid>
+		</ice:panelGrid>
+	
+	</composite:implementation>
+</html>

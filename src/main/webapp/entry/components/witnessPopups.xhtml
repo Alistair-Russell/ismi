@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<body>
+	<ui:composition>
+
+
+		<!-- Select Codex -->
+		<h:panelGrid id="witnessSelectCodex">
+			<h:panelGroup rendered="#{CurrentWitness.codicesOverviewRendered}">
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" class="rf-pp-cntr"
+					style="height: 100px; left: 100px; position: fixed; top: 50px; width: 500px; z-index: 100;">
+
+					<div class="rf-pp-shdw"
+						style="height: 100px; left: 100px; left: 5px; top: 5px; bottom: -5px; opacity: 0.1;">
+					</div>
+					<div class="rf-pp-hdr " style="cursor: default;">
+						<div class="rf-pp-hdr-cnt">Select Codex</div>
+					</div>
+
+					<h:panelGrid columns="1" class="rf-pp-cnt-scrlr"
+						style="width: 500px; height: 329px;">
+						<h:panelGrid columns="1" class="rf-pp-cnt">
+
+							<h:panelGrid columns="1">
+								<rich:dataTable value="#{CurrentWitness.codicesAll}" var="item"
+									rows="5">
+
+									<rich:column>
+										<a4j:commandButton value="#{item.id}"
+											actionListener="#{CurrentWitness.selectCodexFromOverviewAction}"
+											render="witnessSelectCodex" />
+									</rich:column>
+									<rich:column>
+										<h:outputText value="#{item.ident}" />
+									</rich:column>
+									<rich:column>
+										<h:outputText value="#{item.collection}" />
+									</rich:column>
+									<rich:column>
+										<h:outputText value="#{item.repository}" />
+									</rich:column>
+									<rich:column>
+										<h:outputText value="#{item.place}" />
+									</rich:column>
+								</rich:dataTable>
+								<a4j:commandButton value="Close"
+									action="#{CurrentWitness.closeCodicesOverview}"
+									render="witnessSelectCodex" />
+							</h:panelGrid>
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:panelGrid>
+
+			</h:panelGroup>
+		</h:panelGrid>
+
+
+		<!-- Codex unknown -->
+		<h:panelGrid id="witnessCodexUnknown">
+			<h:panelGroup rendered="#{CurrentWitness.createCodexRendered}">
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" styleClass="ismi-pp-cntr"
+					style="margin-left: -200px">
+
+					<div class="ismi-pp-hdr">
+						<div class="ismi-pp-hdr-cnt">Codex unknown</div>
+					</div>
+
+					<h:panelGrid columns="1" styleClass="ismi-pp-main-panel">
+						<h:outputText>Codex unknown!</h:outputText>
+						<h:outputText>You can only save a witness, if the codex exists</h:outputText>
+						<h:outputText>and the codex has an identifier!</h:outputText>
+						<h:panelGrid columns="2">
+							<a4j:commandButton value="Create Codex"
+								rendered="#{!empty CurrentWitness.newIdentifier}"
+								action="#{CurrentWitness.createCodexAction}" />
+							<a4j:commandButton value="Continue Editing"
+								action="#{CurrentWitness.cancelCodexAction}" />
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:panelGroup>
+		</h:panelGrid>
+
+
+
+		<!-- Select Title -->
+		<h:panelGrid id="ppWitnessSelectTitle">
+			<h:panelGroup rendered="#{CurrentWitness.selectTitleRendered}">
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" styleClass="ismi-pp-cntr"
+					style="margin-left: -200px">
+
+					<div class="ismi-pp-hdr">
+						<div class="ismi-pp-hdr-cnt">Select Title</div>
+					</div>
+
+					<h:panelGrid columns="1" styleClass="ismi-pp-main-panel">
+
+						<h:selectOneListbox partialSubmit="true" size="10"
+							value="#{CurrentWitness.selectedTitleId}" style="width: 400px;">
+							<f:selectItems value="#{CurrentWitness.titles_list}" />
+						</h:selectOneListbox>
+
+						<h:panelGrid columns="2">
+							<a4j:commandButton value="Take"
+								actionListener="#{CurrentWitness.listenerSelectTitle}"
+								render="ppWitnessSelectTitle,witnessTitlePanel,witnessAuthorPanel" />
+
+							<a4j:commandButton
+								actionListener="#{CurrentWitness.listenerCancelPpSelectTitle}"
+								value="Cancel"
+								render="ppWitnessSelectTitle,witnessTitlePanel,witnessAuthorPanel" />
+						</h:panelGrid>
+
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:panelGroup>
+		</h:panelGrid>
+
+		<!-- Select Person -->
+		<h:panelGrid id="ppWitnessSelectPerson">
+			<h:panelGroup rendered="#{CurrentWitness.selectPersonRendered}">
+				<div style="z-index: 100;" class="rf-pp-shade">
+					<button class="rf-pp-btn" tabindex="-1" accesskey="" />
+				</div>
+
+				<h:panelGrid columns="1" styleClass="ismi-pp-cntr"
+					style="margin-left: -200px">
+
+					<div class="ismi-pp-hdr">
+						<div class="ismi-pp-hdr-cnt">Select Person</div>
+					</div>
+
+					<h:panelGrid columns="1" styleClass="ismi-pp-main-panel">
+
+						<h:panelGroup>
+							<h:selectOneListbox partialSubmit="true" size="10"
+								value="#{CurrentWitness.selectedPersonId}" style="width: 400px;">
+								<f:selectItems value="#{CurrentWitness.persons_list}" />
+							</h:selectOneListbox>
+
+						</h:panelGroup>
+						<h:panelGroup>
+			                Restrict by role:<h:selectBooleanCheckbox
+								partialSubmit="true"
+								valueChangeListener="#{CurrentWitness.restrictedByRoleChange}"
+								value="#{CurrentWitness.restrictedByRole}">
+								<a4j:ajax event="click" render="ppWitnessSelectPerson" />
+							</h:selectBooleanCheckbox>
+						</h:panelGroup>
+						<h:panelGrid columns="2">
+							<a4j:commandButton
+								actionListener="#{CurrentWitness.listenerSelectPerson}"
+								value="Take"
+								render="ppWitnessSelectPerson,witnessTitlePanel,witnessAuthorPanel,witnessCopyPanel" />
+							<a4j:commandButton
+								actionListener="#{CurrentWitness.listenerCancelPpSelectAuthor}"
+								value="Cancel"
+								render="ppWitnessSelectPerson,witnessTitlePanel,witnessAuthorPanel,witnessCopyPanel" />
+						</h:panelGrid>
+
+					</h:panelGrid>
+				</h:panelGrid>
+
+
+			</h:panelGroup>
+		</h:panelGrid>
+
+
+	</ui:composition>
+</body>
+</html>
